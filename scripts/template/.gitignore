@@ -1,0 +1,4 @@
+/build
+/venv
+/.sass-cache
+/deploy_test.sh

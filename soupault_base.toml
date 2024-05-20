@@ -1,0 +1,94 @@
+[settings]
+strict = true
+verbose = true
+doctype = "<!DOCTYPE html>"
+clean_urls = false
+page_file_extensions = ["htm", "html", "md"]
+ignore_extensions = ["draft"]
+ignore_directories = ["include"]
+plugin_discovery = true
+plugin_dirs = ["scripts/plugins"]
+
+default_template_file = "PandocRulebookBase/templates/main.html"
+default_content_selector = "article"
+default_content_action = "append_child"
+
+[preprocessors]
+md = 'PandocRulebookBase/support/pandoc_html.sh'
+
+[plugins.inline-styles]
+file = "PandocRulebookBase/plugins/inline-style.lua"
+
+[plugins.pandoc-cleanup-css]
+file = "PandocRulebookBase/plugins/pandoc-cleanup-css.lua"
+
+[plugins.custom_toc]
+file = "PandocRulebookBase/plugins/custom_toc.lua"
+
+[templates.redirect]
+file = "PandocRulebookBase/templates/redirect.html"
+content_selector = 'head'
+content_action = "append_child"
+section = ""
+
+[widgets.header]
+widget = "include"
+selector = "header"
+file = "templates/header.html"
+
+[widgets.menu-inner]
+widget = "exec"
+selector = ["#gen-menu"]
+command = "PandocRulebookBase/support/pandoc_html.sh templates/menu_index.md"
+
+[widgets.ver-tag]
+widget = "exec"
+selector = ["#ver-tag"]
+command = 'git describe --always --dirty=-DIRTY | tr -d "\n"'
+action = "replace_content"
+
+[widgets.rev-tag]
+widget = "exec"
+selector = ["#rev-tag"]
+command = 'git rev-parse HEAD | tr -d "\n"'
+action = "replace_content"
+
+[widgets.generator-meta]
+widget = 'insert_html'
+selector = 'head'
+html = '<meta name="generator" content="soupault">'
+
+[widgets.page-title]
+widget = "title"
+selector = "h1"
+default = "Project Name"
+append = " | Project Name"
+force = true
+keep = true
+
+[widgets.table-of-contents]
+widget = "toc"
+selector = "#gen-toc"
+
+min_level = 2
+toc_list_class = "toc"
+numbered_list = false
+heading_links = true
+heading_link_text = "§"
+heading_link_class = "section"
+heading_links_append = true
+use_heading_slug = true
+
+slug_regex = '[^a-zA-Z0-9.]+'
+slug_replacement_string = "-"
+
+[widgets.inline-styles]
+widget = "inline-styles"
+
+[widgets.custom_toc]
+after = "table-of-contents"
+widget = "custom_toc"
+
+[widgets.pandoc-cleanup-css]
+after = "custom_toc"
+widget = "pandoc-cleanup-css"
