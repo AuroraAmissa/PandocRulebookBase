@@ -1,8 +1,10 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash --pure -p soupault -p pandoc -p minify -p nix -p git -p wget -p dart-sass -p cacert
+#! nix-shell -i bash --pure -p soupault -p pandoc -p minify -p nix -p git -p git-lfs -p wget -p dart-sass -p cacert
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
 set -eu
+
+git lfs pull
 
 mkdir -p build/web/
 rm -rf build/web/* build/web/.* build/soupault build/extract ||:
