@@ -13,14 +13,18 @@ $color_code_block: $color_text !default;
 $border_style_main: solid !default;
 $border_width_main: 1px !default;
 
-$border_style_code: $border_style_main !default;
-$border_width_code: 1px !default;
-
 $border_style_secondary: $border_style_main !default;
 $border_width_secondary: 1px 1px 1px 2px !default;
+$border_width_secondary_head: 0 0 1px !default;
 
-$border_style_subability: $border_style_main !default;
+$border_style_table: $border_style_secondary !default;
+$border_width_table: $border_width_secondary !default;
+
+$border_style_subability: $border_style_secondary !default;
 $border_width_subability: 0 0 0 2px !default;
+
+$border_style_code: $border_style_secondary !default;
+$border_width_code: 1px !default;
 
 $border_style_title: $border_style_main !default;
 $border_width_title: 0 0 2px !default;
@@ -28,10 +32,10 @@ $border_width_title: 0 0 2px !default;
 $background: #6f6 !default;
 
 $color_background_main: rgba(255, 255, 255, 85%) !default;
-$color_background_secondary: rgba(255, 255, 255, 35%) !default;
-$color_background_secondary: $color_background_secondary !default;
-$color_background_table_even: rgba(255, 128, 128, 35%) !default;
-$color_background_table_odd: $color_background_secondary !default;
+$color_background_secondary_dark: rgba(255, 255, 255, 35%) !default;
+$color_background_secondary_light: rgba(255, 128, 128, 35%) !default;
+$color_background_table_even: $color_background_secondary_light !default;
+$color_background_table_odd: $color_background_secondary_dark !default;
 
 $font_title: sans-serif !default;
 $font_symbol: sans-serif !default;
@@ -149,13 +153,14 @@ p {
   margin: 0.6rem 0 0.6rem 0;
 }
 
+.section, .symbol {
+  @include font_symbol;
+}
+
 .section {
   float: right;
   user-select: none;
-}
-
-.section, .symbol {
-  @include font_symbol;
+  font-weight: $font_weight_main;
 }
 
 .calc, .c {
@@ -237,7 +242,7 @@ div.highlight {
 .highlight, :not(div.highlight > pre) > code {
   @include font_code;
 
-  background-color: $color_background_secondary;
+  background-color: $color_background_secondary_dark;
   @include border($border_style_code, $border_width_code);
   padding: 0 1px 1px 1px;
 }
@@ -251,10 +256,7 @@ div.highlight {
 /// Sidebar layout
 ///
 
-blockquote, .ability {
-  padding: 0.01em 0.7em 0.01em 0.7em;
-  background: $color_background_secondary;
-}
+$sidebar_layout_padding_width: 0.7em !default;
 
 table {
   padding: 0;
@@ -272,15 +274,15 @@ th, td {
   }
 
   &:first-child {
-    padding-left: 0.7em;
+    padding-left: $sidebar_layout_padding_width;
   }
 
   &:last-child {
-    padding-right: 0.7em;
+    padding-right: $sidebar_layout_padding_width;
   }
 
   + th, + td {
-    padding-left: 0.7em;
+    padding-left: $sidebar_layout_padding_width;
   }
 }
 
@@ -328,9 +330,48 @@ th, td {
   padding-right: 0;
 }
 
+table {
+  @include border($border_style_table, $border_width_table);
+}
+
+blockquote, .ability {
+  @include border($border_style_secondary, $border_width_secondary);
+
+  > * {
+    margin: 0;
+    padding-left: $sidebar_layout_padding_width;
+    padding-right: $sidebar_layout_padding_width;
+    background: $color_background_secondary_light;
+  }
+
+  > h4, > h6 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  > h2, > h3, > h4, > h5, > h6 {
+    margin: 0;
+    background: $color_background_secondary_dark;
+    @include border($border_style_secondary, $border_width_secondary_head);
+
+    + p {
+      margin-top: 0;
+      padding-top: 0.4em;
+    }
+  }
+
+  > p + p {
+    padding-top: 0.6rem;
+  }
+
+  > p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0.4em;
+  }
+}
+
 blockquote, table, .ability {
   margin: 0;
-  @include border($border_style_secondary, $border_width_secondary);
 
   + blockquote, + table, + .ability {
     margin-top: 0.6rem;
@@ -338,14 +379,6 @@ blockquote, table, .ability {
 
   &:last-child {
     margin-bottom: 0.4em;
-  }
-
-  > p:last-child {
-    margin-bottom: 0.4em;
-  }
-
-  > h2, > h3, > h4, > h5, > h6 {
-    margin-top: 0.4em;
   }
 }
 
