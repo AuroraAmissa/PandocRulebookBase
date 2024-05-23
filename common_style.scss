@@ -242,7 +242,7 @@ div.highlight {
 .highlight, :not(div.highlight > pre) > code {
   @include font_code;
 
-  background-color: $color_background_secondary_dark;
+  background-color: $color_background_secondary_light;
   @include border($border_style_code, $border_width_code);
   padding: 0 1px 1px 1px;
 }
