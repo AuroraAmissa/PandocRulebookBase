@@ -53,6 +53,8 @@ $font_style_em: oblique !default;
 
 $menu_mobile_seperator: " • " !default;
 
+$media_screen: 'not print';
+$media_print: 'only print';
 $media_desktop: 'only screen and (min-width: 70em)';
 $media_mobile: 'not screen and (min-width: 70em)';
 
@@ -60,8 +62,14 @@ $media_mobile: 'not screen and (min-width: 70em)';
 /// Mixins
 ///
 
+@mixin border_color($color) {
+  @media #{$media_screen} {
+    border-color: $color;
+  }
+}
+
 @mixin border($style, $width) {
-  border-color: $color_border;
+  @include border_color($color_border);
   border-style: $style;
   border-width: $width;
 }
@@ -123,7 +131,9 @@ hr {
 
 body {
   @include font_main;
-  color: $color_text;
+  @media #{$media_screen} {
+    color: $color_text;
+  }
 }
 
 a {
@@ -323,7 +333,9 @@ th, td {
   font-weight: $font_weight_title;
   user-select: none;
 
-  padding-right: 0.6rem;
+  @media #{$media_screen} {
+    padding-right: 0.6rem;
+  }
 }
 
 .subability-head {
@@ -418,7 +430,9 @@ article {
 
 #menu-inner, article {
   background-color: $color_background_main;
-  @include border($border_style_main, $border_width_main);
+  @media #{$media_screen} {
+    @include border($border_style_main, $border_width_main);
+  }
 }
 
 #menu-inner {
@@ -500,6 +514,10 @@ article {
     grid-column: 1;
   }
 
+  #gen-menu, #nav-section {
+    display: inline;
+  }
+
   #gen-menu > ul, #gen-menu > ul > li {
     display: inline;
     padding: 0;
@@ -513,4 +531,12 @@ article {
   .nav-desk {
     display: none;
   }
+}
+
+@media #{$media_print} {
+  .section, nav, header {
+    display: none;
+  }
+
+
 }
