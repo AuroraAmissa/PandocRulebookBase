@@ -1,6 +1,3 @@
--- Allows anchors for all headings, but exclude any after the second level from the TOC.
-Table.iter_values(HTML.delete, HTML.select(page, "#gen-toc>ul>ul>ul"))
-
 -- Process excluded headings
 unlisted_ids = {}
 function process_unlisted(element)
@@ -9,7 +6,7 @@ function process_unlisted(element)
         unlisted_ids["#" .. attr] = 1
     end
 end
-Table.iter_values(process_unlisted, HTML.select_all_of(page, { ".unlisted" }))
+Table.iter_values(process_unlisted, HTML.select_all_of(page, { ".unlisted", "h4", "h5", "h6" }))
 
 -- Process toc and exclude references that are excluded
 local html = HTML.select_one(page, "#gen-toc")
@@ -59,7 +56,7 @@ end
 Table.iter_values(subability_no_subsection, HTML.select_all_of(page, {".subability"}))
 
 -- Delete the `#nav-hr` if there is no (remaining) table of contents
-local html = HTML.select_one(page, "#gen-toc>ul")
+local html = HTML.select_one(page, "#gen-toc li")
 if not html or Table.length(HTML.children(html)) == 0 then
     Table.iter_values(HTML.delete, HTML.select_all_of(page, {"#nav-hr", "#nav-banner-toc", "#gen-toc"}))
 end
