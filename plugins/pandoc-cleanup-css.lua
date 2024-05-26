@@ -1,6 +1,6 @@
 local remove_classes = {
     "level1", "level2", "level3", "level4", "level5", "level6", -- redundant
-    "unlisted", "unnumbered" -- not used after generation
+    "u", "unlisted", "unnumbered" -- not used after generation
 }
 
 function do_remove(elem)

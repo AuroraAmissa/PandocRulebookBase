@@ -372,13 +372,35 @@ blockquote, .ability {
     }
   }
 
-  > p + p {
-    padding-top: 0.6rem;
+  // The two main types of elements allowed in ability blocks.
+  > p, > div {
+    &:not(:first-child) {
+      padding-top: 0.6rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0.4em;
+    }
   }
 
-  > p:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0.4em;
+  // Used to wrap stranger elements
+  > div {
+    > table {
+      margin: 0;
+    }
+
+    > ul, > ol {
+      margin: 0;
+
+      > li:first-child > p:first-child {
+        margin-top: 0;
+      }
+
+      > li:last-child > p:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
