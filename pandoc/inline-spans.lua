@@ -20,8 +20,17 @@ function Span(span)
     return span
 end
 
+function Div(div)
+    div = class_u(div)
+
+    if div.classes:includes("ability") or div.classes:includes("sidebar") then
+        div.classes:insert("box")
+    end
+
+    return div
+end
+
 CodeBlock = class_u
-Div = class_u
 Figure = class_u
 Header = class_u
 Table = class_u

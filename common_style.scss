@@ -36,6 +36,7 @@ $color_background_secondary_dark: rgba(255, 255, 255, 35%) !default;
 $color_background_secondary_light: rgba(255, 128, 128, 35%) !default;
 $color_background_table_even: $color_background_secondary_light !default;
 $color_background_table_odd: $color_background_secondary_dark !default;
+$color_background_tooltip: #ffffff !default;
 
 $font_title: sans-serif !default;
 $font_symbol: sans-serif !default;
@@ -70,9 +71,14 @@ $media_mobile: 'not screen and (min-width: 70em)';
 
 @mixin border($style, $width) {
   @include border_color($color_border);
+  @include border_no_color($style, $width);
+}
+
+@mixin border_no_color($style, $width) {
   border-style: $style;
   border-width: $width;
 }
+
 
 @mixin font_main {
   font-family: $font_main;
@@ -173,10 +179,14 @@ p {
   font-weight: $font_weight_main;
 }
 
-.calc, .c {
+.c {
   margin-left: -0.4em;
   margin-right: -0.4em;
   line-height: 100%; // ensure we don't fuck stuff up
+}
+
+.c:not(.ml) {
+  white-space: nowrap;
 }
 
 ///
@@ -346,7 +356,24 @@ table {
   @include border($border_style_table, $border_width_table);
 }
 
-blockquote, .ability {
+blockquote {
+  @include border($border_style_secondary, $border_width_secondary);
+
+  margin: 0;
+  padding-left: $sidebar_layout_padding_width;
+  padding-right: $sidebar_layout_padding_width;
+  background: $color_background_secondary_light;
+
+  > :first-child {
+    margin-top: 0.4em;
+  }
+
+  > :last-child {
+    margin-bottom: 0.4em;
+  }
+}
+
+.box {
   @include border($border_style_secondary, $border_width_secondary);
 
   > * {
@@ -366,9 +393,11 @@ blockquote, .ability {
     background: $color_background_secondary_dark;
     @include border($border_style_secondary, $border_width_secondary_head);
 
-    + p {
-      margin-top: 0;
-      padding-top: 0.4em;
+    + p, + div {
+      &:not(#xx) { // redundant :not(#xx) to fix precedence
+        margin-top: 0;
+        padding-top: 0.4em;
+      }
     }
   }
 
@@ -404,15 +433,68 @@ blockquote, .ability {
   }
 }
 
-blockquote, table, .ability {
+blockquote, table, .box {
   margin: 0;
 
-  + blockquote, + table, + .ability {
+  + blockquote, + table, + .box {
     margin-top: 0.6rem;
   }
 
   &:last-child {
     margin-bottom: 0.4em;
+  }
+}
+
+///
+/// Alt-Text Layout
+///
+
+span.alt {
+  @include border_no_color($border_style_title, $border_width_title);
+  @include border_color($color_text);
+
+  position: relative; // needed to make it absolute to this
+  display: inline-block; // inline-block ensures no line breaks
+
+  line-height: 120%; // ensure we don't fuck stuff up
+  margin-top: -0.5em;
+  margin-bottom: -0.5em;
+
+  span.tt-tx {
+    position: relative; // allow z-index
+    z-index: 5;
+  }
+
+  span.tt-wr {
+    display: none;
+    user-select: none;
+  }
+
+  $alt_max_width: 20em;
+
+  &:hover span.tt-wr {
+    display: block;
+    position: absolute;
+
+    top: 1em;
+    width: $alt_max_width;
+    height: 100%;
+
+    span.tt-in {
+      display: block;
+      position: relative; // allow z-index
+      z-index: 10;
+
+      @include border($border_style_secondary, $border_width_secondary);
+      background: $color_background_tooltip;
+
+      width: max-content;
+      max-width: $alt_max_width;
+      margin-top: 0.15em;
+      padding: 0.4em;
+
+      white-space: normal;
+    }
   }
 }
 

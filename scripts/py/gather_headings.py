@@ -1,5 +1,7 @@
 import glob
 import json
+import re
+import tomllib
 
 files = {}
 
@@ -17,3 +19,10 @@ for file in glob.glob("content/*/*.md"):
 
 open("build/extract/pages.json", "w").write(json.dumps(files))
 print(files)
+
+alt_list = {}
+for tag, value in tomllib.loads(open("templates/meta.toml").read())["alt"].items():
+    alt_list[tag] = value.replace("((", "").replace("))", "")
+    alt_list[f"{tag}_ny"] = re.sub(r"\(\(.+\)\)", "", value)
+open("build/extract/alt.json", "w").write(json.dumps(alt_list))
+print(alt_list)

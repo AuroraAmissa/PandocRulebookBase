@@ -25,6 +25,9 @@ file = "PandocRulebookBase/plugins/pandoc-cleanup-css.lua"
 [plugins.custom_toc]
 file = "PandocRulebookBase/plugins/custom_toc.lua"
 
+[plugins.alt-overlay]
+file = "PandocRulebookBase/plugins/alt-overlay.lua"
+
 [templates.redirect]
 file = "PandocRulebookBase/templates/redirect.html"
 content_selector = 'head'
@@ -89,6 +92,14 @@ widget = "inline-styles"
 after = "table-of-contents"
 widget = "custom_toc"
 
+[widgets.wrap-ability]
+widget = "wrap"
+wrapper = """ <div> """
+selector = [".box > table", ".box > ul", ".box > ol"]
+
+[widgets.alt-overlay]
+widget = "alt-overlay"
+
 [widgets.pandoc-cleanup-css]
-after = "custom_toc"
+after = ["custom_toc", "wrap-ability", "alt-overlay"]
 widget = "pandoc-cleanup-css"
