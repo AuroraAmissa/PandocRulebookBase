@@ -11,3 +11,9 @@ function remove(cl)
     Table.iter_values(do_remove, HTML.select(page, "." .. cl))
 end
 Table.iter_values(remove, remove_classes)
+
+function aria_hidden(elem)
+    HTML.remove_class(elem, "aria-hidden")
+    HTML.set_attribute(elem, "aria-hidden", "true")
+end
+Table.iter_values(aria_hidden, HTML.select(page, ".aria-hidden"))

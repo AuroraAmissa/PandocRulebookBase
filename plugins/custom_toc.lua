@@ -1,3 +1,8 @@
+HTML = HTML
+Table = Table
+String = String
+page = page
+
 -- Process excluded headings
 unlisted_ids = {}
 function process_unlisted(element)

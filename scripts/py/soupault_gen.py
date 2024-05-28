@@ -26,6 +26,7 @@ base = tomllib.loads(open("PandocRulebookBase/soupault_base.toml").read())
 meta = tomllib.loads(open("templates/meta.toml").read())
 base["widgets"]["page-title"]["default"] = meta["config"]["title"]
 base["widgets"]["page-title"]["append"] = " | " + meta["config"]["title"]
+base["custom_options"] = { "site_title": meta["config"]["title"] }
 
 web_path = meta["config"]["path"]
 web_entry = meta["entry"]["name"]

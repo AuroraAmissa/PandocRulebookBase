@@ -189,6 +189,18 @@ p {
   white-space: nowrap;
 }
 
+.select-only {
+  display: inline-block;
+  overflow: hidden;
+  height: 0;
+  width: 0;
+  user-select: text;
+}
+
+.nosel {
+  user-select: none;
+}
+
 ///
 /// Headings
 ///
@@ -341,7 +353,6 @@ th, td {
 
   @include font_main;
   font-weight: $font_weight_title;
-  user-select: none;
 
   @media #{$media_screen} {
     padding-right: 0.6rem;

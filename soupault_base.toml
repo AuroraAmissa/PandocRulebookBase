@@ -28,6 +28,12 @@ file = "PandocRulebookBase/plugins/custom_toc.lua"
 [plugins.alt-overlay]
 file = "PandocRulebookBase/plugins/alt-overlay.lua"
 
+[plugins.ability-head]
+file = "PandocRulebookBase/plugins/ability-head.lua"
+
+[plugins.opengraph]
+file = "PandocRulebookBase/plugins/opengraph.lua"
+
 [templates.redirect]
 file = "PandocRulebookBase/templates/redirect.html"
 content_selector = 'head'
@@ -103,3 +109,10 @@ widget = "alt-overlay"
 [widgets.pandoc-cleanup-css]
 after = ["custom_toc", "wrap-ability", "alt-overlay"]
 widget = "pandoc-cleanup-css"
+
+[widgets.ability-head]
+widget = "ability-head"
+
+[widgets.opengraph]
+after = ["pandoc-cleanup-css", "ability-head", "page-title"]
+widget = "opengraph"
