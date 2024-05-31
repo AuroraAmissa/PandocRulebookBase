@@ -111,6 +111,7 @@ after = ["custom_toc", "wrap-ability", "alt-overlay"]
 widget = "pandoc-cleanup-css"
 
 [widgets.ability-head]
+after = "table-of-contents"
 widget = "ability-head"
 
 [widgets.opengraph]
