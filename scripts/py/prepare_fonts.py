@@ -18,7 +18,7 @@ classify_info = {
     },
     "symbol": {
         "name": [],
-        "class": ['a-left', 'a-right', 'symbol', 'section'],
+        "class": ['a-left', 'a-right', 'symbol', 'sy', 'section'],
     },
     "hidden": {
         "name": ["style", "script", "head", "title", "meta", "[document]"],

@@ -25,6 +25,9 @@ file = "PandocRulebookBase/plugins/pandoc-cleanup-css.lua"
 [plugins.custom_toc]
 file = "PandocRulebookBase/plugins/custom_toc.lua"
 
+[plugins.page_no_toc]
+file = "PandocRulebookBase/plugins/page_no_toc.lua"
+
 [plugins.alt-overlay]
 file = "PandocRulebookBase/plugins/alt-overlay.lua"
 
@@ -54,6 +57,11 @@ file = "templates/header.html"
 widget = "include"
 selector = ["#menu-inner"]
 file = "PandocRulebookBase/templates/menu.html"
+
+[widgets.menu-footer]
+widget = "exec"
+selector = ["#menu-footer"]
+command = "PandocRulebookBase/support/pandoc_html.sh templates/menu_footer.md"
 
 [widgets.menu-inner]
 after = "menu-template"
@@ -109,6 +117,10 @@ widget = "inline-styles"
 [widgets.custom_toc]
 after = "table-of-contents"
 widget = "custom_toc"
+
+[widgets.page_no_toc]
+after = "custom_toc"
+widget = "page_no_toc"
 
 [widgets.wrap-ability]
 widget = "wrap"
