@@ -28,30 +28,43 @@ base["widgets"]["page-title"]["default"] = meta["config"]["title"]
 base["widgets"]["page-title"]["append"] = " | " + meta["config"]["title"]
 base["custom_options"] = { "site_title": meta["config"]["title"] }
 
-web_path = meta["config"]["path"]
-web_entry = meta["entry"]["name"]
-web_entry_path = meta["entry"]["path"]
-
 os.mkdir("build/soupault/site")
-os.mkdir(f"build/soupault/site/{web_path}")
 
-if "entry" in meta:
-    name = meta["entry"]["name"]
-    path = meta["entry"]["path"]
-    contents = f'<meta http-equiv="refresh" content="0; URL={path}"/>'
-    open(f"build/soupault/site/{name}.html", "w").write(contents)
+if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
+    open("build/extract/website_mode", "w").write("-")
+    del base["templates"]["redirect"]
+    base["settings"]["clean_urls"] = True
+    # TODO
+    base["settings"]["default_template_file"] = "PandocRulebookBase/templates/main_temp.html"
+else:
+    web_path = meta["config"]["path"]
+
+    os.mkdir(f"build/soupault/site/{web_path}")
+
+    if "entry" in meta:
+        name = meta["entry"]["name"]
+        path = meta["entry"]["path"]
+        contents = f'<meta http-equiv="refresh" content="0; URL={path}"/>'
+        open(f"build/soupault/site/{name}.html", "w").write(contents)
+
+        web_entry = meta["entry"]["name"]
+        web_entry_path = meta["entry"]["path"]
+    else:
+        web_entry = "unknown"
+        web_entry_path = "unknown"
+
+    readme_message = f"""
+    Please use the <{web_entry}.html> file in the archive root instead!
+    The file names here are more organized for easy development rather than being easy to find things.
+    If you really insist, the title page can be found at <{web_entry_path}>.
+    """
+
+    open(f"build/soupault/site/{web_path}/!! PLEASE README !!.txt", "w").write(readme_message)
+    open("build/extract/web_path", "w").write(web_path)
 
 if "soupault" in meta:
     merged = merge(base, meta["soupault"])
 else:
     merged = base
 
-readme_message = f"""
-Please use the <{web_entry}.html> file in the archive root instead!
-The file names here are more organized for easy development rather than being easy to find things.
-If you really insist, the title page can be found at <{web_entry_path}>.
-"""
-
 open("build/soupault/soupault.toml", "w").write(tomli_w.dumps(merged))
-open(f"build/soupault/site/{web_path}/!! PLEASE README !!.txt", "w").write(readme_message)
-open("build/extract/web_path", "w").write(web_path)

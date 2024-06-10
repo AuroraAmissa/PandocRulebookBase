@@ -27,7 +27,13 @@ classify_info = {
 }
 
 meta = tomllib.loads(open("templates/meta.toml").read())
-root_path = meta["config"]["path"]
+if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
+    root_path = "build/web/static"
+    img_path = "img_XXXX"
+else:
+    root_path = meta["config"]["path"]
+    root_path = f"build/web/{root_path}"
+    img_path = "img"
 
 
 def classify_element(element):
@@ -72,11 +78,12 @@ def make_font_cmdline(name):
     subsets = sorted(list(set([name] + (meta["fonts"][fallback_attr] if fallback_attr in meta["fonts"] else []))))
     for subset in subsets:
         subset_args.append(f"--subset-from=build/extract/text_{subset}.txt")
+    subset_args.sort()
 
     return [
         "PandocRulebookBase/support/mkwebfont.sh", "-v", "--splitter=none",
-        "--store", f"build/web/{root_path}/webfonts", "--store-uri", "../webfonts/",
-        font_file, "-o", f"build/web/{root_path}/img/wf_{name}.scss",
+        "--store", f"{root_path}/webfonts", "--store-uri", "../webfonts/",
+        font_file, "-o", f"{root_path}/{img_path}/wf_{name}.scss",
     ] + subset_args
 
 
@@ -118,4 +125,4 @@ all_style_scss = """
 @use 'wf_code';
 @use 'wf_symbol';
 """
-open(f"build/web/{root_path}/img/all_style.scss", "w").write(all_style_scss)
+open(f"{root_path}/{img_path}/all_style.scss", "w").write(all_style_scss)

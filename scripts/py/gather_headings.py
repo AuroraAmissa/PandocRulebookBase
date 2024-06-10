@@ -5,7 +5,7 @@ import tomllib
 
 files = {}
 
-for file in glob.glob("content/*/*.md"):
+for file in glob.glob("content/*/*.md") + glob.glob("site/**/*.md", recursive=True):
     contents = open(file, "r").read()
 
     title = None
@@ -21,8 +21,10 @@ open("build/extract/pages.json", "w").write(json.dumps(files))
 print(files)
 
 alt_list = {}
-for tag, value in tomllib.loads(open("templates/meta.toml").read())["alt"].items():
-    alt_list[tag] = value.replace("((", "").replace("))", "")
-    alt_list[f"{tag}_ny"] = re.sub(r"\(\(.+\)\)", "", value)
+meta_toml = tomllib.loads(open("templates/meta.toml").read())
+if "alt" in meta_toml:
+    for tag, value in meta_toml["alt"].items():
+        alt_list[tag] = value.replace("((", "").replace("))", "")
+        alt_list[f"{tag}_ny"] = re.sub(r"\(\(.+\)\)", "", value)
 open("build/extract/alt.json", "w").write(json.dumps(alt_list))
 print(alt_list)
