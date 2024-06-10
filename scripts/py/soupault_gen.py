@@ -34,8 +34,12 @@ if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
     open("build/extract/website_mode", "w").write("-")
     del base["templates"]["redirect"]
     base["settings"]["clean_urls"] = True
-    # TODO
-    base["settings"]["default_template_file"] = "PandocRulebookBase/templates/main_temp.html"
+    base["settings"]["default_template_file"] = "PandocRulebookBase/templates/main_website.html"
+    if "toc_allowed" in meta["config"] and len(meta["config"]["toc_allowed"]) > 0:
+        base["widgets"]["table-of-contents"]["section"] = meta["config"]["toc_allowed"]
+        base["widgets"]["table-of-contents"]["include_subsections"] = True
+    else:
+        base["widgets"]["table-of-contents"]["selector"] = "#run-never"
 else:
     web_path = meta["config"]["path"]
 

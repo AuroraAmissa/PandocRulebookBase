@@ -16,13 +16,11 @@
 -- Author: Daniil Baturin
 -- License: MIT
 
-styles = HTML.select(page, "style")
+styles = HTML.select(page, "body style")
 
 function add_style(s)
-  head = HTML.select_one(s, "head")
-  HTML.append_child(head, e)
+  head = HTML.select_one(page, "head")
+  HTML.append_child(head, s)
 end
 
 Table.iter_values(add_style, styles)
-
-Table.iter_values(HTML.delete, styles)

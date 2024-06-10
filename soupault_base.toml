@@ -40,12 +40,23 @@ content_selector = 'head'
 content_action = "append_child"
 section = ""
 
+[templates.apps]
+file = "PandocRulebookBase/templates/main_app.html"
+section = "apps/"
+include_subsections = true
+
 [widgets.header]
 widget = "include"
 selector = "header"
 file = "templates/header.html"
 
+[widgets.menu-template]
+widget = "include"
+selector = ["#menu-inner"]
+file = "PandocRulebookBase/templates/menu.html"
+
 [widgets.menu-inner]
+after = "menu-template"
 widget = "exec"
 selector = ["#gen-menu"]
 command = "PandocRulebookBase/support/pandoc_html.sh templates/menu_index.md"
@@ -76,6 +87,7 @@ force = true
 keep = true
 
 [widgets.table-of-contents]
+after = "menu-inner"
 widget = "toc"
 selector = "#gen-toc"
 
@@ -117,3 +129,8 @@ widget = "ability-head"
 [widgets.opengraph]
 after = ["pandoc-cleanup-css", "ability-head", "page-title"]
 widget = "opengraph"
+
+[widgets.highlight]
+widget = "preprocess_element"
+selector = '*[class^="language-"]'
+command = 'highlight --force -O html -f --syntax=$(echo $ATTR_CLASS | sed -e "s/language-//")'
