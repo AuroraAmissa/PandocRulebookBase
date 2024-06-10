@@ -25,7 +25,7 @@ function Link(el)
             if section == "" then
                 section = linkName
             end
-            section = section:lower():gsub("%%20", "-")
+            section = section:lower():gsub("%%20", "-"):gsub(" ", "-")
             target = target .. "#" .. section
         end
 

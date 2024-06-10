@@ -1,6 +1,8 @@
 #!/bin/sh -e
 
 if [ "$1" = "" ]; then
+    echo "Usage: build.sh [dist/web]"
+elif [ "$1" = "dist" ]; then
     PandocRulebookBase/scripts/build.sh
 elif [ "$1" = "web" ]; then
     PandocRulebookBase/scripts/build_web.sh

@@ -4,7 +4,7 @@
 set -eu
 
 # Check links (validation step)
-linkchecker build/web/
+linkchecker --config PandocRulebookBase/scripts/steps/linkcheckerrc build/web/
 
 # Build archive zip
 cd build
