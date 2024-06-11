@@ -18,9 +18,9 @@ for file in glob.glob("content/*/*.md") + glob.glob("site/**/*.md", recursive=Tr
 
     if title:
         if is_website:
-            file_uri = ("/" + "/".join(file.split("/")[-2:])).replace("/_content", "")
+            file_uri = ("/" + "/".join(file.split("/")[1:])).replace(".md", "").replace("/_content", "")
         else:
-            file_uri = "../".join(file.split("/")[-2:]) + ".html"
+            file_uri = "../".join(file.split("/")[1:]).replace(".md", "") + ".html"
         files[title.lower()] = file_uri
         files[title.lower().replace(" ", "%20")] = file_uri
 
