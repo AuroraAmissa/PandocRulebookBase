@@ -3,6 +3,9 @@ import json
 import re
 import tomllib
 
+meta_toml = tomllib.loads(open("templates/meta.toml").read())
+is_website = "website_mode" in meta_toml["config"] and meta_toml["config"]["website_mode"]
+
 files = {}
 
 for file in glob.glob("content/*/*.md") + glob.glob("site/**/*.md", recursive=True):
@@ -14,14 +17,17 @@ for file in glob.glob("content/*/*.md") + glob.glob("site/**/*.md", recursive=Tr
             title = line[2:]
 
     if title:
-        files[title.lower()] = "/".join(file.split("/")[-2:])
-        files[title.lower().replace(" ", "%20")] = "/".join(file.split("/")[-2:])
+        if is_website:
+            file_uri = ("/" + "/".join(file.split("/")[-2:])).replace("/_content", "")
+        else:
+            file_uri = "../".join(file.split("/")[-2:]) + ".html"
+        files[title.lower()] = file_uri
+        files[title.lower().replace(" ", "%20")] = file_uri
 
 open("build/extract/pages.json", "w").write(json.dumps(files))
 print(files)
 
 alt_list = {}
-meta_toml = tomllib.loads(open("templates/meta.toml").read())
 if "alt" in meta_toml:
     for tag, value in meta_toml["alt"].items():
         alt_list[tag] = value.replace("((", "").replace("))", "")

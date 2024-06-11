@@ -18,7 +18,7 @@ function Link(el)
             end
         end
         if target and pages[target:lower()] then
-            target = "../" .. pages[target:lower()]:gsub("%.md", ".html")
+            target = pages[target:lower()]
         end
 
         if section then

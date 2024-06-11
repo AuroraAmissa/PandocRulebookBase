@@ -46,10 +46,10 @@ function add_meta(property, content)
 end
 
 -- required metadata:
-local type = "website"
-if Sys.strip_extensions(Sys.basename(page_file)) ~= "index" then
-	type = "article"
-end
+local type = "article"
+--if Sys.strip_extensions(Sys.basename(page_file)) ~= "index" then
+--	type = "article"
+--end
 add_meta("og:type", type)
 
 local title_elt = HTML.select_one(page, "h1")

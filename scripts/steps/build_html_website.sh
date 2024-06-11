@@ -1,6 +1,6 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i bash --pure -p soupault -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -i bash --pure -p pandoc -p minify -p dart-sass -p highlight
+#! nix-shell -i bash --pure -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
 set -eu
@@ -31,6 +31,9 @@ python3.11 PandocRulebookBase/scripts/py/prepare_fonts.py
 
 # Minify
 minify -vr build/web/ -o build/web/ --html-keep-comments
+if [ -d build/web ]; then
+    cp -rv templates/static/* build/web/
+fi
 
 # Build scss stylesheet
 dart-sass -c "$WEB_ROOT"/img_XXXX/all_style.scss:"$WEB_ROOT"/img_XXXX/all_style.css --style=compressed

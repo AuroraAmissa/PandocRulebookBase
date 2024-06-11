@@ -38,8 +38,8 @@ if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
     if "toc_allowed" in meta["config"] and len(meta["config"]["toc_allowed"]) > 0:
         base["widgets"]["table-of-contents"]["section"] = meta["config"]["toc_allowed"]
         base["widgets"]["table-of-contents"]["include_subsections"] = True
-        base["widgets"]["page_no_toc"]["exclude_section"] = meta["config"]["toc_allowed"]
-        base["widgets"]["page_no_toc"]["include_subsections"] = True
+        base["widgets"]["website_no-toc-format"]["exclude_section"] = meta["config"]["toc_allowed"]
+        base["widgets"]["website_no-toc-format"]["include_subsections"] = True
     else:
         base["widgets"]["table-of-contents"]["selector"] = "#run-never"
 else:
@@ -68,7 +68,10 @@ else:
     open(f"build/soupault/site/{web_path}/!! PLEASE README !!.txt", "w").write(readme_message)
     open("build/extract/web_path", "w").write(web_path)
 
-    del base["widgets"]["page_no_toc"]
+    del base["widgets"]["website_no-toc-format"]
+
+base["custom_options"]["image_src"] = meta["config"]["image_src"]
+base["custom_options"]["image_uri"] = meta["config"]["image_uri"]
 
 if "soupault" in meta:
     merged = merge(base, meta["soupault"])

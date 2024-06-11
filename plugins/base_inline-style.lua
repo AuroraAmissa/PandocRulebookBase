@@ -8,7 +8,7 @@
 --
 -- To run it, you need to add something like this to soupault_base.toml:
 -- [plugins.inline-styles]
---   file = "plugins/inline-style.lua"
+--   file = "plugins/base_inline-style.lua"
 --
 -- [widgets.inline-styles]
 --   widget = "inline-styles"
