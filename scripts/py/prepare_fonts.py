@@ -20,11 +20,18 @@ classify_info = {
         "name": [],
         "class": ['a-left', 'a-right', 'symbol', 'sy', 'section'],
     },
+    "zh": {
+        "name": [],
+        "class": ["zh"],
+    },
     "hidden": {
         "name": ["style", "script", "head", "title", "meta", "[document]"],
         "class": [],
     },
 }
+classifications = set(classify_info.keys())
+classifications.remove("hidden")
+classifications = sorted(list(classifications))
 
 meta = tomllib.loads(open("templates/meta.toml").read())
 if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
@@ -71,33 +78,25 @@ def glyphs(t: str):
     return repr("".join(sorted(list(set(t)))))
 
 
-
-
-text_main = ""
-text_title = ""
-text_code = ""
-text_symbol = ""
+text_classes = {}
+for c in classifications:
+    text_classes[c] = ""
 for page in glob("build/web/**/*.html", recursive=True):
     html = open(page).read()
-    text_main += text_from_html(html, "main") + "\n\n"
-    text_title += text_from_html(html, "title") + "\n\n"
-    text_code += text_from_html(html, "code") + "\n\n"
-    text_symbol += text_from_html(html, "symbol") + "\n\n"
-text_symbol += text_from_css(open("build/extract/style.css").read()) + "\n\n"
+    for c in classifications:
+        text_classes[c] += text_from_html(html, c) + "\n\n"
+text_classes["symbol"] += text_from_css(open("build/extract/style.css").read()) + "\n\n"
 
+for c in classifications:
+    open(f"build/extract/text_{c}.txt", "w").write(text_classes[c])
+    print(f"Glyphs for '{c}': {glyphs(text_classes[c])}")
 
-open("build/extract/text_main.txt", "w").write(text_main)
-open("build/extract/text_title.txt", "w").write(text_title)
-open("build/extract/text_code.txt", "w").write(text_code)
-open("build/extract/text_symbol.txt", "w").write(text_symbol)
-
-print("Text glyphs: "+glyphs(text_main))
-print("Title glyphs: "+glyphs(text_title))
-print("Code glyphs: "+glyphs(text_code))
-print("Symbol glyphs: "+glyphs(text_symbol))
 
 font_defs = {}
 def push_font(name):
+    if not name in meta["fonts"]:
+        return
+
     font_file = meta["fonts"][name]
     if not font_file in font_defs:
         font_defs[font_file] = set([])
@@ -129,7 +128,7 @@ def make_font_cmdline(font_file):
     ] + subset_args
 
 
-for font in ["main", "title", "code", "symbol"]:
+for font in classifications:
     push_font(font)
 
 

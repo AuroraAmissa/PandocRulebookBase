@@ -1,6 +1,6 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i bash --pure -p soupault -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -i bash --pure -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
+#! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
 set -eu

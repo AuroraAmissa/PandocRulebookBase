@@ -1,7 +1,8 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i bash --pure -p soupault -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -i bash --pure -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
+#! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
+#! nix-shell -p linkchecker
 
 set -eu
 
@@ -46,3 +47,6 @@ find build/web -type f -name *.html -exec sed -i "s/img_XXXX/img_$IMG_HASH/g" {}
 JS_HASH="$(nix hash path build/web/static/js_XXXX/ --base32 | tail -c +2 | cut -c-10)"
 mv -v build/web/static/js_XXXX build/web/static/"js_$JS_HASH"
 find build/web -type f -name *.html -exec sed -i "s/js_XXXX/js_$JS_HASH/g" {} \;
+
+# Check links (validation step)
+linkchecker --config PandocRulebookBase/scripts/steps/linkcheckerrc build/web/
