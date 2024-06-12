@@ -67,6 +67,8 @@ $media_print: 'only print';
 $media_desktop: 'only screen and (min-width: 70em)';
 $media_mobile: 'not screen and (min-width: 70em)';
 
+$sidebar_layout_padding_width: 0.7em !default;
+
 ///
 /// Mixins
 ///
@@ -177,14 +179,8 @@ p {
   margin: 0.6rem 0 0.6rem 0;
 }
 
-.section, .symbol, .sy {
+.symbol, .sy {
   @include font_symbol;
-}
-
-.section {
-  float: right;
-  user-select: none;
-  font-weight: $font_weight_main;
 }
 
 .c {
@@ -239,6 +235,48 @@ h1 {
 
 .h0, h1, h2, h3, h4, h5, h6 {
   @include font_title;
+}
+
+h2, h3, h4, h6 {
+  .section {
+    @include font_symbol;
+
+    float: right;
+    user-select: none;
+    font-weight: $font_weight_main;
+  }
+
+  .section-for-ability {
+    display: none;
+  }
+
+  @media #{$media_screen} {
+    position: relative;
+
+    .section {
+      display: none;
+    }
+
+    &:hover, &:focus {
+      > .section {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        text-align: right;
+      }
+
+      > .section-for-ability {
+        float: right;
+        display: inline-block;
+        color: $color_link;
+        text-decoration: underline;
+        margin-right: 0.5em;
+      }
+    }
+  }
 }
 
 .h0 {
@@ -336,8 +374,6 @@ div.highlight {
 /// Sidebar layout
 ///
 
-$sidebar_layout_padding_width: 0.7em !default;
-
 table:not(.no-table-layout) {
   padding: 0;
   border-spacing: 0;
@@ -403,10 +439,6 @@ table:not(.no-table-layout) {
 
   @include font_main;
   font-weight: $font_weight_title;
-
-  @media #{$media_screen} {
-    padding-right: 0.6rem;
-  }
 }
 
 .subability-head {
@@ -675,6 +707,12 @@ hr.nav-hr {
 
 .nav-span > ul {
   margin: 0.2rem 0 0.2rem 0;
+}
+
+.dissolved-menu {
+  a {
+    font-weight: $font_weight_strong;
+  }
 }
 
 @media #{$media_desktop} {

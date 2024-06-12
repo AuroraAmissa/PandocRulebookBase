@@ -36,10 +36,7 @@ if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
     base["settings"]["clean_urls"] = True
     base["settings"]["default_template_file"] = "PandocRulebookBase/templates/main_website.html"
     if "toc_allowed" in meta["config"] and len(meta["config"]["toc_allowed"]) > 0:
-        base["widgets"]["table-of-contents"]["section"] = meta["config"]["toc_allowed"]
-        base["widgets"]["table-of-contents"]["include_subsections"] = True
-        base["widgets"]["website_no-toc-format"]["exclude_section"] = meta["config"]["toc_allowed"]
-        base["widgets"]["website_no-toc-format"]["include_subsections"] = True
+        base["widgets"]["table-of-contents"]["path_regex"] = "|".join(meta["config"]["toc_allowed"])
     else:
         base["widgets"]["table-of-contents"]["selector"] = "#run-never"
 else:
