@@ -46,12 +46,12 @@ else:
 def classify_element(element):
     for key in classify_info:
         value = classify_info[key]
-        if element.name in value["name"]:
-            return key
         if "class" in element.attrs:
             for cl in value["class"]:
                 if cl in element.attrs["class"]:
                     return key
+        if element.name in value["name"]:
+            return key
     return classify_element(element.parent)
 
 
@@ -86,6 +86,16 @@ for page in glob("build/web/**/*.html", recursive=True):
     for c in classifications:
         text_classes[c] += text_from_html(html, c) + "\n\n"
 text_classes["symbol"] += text_from_css(open("build/extract/style.css").read()) + "\n\n"
+
+
+def zh_exclude(text: str, reverse: bool = False):
+    exclude_single = "…。！？、〜"
+    return "".join(filter(lambda x: reverse ^ (not x in exclude_single and ord(x) >= 0x100), text))
+
+
+text_classes["zh"] = zh_exclude(text_classes["zh"])
+text_classes["main"] += "\n\n" + zh_exclude(text_classes["zh"], reverse=True)
+
 
 for c in classifications:
     open(f"build/extract/text_{c}.txt", "w").write(text_classes[c])

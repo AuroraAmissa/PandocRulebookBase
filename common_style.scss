@@ -519,6 +519,7 @@ blockquote, table, .box {
   background-color: $color_background_secondary_light;
   margin-top: -2px;
   margin-bottom: -2px;
+  margin-right: 0.5em;
 
   &, img {
     border-color: $color_border_hcard;

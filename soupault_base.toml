@@ -36,6 +36,14 @@ file = "PandocRulebookBase/plugins/base_images.lua"
 # Moves <style> tags in <body> to <head> for correctness by HTML 5.
 file = "PandocRulebookBase/plugins/base_inline-style.lua"
 
+[plugins.base_mark-jp]
+# Marks content as Japanese
+file = "PandocRulebookBase/plugins/base_mark-jp.lua"
+
+[plugins.base_mark-zh]
+# Marks content as Chinese
+file = "PandocRulebookBase/plugins/base_mark-zh.lua"
+
 [plugins.base_opengraph]
 # Generates opengraph metadata from content on the webpage
 file = "PandocRulebookBase/plugins/base_opengraph.lua"
@@ -113,6 +121,16 @@ keep = true
 widget = 'insert_html'
 selector = 'head'
 html = '<meta name="generator" content="soupault">'
+
+[widgets.mark_jp]
+widget = "base_mark-jp"
+section = "jp"
+include_subsections = true
+
+[widgets.mark_zh]
+widget = "base_mark-zh"
+section = "zh"
+include_subsections = true
 
 ##
 ## Widgets: Markup Processing
