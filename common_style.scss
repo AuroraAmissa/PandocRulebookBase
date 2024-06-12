@@ -124,8 +124,15 @@ ul {
   :not(li) > & {
     margin: 0.8rem 0 0.8rem 0;
   }
+
   li > & {
     margin: 0.2rem 0 0.2rem 0;
+  }
+}
+
+article {
+  li + li {
+    margin-top: 0.2rem;
   }
 }
 
