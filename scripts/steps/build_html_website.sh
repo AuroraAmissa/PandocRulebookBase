@@ -40,11 +40,11 @@ fi
 dart-sass -c "$WEB_ROOT"/img_XXXX/all_style.scss:"$WEB_ROOT"/img_XXXX/all_style.css --style=compressed
 
 # Build hashed directories
-IMG_HASH="$(nix hash path build/web/static/img_XXXX/ --base32 | tail -c +2 | cut -c-10)"
+IMG_HASH="$(nix hash path build/web/static/img_XXXX/ --base32 | tail -c +2 | cut -c-12)"
 mv -v build/web/static/img_XXXX build/web/static/"img_$IMG_HASH"
 find build/web -type f -name *.html -exec sed -i "s/img_XXXX/img_$IMG_HASH/g" {} \;
 
-JS_HASH="$(nix hash path build/web/static/js_XXXX/ --base32 | tail -c +2 | cut -c-10)"
+JS_HASH="$(nix hash path build/web/static/js_XXXX/ --base32 | tail -c +2 | cut -c-12)"
 mv -v build/web/static/js_XXXX build/web/static/"js_$JS_HASH"
 find build/web -type f -name *.html -exec sed -i "s/js_XXXX/js_$JS_HASH/g" {} \;
 
