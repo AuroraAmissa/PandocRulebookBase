@@ -122,17 +122,17 @@ ul {
 
   // Recursive lists
   :not(li) > & {
-    margin: 0.8rem 0 0.8rem 0;
+    margin: 0.8em 0 0.8em 0;
   }
 
   li > & {
-    margin: 0.2rem 0 0.2rem 0;
+    margin: 0.2em 0 0.2em 0;
   }
 }
 
 article {
   li + li {
-    margin-top: 0.2rem;
+    margin-top: 0.2em;
   }
 }
 
@@ -153,8 +153,6 @@ body {
 }
 
 a {
-  @include font_main;
-
   &:link, &:visited {
     color: $color_link;
     text-decoration: none;
@@ -519,7 +517,6 @@ blockquote, table, .box {
   background-color: $color_background_secondary_light;
   margin-top: -2px;
   margin-bottom: -2px;
-  margin-right: 0.5em;
 
   &, img {
     border-color: $color_border_hcard;
@@ -542,6 +539,7 @@ blockquote, table, .box {
     position: relative;
     top: -1px;
 
+    @include font_main;
     line-height: $hcard_height;
     text-align: center;
     font-weight: $font_weight_strong;
