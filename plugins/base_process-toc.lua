@@ -72,4 +72,8 @@ function delete_empty_toc(element)
         HTML.delete(element)
     end
 end
-Table.iter_values(delete_empty_toc, HTML.select_all_of(page, {".toc"}))
+Table.iter_values(delete_empty_toc, HTML.select(page, ".toc")) -- lazy loop!
+Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
+Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
+Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
+Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))

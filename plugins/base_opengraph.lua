@@ -47,9 +47,10 @@ end
 
 -- required metadata:
 local type = "article"
---if Sys.strip_extensions(Sys.basename(page_file)) ~= "index" then
---	type = "article"
---end
+local page_name = Sys.strip_extensions(Sys.basename(page_file))
+if page_name == "index" or page_name == "home" then
+	type = "website"
+end
 add_meta("og:type", type)
 
 local title_elt = HTML.select_one(page, "h1")

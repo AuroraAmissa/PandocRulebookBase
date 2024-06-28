@@ -20,6 +20,10 @@ src_images_base = soupault_config["custom_options"]["image_src"]
 images_base_strsub = String.length(src_images_base) + 1
 target_images_uri = soupault_config["custom_options"]["image_uri"]
 
+if not global_data["images_cache"] then
+    global_data["images_cache"] = {}
+end
+
 -- Resizes an image using ImageMagick.
 -- @param input  Path to process, relative to the site dir.
 --               Example: `/images/friend-shaped.jpg`
@@ -40,15 +44,26 @@ function resize(input, output, cmd)
 		local input_mt = Sys.get_file_modification_time(input_path)
 		local output_mt = Sys.get_file_modification_time(output_path)
 		if output_mt > input_mt then
-			-- No need to regenerate this file if it hasn't been
-			-- updated. But we still need to return the size in pixels.
-			local command =
-				format("magick identify -format %%w:%%h %s", output_path)
-			local output = Sys.get_program_output(command)
-			local colon = strfind(output, ":")
-			local width = strsub(output, 1, colon - 1)
-			local height = strsub(output, colon + 1)
-			return width, height
+		    if global_data["images_cache"][output_path] then
+    		    local width = global_data["images_cache"][output_path]["width"]
+    		    local height = global_data["images_cache"][output_path]["height"]
+		        return width, height
+		    else
+                -- No need to regenerate this file if it hasn't been
+                -- updated. But we still need to return the size in pixels.
+                local command =
+                    format("magick identify -format %%w:%%h %s", output_path)
+                local output = Sys.get_program_output(command)
+                local colon = strfind(output, ":")
+                local width = strsub(output, 1, colon - 1)
+                local height = strsub(output, colon + 1)
+
+                global_data["images_cache"][output_path] = {}
+                global_data["images_cache"][output_path]["width"] = width
+                global_data["images_cache"][output_path]["height"] = height
+
+                return width, height
+		    end
 		end
 	end
 	local command = format(

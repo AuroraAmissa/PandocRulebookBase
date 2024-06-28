@@ -89,7 +89,6 @@ $sidebar_layout_padding_width: 0.7em !default;
   border-width: $width;
 }
 
-
 @mixin font_main {
   font-family: $font_main;
   font-style: $font_style_main;
@@ -184,8 +183,8 @@ p {
 }
 
 .c {
-  margin-left: -0.4em;
-  margin-right: -0.4em;
+  margin-left: -0.5em;
+  margin-right: -0.5em;
   line-height: 100%; // ensure we don't fuck stuff up
 }
 
@@ -368,6 +367,33 @@ div.highlight {
 .highlight > pre {
   padding: 0.67em;
   margin: 0;
+}
+
+///
+/// Breadcrumbs layout
+///
+
+.breadcrumbs {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.8em;
+  font-weight: $font_weight_menu;
+
+  p:has(&) {
+    margin-top: 0.15rem;
+    margin-bottom: 0;
+
+    + p {
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media #{$media_mobile} {
+    > span + span {
+      display: none;
+    }
+  }
 }
 
 ///

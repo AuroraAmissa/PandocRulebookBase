@@ -34,6 +34,9 @@ function render_hcard(e)
     if HTML.get_attribute(e, "aria-hidden") then
         HTML.set_attribute(hcard, "aria-hidden", HTML.get_attribute(e, "aria-hidden"))
     end
+    if HTML.has_class(e, "p-author") then
+        HTML.add_class(hcard, "p-author")
+    end
     if HTML.has_class(e, "h-card-hidden") then
         HTML.add_class(hcard, "h-card-hidden")
     end

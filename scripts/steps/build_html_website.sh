@@ -7,8 +7,8 @@
 set -eu
 
 mkdir -p build/web/
-rm -rf build/web/* build/web/.* build/soupault build/extract ||:
-mkdir -p build/soupault/ build/extract/
+rm -rf build/web/* build/web/.* build/soupault build/extract build/css ||:
+mkdir -p build/soupault/ build/extract/ build/css/
 
 # Build soupault directory
 ln -s "$(pwd)/PandocRulebookBase" build/soupault/
@@ -19,25 +19,30 @@ mkdir -p build/soupault/
 python3.11 PandocRulebookBase/scripts/py/gather_headings.py
 soupault --config build/soupault/soupault.toml --site-dir site --build-dir build/web
 
-# Copy scss resources
-WEB_ROOT="build/web/static"
-mkdir -p "$WEB_ROOT"/img_XXXX "$WEB_ROOT"/img_XXXX/PandocRulebookBase/
-cp -v resources/* "$WEB_ROOT"/img_XXXX/
-cp -v PandocRulebookBase/*.scss "$WEB_ROOT"/img_XXXX/PandocRulebookBase/
+# Build stylesheet
+mkdir -p build/css/PandocRulebookBase/
+cp -r resources/*.scss build/css/
+cp -v PandocRulebookBase/*.scss build/css/PandocRulebookBase/
+
+for css in build/css/*.scss; do
+    TARGET="$(echo "$css" | sed "s/\.scss$/.css/g" | sed "s_.*/__g")"
+    dart-sass -c --no-source-map "$css":build/web/static/img_XXXX/"$TARGET"
+done
+
+cp -v resources/* build/web/static/img_XXXX/
+rm -v build/web/static/img_XXXX/*.scss
 
 # Generate webfonts
-dart-sass -c --no-source-map "$WEB_ROOT"/img_XXXX/style.scss:build/extract/style.css
-mkdir -p "$WEB_ROOT"/webfonts/
-python3.11 PandocRulebookBase/scripts/py/prepare_fonts.py
+WEB_ROOT="build/web/static"
+PandocRulebookBase/support/mkwebfont.sh \
+    --store "build/web/static/webfonts" --webroot "build/web" \
+    --write-to-webroot --subset
 
 # Minify
 minify -vr build/web/ -o build/web/ --html-keep-comments
 if [ -d build/web ]; then
     cp -rv templates/static/* build/web/
 fi
-
-# Build scss stylesheet
-dart-sass -c "$WEB_ROOT"/img_XXXX/all_style.scss:"$WEB_ROOT"/img_XXXX/all_style.css --style=compressed
 
 # Build hashed directories
 IMG_HASH="$(nix hash path build/web/static/img_XXXX/ --base32 | tail -c +2 | cut -c-12)"

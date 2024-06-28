@@ -2,9 +2,12 @@
 
 set -eu
 
-if [ ! -f build/mkwebfont ]; then
-    wget https://github.com/Lymia/mkwebfont/releases/download/v0.2.0-alpha1/mkwebfont-0.2.0-alpha1-no_data-x86_64.AppImage -O build/mkwebfont
-    chmod +x build/mkwebfont
+VERSION="0.2.0-alpha2"
+MKWEBFONT="build/mkwebfont-$VERSION"
+
+if [ ! -f "$MKWEBFONT" ]; then
+    wget "https://github.com/Lymia/mkwebfont/releases/download/v$VERSION/mkwebfont-$VERSION-x86_64.AppImage" -O "$MKWEBFONT"
+    chmod +x "$MKWEBFONT"
 fi
 
-build/mkwebfont "$@"
+"$MKWEBFONT" "$@"

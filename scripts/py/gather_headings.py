@@ -19,6 +19,8 @@ for file in glob.glob("content/*/*.md") + glob.glob("site/**/*.md", recursive=Tr
     if title:
         if is_website:
             file_uri = ("/" + "/".join(file.split("/")[1:])).replace(".md", "").replace("/_content", "")
+            if file_uri.endswith("/index"):
+                file_uri = file_uri[:-len("/index")]
         else:
             file_uri = "../".join(file.split("/")[1:]).replace(".md", "") + ".html"
         files[title.lower()] = file_uri
