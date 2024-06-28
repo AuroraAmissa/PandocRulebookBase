@@ -117,7 +117,7 @@ $sidebar_layout_padding_width: 0.7em !default;
 /// General layout elements
 ///
 
-ul {
+ul, ol {
   margin: 0;
   padding-left: 1.75em;
 
@@ -236,19 +236,21 @@ h1 {
   @include font_title;
 }
 
+
+.section {
+  @include font_symbol;
+
+  float: right;
+  user-select: none;
+  font-weight: $font_weight_main;
+}
+
+.section-for-ability {
+  display: none;
+  user-select: none;
+}
+
 h2, h3, h4, h6 {
-  .section {
-    @include font_symbol;
-
-    float: right;
-    user-select: none;
-    font-weight: $font_weight_main;
-  }
-
-  .section-for-ability {
-    display: none;
-  }
-
   @media #{$media_screen} {
     position: relative;
 
@@ -298,8 +300,12 @@ h2 {
   margin: 1.5rem 0 0.6rem 0;
 
   // common case that looks good with a margin override
-  h1 + & {
-    margin: 0.75rem 0 0.6rem 0;
+  &, section > & {
+    &, #subpages-section + & {
+      h1 + &, p:has(.breadcrumbs) + & {
+        margin: 0.75rem 0 0.6rem 0;
+      }
+    }
   }
 }
 
@@ -369,6 +375,10 @@ div.highlight {
   margin: 0;
 }
 
+.mono {
+  @include font_code;
+}
+
 ///
 /// Breadcrumbs layout
 ///
@@ -386,12 +396,6 @@ div.highlight {
 
     + p {
       margin-top: 0.5rem;
-    }
-  }
-
-  @media #{$media_mobile} {
-    > span + span {
-      display: none;
     }
   }
 }
@@ -530,7 +534,7 @@ blockquote {
 
   // Used to wrap stranger elements
   > div {
-    > table {
+    > table, > hr {
       margin: 0;
     }
 

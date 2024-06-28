@@ -155,7 +155,7 @@ command = 'highlight --force -O html -f --syntax=$(echo $ATTR_CLASS | sed -e "s/
 [widgets.wrap-boxes]
 widget = "wrap"
 wrapper = """ <div> """
-selector = [".box > table", ".box > ul", ".box > ol"]
+selector = [".box > table", ".box > ul", ".box > ol", ".box > hr"]
 
 [widgets.base_hcard]
 after = ["base-format_menu-inner", "base-format_menu-footer"]
