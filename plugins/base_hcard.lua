@@ -36,15 +36,13 @@ function render_hcard(e)
     end
     if HTML.has_class(e, "p-author") then
         HTML.add_class(hcard, "p-author")
+        add_rel(HTML.select_one(hcard, ".p-name"), "author")
     end
     if HTML.has_class(e, "h-card-hidden") then
         HTML.add_class(hcard, "h-card-hidden")
     end
     if HTML.has_class(e, "rel-me") then
         add_rel(HTML.select_one(hcard, ".u-url"), "me")
-    end
-    if HTML.has_class(e, "rel-author") then
-        add_rel(HTML.select_one(hcard, ".p-name"), "author")
     end
 
     HTML.set_attribute(HTML.select_one(hcard, "img.u-photo"), "src", image_src .. pfp)
