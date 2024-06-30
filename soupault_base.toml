@@ -74,8 +74,8 @@ content_selector = 'head'
 content_action = "append_child"
 section = ""
 
-[templates.apps]
-file = "PandocRulebookBase/templates/main_app.html"
+[templates.nonav]
+file = "PandocRulebookBase/templates/main_nonav.html"
 section = "apps/"
 include_subsections = true
 

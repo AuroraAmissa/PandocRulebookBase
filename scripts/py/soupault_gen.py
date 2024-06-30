@@ -32,13 +32,20 @@ os.mkdir("build/soupault/site")
 
 if "website_mode" in meta["config"] and meta["config"]["website_mode"]:
     open("build/extract/website_mode", "w").write("-")
+
     del base["templates"]["redirect"]
     base["settings"]["clean_urls"] = True
     base["settings"]["default_template_file"] = "PandocRulebookBase/templates/main_website.html"
+
     if "toc_allowed" in meta["config"] and len(meta["config"]["toc_allowed"]) > 0:
         base["widgets"]["table-of-contents"]["path_regex"] = "|".join(meta["config"]["toc_allowed"])
     else:
         base["widgets"]["table-of-contents"]["selector"] = "#run-never"
+
+    if "nonav" in meta["config"] and len(meta["config"]["nonav"]) > 0:
+        base["templates"]["nonav"]["path_regex"] = "|".join(meta["config"]["nonav"])
+    else:
+        base["templates"]["nonav"]["path_regex"] = "x^"
 else:
     web_path = meta["config"]["path"]
 
