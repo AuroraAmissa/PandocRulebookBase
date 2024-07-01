@@ -32,17 +32,13 @@ file = "PandocRulebookBase/soupault/plugins/base_hcard.lua"
 # Reencodes images to save on bandwidth.
 file = "PandocRulebookBase/soupault/plugins/base_images.lua"
 
-[plugins.base_inline-style]
-# Moves <style> tags in <body> to <head> for correctness by HTML 5.
-file = "PandocRulebookBase/soupault/plugins/base_inline-style.lua"
+[plugins.base_fix-styles]
+# Handles stylesheet linking.
+file = "PandocRulebookBase/soupault/plugins/base_fix-styles.lua"
 
-[plugins.base_mark-jp]
-# Marks content as Japanese
-file = "PandocRulebookBase/soupault/plugins/base_mark-jp.lua"
-
-[plugins.base_mark-zh]
-# Marks content as Chinese
-file = "PandocRulebookBase/soupault/plugins/base_mark-zh.lua"
+[plugins.base_mark-lang]
+# Marks content as a given language
+file = "PandocRulebookBase/soupault/plugins/base_mark-lang.lua"
 
 [plugins.base_opengraph]
 # Generates opengraph metadata from content on the webpage
@@ -122,22 +118,12 @@ widget = 'insert_html'
 selector = 'head'
 html = '<meta name="generator" content="soupault">'
 
-[widgets.mark_jp]
-widget = "base_mark-jp"
-section = "jp"
-include_subsections = true
-
-[widgets.mark_zh]
-widget = "base_mark-zh"
-section = "zh"
-include_subsections = true
-
 ##
 ## Widgets: Markup Processing
 ##
 
-[widgets.base_inline-style]
-widget = "base_inline-style"
+[widgets.base_fix-styles]
+widget = "base_fix-styles"
 
 [widgets.base_cleanup]
 after = ["base_process-toc", "rulebook_alt-span"]

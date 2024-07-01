@@ -1,0 +1,152 @@
+@use 'sass:list';
+
+$font_title: "Hachi Maru Pop" !default;
+$font_text: "M Plus 2" !default;
+
+$marker_li: "♡" !default;
+$marker_li_2: "◇" !default;
+$marker_title: "☆" !default;
+$marker_sep: $marker_li !default;
+
+$background: #000 !default;
+$bg_alpha: 0.7 !default;
+
+$title_selector: h1 !default;
+
+$theme_color: 0 !default;
+$theme_color_secondary: $theme_color !default;
+
+$color_text: oklch(51.26% 0.161 $theme_color) !default;
+$color_link: oklch(69.27% 0.187 $theme_color) !default;
+$color_code_block: $color_text !default;
+
+$color_background_main: oklch(list.slash(99.01% 0.007 $theme_color_secondary, $bg_alpha)) !default;
+$color_background_secondary_dark: oklch(list.slash(89.98% 0.057 $theme_color_secondary, 0.35)) !default;
+$color_background_secondary_light: oklch(list.slash(95.39% 0.026 $theme_color_secondary, 0.15)) !default;
+$color_background_table_even: oklch(list.slash(98.32% 0.009 $theme_color_secondary, 0.35)) !default;
+$color_background_table_odd: oklch(list.slash(91.41% 0.048 $theme_color_secondary, 0.35)) !default;
+$color_background_tooltip: oklch(99.01% 0.007 $theme_color_secondary) !default;
+
+$color_border_main: oklch(91.81% 0.046 $theme_color) !default;
+$color_border_hr: oklch(75.27% 0.157 $theme_color) !default;
+$color_decor: oklch(82.91% 0.102 $theme_color) !default;
+
+$fallback_chain: ("Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans Symbols 2");
+
+@use 'common_style' with (
+  $color_border: $color_border_main,
+  $color_link: $color_link,
+  $color_text: $color_text,
+  $color_code_block: $color_code_block,
+
+  $color_background_main: $color_background_main,
+  $color_background_secondary_dark: $color_background_secondary_dark,
+  $color_background_secondary_light: $color_background_secondary_light,
+  $color_background_table_even: $color_background_table_even,
+  $color_background_table_odd: $color_background_table_odd,
+  $color_background_tooltip: $color_background_tooltip,
+
+  $font_title: list.join(($font_title), $fallback_chain),
+  $font_symbol: "Hachi Maru Pop",
+  $font_main: list.join(($font_text), $fallback_chain),
+  $font_code: list.join(("Noto Sans Mono", $font_text), $fallback_chain),
+
+  $font_weight_main: 420,
+  $font_weight_strong: 625,
+  $font_weight_code: 380,
+  $font_weight_title: bold,
+  $font_weight_symbol: inherit,
+  $font_style_em: oblique 12deg,
+  $font_weight_menu: 450,
+
+  $border_style_main: solid,
+  $border_style_title: dotted,
+  $border_width_secondary: 1px,
+
+  $menu_mobile_seperator: "  " + $marker_sep + "  ",
+  $menu_width: 13em,
+
+  //noinspection CssUnknownTarget
+  $background: $background,
+);
+
+:not(ol) > li::marker {
+  content: $marker_li + "  ";
+  @include common_style.font_symbol;
+}
+
+article li ul li::marker {
+  content: $marker_li_2 + "  ";
+  @include common_style.font_symbol;
+}
+
+h1, hr {
+  @include common_style.border_color($color_border_hr);
+}
+
+.ability, blockquote, table {
+  @include common_style.border_color($color_border_main);
+}
+
+#{$title_selector} {
+  &:before {
+    content: $marker_title + "  ";
+    @include common_style.font_symbol;
+  }
+
+  &:after {
+    content: "  " + $marker_title;
+    @include common_style.font_symbol;
+  }
+}
+
+.has-toc, .nonav {
+  h2 {
+    &::before {
+      content: "《  ";
+      margin-left: -0.5em;
+      padding-left: 0.15rem;
+      @include common_style.font_symbol;
+    }
+
+    &::after {
+      content: "  》";
+      @include common_style.font_symbol;
+    }
+  }
+
+
+  h3, h6 {
+    &::before {
+      content: "〈  ";
+      margin-left: -0.6em;
+      padding-left: 0.15rem;
+      @include common_style.font_symbol;
+    }
+
+    &::after {
+      content: "  〉";
+      @include common_style.font_symbol;
+    }
+  }
+
+  .h0, h2, h3, h6 {
+    &::before, &::after {
+      @include common_style.font_symbol;
+    }
+  }
+}
+
+.ability {
+  h6 {
+    font-size: 1rem;
+  }
+}
+
+.zh {
+  font-family: list.join(("Noto Sans SC", $font_text), $fallback_chain);
+}
+
+.decor {
+  color: $color_decor;
+}

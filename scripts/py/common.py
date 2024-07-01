@@ -10,14 +10,13 @@ def strip_path_prefix(path, prefix):
         raise Exception(f"Path does not start with '{prefix}'.")
 
 def path_relative_to(root, source, target):
-    root = os.path.abspath(root)
-    source = os.path.abspath(source)
-    target = os.path.abspath(target)
-
     if not source.startswith(root):
         raise Exception(f"Source path is not a child of '{root}'.")
     if not target.startswith(root):
         raise Exception(f"Target path is not a child of '{root}'.")
+
+    if os.path.basename(source).startswith("index."):
+        source = os.path.dirname(source)
 
     rela_source = source[len(root):]
     rela_target = target[len(root):]

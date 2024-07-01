@@ -41,10 +41,14 @@ for path in glob.glob("PandocRulebookBase/**/*.scss", recursive=True):
 
 # Build styles directory
 os.makedirs(f"build/run/web/{resource_root}/styles")
-for path in glob.glob("build/sources/css/*.scss"):
+for path in glob.glob("build/sources/css/style*.scss"):
     fragment = common.strip_path_prefix(path, "build/sources/css/")
     target_name = fragment.replace(".scss", ".css")
-    subprocess.run(["dart-sass", "-c", "--no-source-map", f"{path}:build/run/web/{resource_root}/styles/{target_name}"])
+    subprocess.run([
+        "dart-sass",
+        "-c", "--no-source-map",
+        f"{path}:build/run/web/{resource_root}/styles/{target_name}",
+    ]).check_returncode()
 
 for path in glob.glob("template/web/styles/**", recursive=True):
     if not path.endswith(".scss"):
@@ -116,14 +120,21 @@ else:
 if not has_entry:
     del soupault_cfg["templates"]["redirect"]
 
+if "languages" in config:
+    for language in config["languages"]:
+        soupault_cfg["widgets"][f"mark-{language}"] = {
+            "widget": "base_mark-lang",
+            "lang": language,
+            "path_regex": "|".join(config["languages"][language]),
+        }
+
 if "soupault" in config:
     soupault_cfg = common.merge_config(soupault_cfg, config["soupault"])
 
+prepare_run.prepare_run(config, soupault_cfg)
+
 open("build/sources/soupault/soupault.toml", "w").write(tomli_w.dumps(soupault_cfg))
 open("build/run/soupault.json", "w").write(json.dumps(soupault_cfg))
-
-# Prepare various files for compilation
-prepare_run.prepare_run(config, soupault_cfg)
 
 # Run Soupault
 subprocess.run([
@@ -131,7 +142,7 @@ subprocess.run([
     "--config", "build/sources/soupault/soupault.toml",
     "--site-dir", "build/sources/soupault/site",
     "--build-dir", "build/run/web",
-])
+]).check_returncode()
 
 # Build webfonts
 shutil.copytree("build/run/web", "build/run/web_fonts")
@@ -140,7 +151,7 @@ subprocess.run([
     "--write-to-webroot", "--subset",
     "--store", f"build/run/web_fonts/{resource_root}/webfonts",
     "--webroot", "build/run/web_fonts",
-])
+]).check_returncode()
 
 # Minify HTML
-subprocess.run(["minify", "-vrs", "build/run/web_fonts/", "-o", "build/web/"])
+subprocess.run(["minify", "-vrs", "build/run/web_fonts/", "-o", "build/web/"]).check_returncode()
