@@ -86,12 +86,12 @@ include_subsections = true
 [widgets.base-format_header]
 widget = "include"
 selector = "header"
-file = "templates/header.html"
+file = "template/web/components/layout_header.html"
 
 [widgets.base-format_meta]
 widget = "include"
 selector = "head"
-file = "templates/meta.html"
+file = "template/web/components/head.html"
 
 [widgets.base-format_menu-template]
 widget = "include"
@@ -101,13 +101,13 @@ file = "PandocRulebookBase/templates/menu.html"
 [widgets.base-format_menu-footer]
 widget = "exec"
 selector = ["#menu-footer"]
-command = "PandocRulebookBase/support/pandoc_html.sh templates/menu_footer.md"
+command = "PandocRulebookBase/support/pandoc_html.sh template/web/components/menu_footer.md"
 
 [widgets.base-format_menu-inner]
 after = "base-format_menu-template"
 widget = "exec"
 selector = ["#gen-menu"]
-command = "PandocRulebookBase/support/pandoc_html.sh templates/menu_index.md"
+command = "PandocRulebookBase/support/pandoc_html.sh template/web/components/menu_index.md"
 
 [widgets.page-title]
 widget = "title"

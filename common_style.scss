@@ -689,7 +689,7 @@ span.alt {
   margin-bottom: -0.5em;
 
   span.tt-tx {
-    position: relative; // allow z-index
+    position: relative; // allow z-index.md
     z-index: 5;
   }
 
@@ -710,7 +710,7 @@ span.alt {
 
     span.tt-in {
       display: block;
-      position: relative; // allow z-index
+      position: relative; // allow z-index.md
       z-index: 10;
 
       @include border($border_style_secondary, $border_width_secondary);

@@ -5,7 +5,7 @@ Regex = Regex
 Sys = Sys
 page = page
 
-alt = JSON.from_string(Sys.read_file("build/extract/alt.json"))
+alt = JSON.from_string(Sys.read_file("build/run/alt.json"))
 function append_tooltip(tt)
     local raw_text = HTML.inner_text(tt)
     local text = HTML.inner_text(tt)

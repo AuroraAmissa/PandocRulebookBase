@@ -11,7 +11,7 @@
 -- Rips the <h1> element for the og:title.
 -- Should be good enough in most cases.
 --
--- Assumes that everything that isn't an index page is an article.
+-- Assumes that everything that isn't an index.md page is an article.
 -- This may or may not work for your usage.
 --
 -- Pulls `site_title` from the `[custom_options]` section for the

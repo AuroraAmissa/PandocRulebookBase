@@ -54,7 +54,7 @@ end
 
 local function Span(span)
     if span.classes:includes("breadcrumbs") then
-        local file_name = PANDOC_STATE.input_files[1]
+        local file_name = common.origin_file()
 
         local output = run("git log --follow --pretty=format:%cI " .. file_name)
 
