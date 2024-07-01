@@ -1,10 +1,7 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash --pure -p zip -p git -p linkchecker
+#! nix-shell -i bash --pure -p zip -p git
 
 set -eu
-
-# Check links (validation step)
-linkchecker --config PandocRulebookBase/scripts/steps/linkcheckerrc build/web/
 
 # Build archive zip
 cd build

@@ -90,7 +90,7 @@ open("build/run/origins.json", "w").write(json.dumps(origins))
 open("build/run/short_paths.json", "w").write(json.dumps(short_paths))
 
 # Build soupault configuration
-soupault_cfg = tomllib.loads(open("PandocRulebookBase/soupault_base.toml").read())
+soupault_cfg = tomllib.loads(open("PandocRulebookBase/soupault/soupault_base.toml").read())
 soupault_cfg["custom_options"] = {}
 
 soupault_cfg["custom_options"]["image_src"] = config["config"]["image_src"]
@@ -101,7 +101,7 @@ soupault_cfg["widgets"]["page-title"]["append"] = " | " + config["config"]["titl
 soupault_cfg["custom_options"]["site_title"] = config["config"]["title"]
 
 if "nonav" in config["config"] and len(config["config"]["nonav"]) > 0:
-        soupault_cfg["templates"]["nonav"]["path_regex"] = "|".join(config["config"]["nonav"])
+    soupault_cfg["templates"]["nonav"]["path_regex"] = "|".join(config["config"]["nonav"])
 else:
     soupault_cfg["templates"]["nonav"]["path_regex"] = "x^"
 
@@ -136,7 +136,7 @@ subprocess.run([
 # Build webfonts
 shutil.copytree("build/run/web", "build/run/web_fonts")
 subprocess.run([
-    "PandocRulebookBase/support/mkwebfont.sh",
+    "PandocRulebookBase/scripts/support/mkwebfont.sh",
     "--write-to-webroot", "--subset",
     "--store", f"build/run/web_fonts/{resource_root}/webfonts",
     "--webroot", "build/run/web_fonts",
