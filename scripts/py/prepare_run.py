@@ -60,16 +60,20 @@ def prepare_run(config, soupault_config):
                 sheet_name = f"style_{sheet}.css"
 
         ts=int(time.time())
-        css_path = common.path_relative_to(
-            "build/sources/soupault/site/",
-            file,
-            f"build/sources/soupault/site/{resource_root}/styles/{sheet_name}?ts={ts}"
-        )
-        resource_path = common.path_relative_to(
-            "build/sources/soupault/site/",
-            file,
-            f"build/sources/soupault/site/{resource_root}/"
-        )
+        if "clean_urls" in soupault_config["settings"] and soupault_config["settings"]["clean_urls"]:
+            css_path = f"/{resource_root}/styles/{sheet_name}?ts={ts}"
+            resource_path = f"/{resource_root}/"
+        else:
+            css_path = common.path_relative_to(
+                "build/sources/soupault/site/",
+                file,
+                f"build/sources/soupault/site/{resource_root}/styles/{sheet_name}?ts={ts}"
+            )
+            resource_path = common.path_relative_to(
+                "build/sources/soupault/site/",
+                file,
+                f"build/sources/soupault/site/{resource_root}/"
+            )
 
         style_list[file] = css_path
         resource_paths_list[file] = resource_path
