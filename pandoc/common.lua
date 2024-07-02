@@ -92,12 +92,20 @@ function M.strip_prefix(base, source)
     return source:sub(#base + 1)
 end
 
+local function with_trailing(p)
+    if p == "" then
+        return p
+    else
+        return p .. "/"
+    end
+end
+
 function M.relative_to(base, source, target)
     source = M.strip_prefix(base, source):path_parent()
     target = M.strip_prefix(base, target)
     local prefix = ""
 
-    while not target:startswith(source) do
+    while not target:startswith(with_trailing(source)) do
     	source = source:path_parent()
     	prefix = prefix .. "../"
     end
