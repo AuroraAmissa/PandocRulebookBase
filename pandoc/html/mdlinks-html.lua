@@ -1,6 +1,7 @@
 local common = require 'PandocRulebookBase.pandoc.common'
 
-local pages = pandoc.json.decode(common.read_file("build/extract/pages.json"))
+local pages = common.read_json("build/run/pages.json")
+local clean_urls = common.read_json("build/run/soupault.json")["settings"]["clean_urls"]
 
 function Link(el)
     if el.target and not el.target:startswith("http") then
@@ -19,6 +20,14 @@ function Link(el)
         end
         if target and pages[target:lower()] then
             target = pages[target:lower()]
+        end
+
+        if not target:startswith("/") then
+            if clean_urls then
+                target = "/" .. target
+            else
+                target = common.relative_to("", common.short_path(), target)
+            end
         end
 
         if section then
