@@ -5,8 +5,7 @@ build_dir = build_dir
 page = page
 soupault_config = soupault_config
 
-image_src = soupault_config["custom_options"]["image_src"]
-image_uri = soupault_config["custom_options"]["image_uri"]
+image_src = soupault_config["custom_options"]["resource_root"] .. "/images/"
 
 function add_rel(e, new)
     local rel_name = HTML.get_attribute(e, "rel")

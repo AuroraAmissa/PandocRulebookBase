@@ -43,7 +43,9 @@ def prepare_run(config, soupault_config):
 
     # Prepares the stylesheet data
     style_list = {}
+    resource_paths_list = {}
     re_list = []
+
     if "styles" in config:
         for key in config["styles"]:
             re_list.append(("|".join(config["styles"][key]), key))
@@ -58,11 +60,19 @@ def prepare_run(config, soupault_config):
                 sheet_name = f"style_{sheet}.css"
 
         ts=int(time.time())
-        path = common.path_relative_to(
+        css_path = common.path_relative_to(
             "build/sources/soupault/site/",
             file,
             f"build/sources/soupault/site/{resource_root}/styles/{sheet_name}?ts={ts}"
         )
+        resource_path = common.path_relative_to(
+            "build/sources/soupault/site/",
+            file,
+            f"build/sources/soupault/site/{resource_root}/"
+        )
 
-        style_list[file] = path
+        style_list[file] = css_path
+        resource_paths_list[file] = resource_path
+
     open("build/run/styles.json", "w").write(json.dumps(style_list))
+    open("build/run/resource_paths.json", "w").write(json.dumps(resource_paths_list))

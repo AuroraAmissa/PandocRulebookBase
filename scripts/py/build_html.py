@@ -97,11 +97,9 @@ open("build/run/short_paths.json", "w").write(json.dumps(short_paths))
 soupault_cfg = tomllib.loads(open("PandocRulebookBase/soupault/soupault_base.toml").read())
 soupault_cfg["custom_options"] = {}
 
-soupault_cfg["custom_options"]["image_src"] = config["config"]["image_src"]
-soupault_cfg["custom_options"]["image_uri"] = config["config"]["image_uri"]
-
 soupault_cfg["widgets"]["page-title"]["default"] = config["config"]["title"]
 soupault_cfg["widgets"]["page-title"]["append"] = " | " + config["config"]["title"]
+soupault_cfg["custom_options"]["resource_root"] = resource_root
 soupault_cfg["custom_options"]["site_title"] = config["config"]["title"]
 
 if "nonav" in config["config"] and len(config["config"]["nonav"]) > 0:

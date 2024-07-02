@@ -16,9 +16,11 @@
 -- * Removed code for banner processing and favicon processing.
 -- * General customizations for my setup.
 
-src_images_base = soupault_config["custom_options"]["image_src"]
+resource_paths = JSON.from_string(Sys.read_file("build/run/resource_paths.json"))
+
+src_images_base = soupault_config["custom_options"]["resource_root"] .. "/images/"
 images_base_strsub = String.length(src_images_base) + 1
-target_images_uri = soupault_config["custom_options"]["image_uri"]
+target_images_uri = resource_paths[page_file] .. "images/"
 
 if not global_data["images_cache"] then
     global_data["images_cache"] = {}
