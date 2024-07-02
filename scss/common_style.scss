@@ -276,6 +276,9 @@ h1 {
   @include font_title;
 }
 
+h1.hide_h1 {
+  display: none;
+}
 
 .section {
   @include font_symbol;

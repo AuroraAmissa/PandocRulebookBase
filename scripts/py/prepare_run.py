@@ -18,6 +18,8 @@ def prepare_run(config, soupault_config):
         for line in contents.split("\n"):
             if line.startswith("# "):
                 title = line[2:]
+                title = title.split("{")[0].strip()
+                break
 
         if title:
             full_path = common.strip_path_prefix(file, "build/sources/soupault/site/")
