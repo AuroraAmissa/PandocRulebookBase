@@ -454,7 +454,7 @@ div.highlight {
   @include border($border_style_table, $border_width_table);
 
   &:has(colgroup) {
-    width: 100%;
+    width: 100% !important; // !important because pandoc bullshit. don't worry about it.
   }
 
   tr:last-child > td {
@@ -480,11 +480,11 @@ div.highlight {
     }
   }
 
-  .even, .header {
+  tbody .even, thead th {
     background: $color_background_table_even;
   }
 
-  .odd {
+  tbody .odd {
     background: $color_background_table_odd;
   }
 }
