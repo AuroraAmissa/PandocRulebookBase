@@ -37,6 +37,12 @@ $color_border_main: oklch(91.81% 0.046 * $theme_chroma_mult $theme_color) !defau
 $color_border_hr: oklch(75.27% 0.157 * $theme_chroma_mult $theme_color) !default;
 $color_decor: oklch(82.91% 0.102 * $theme_chroma_mult $theme_color) !default;
 
+$font_weight_main: 420 !default;
+$font_weight_strong: 625 !default;
+$font_weight_code: 380 !default;
+$font_weight_title: bold !default;
+$font_weight_menu: $font_weight_main * 1.1 !default;
+
 $fallback_chain: ("Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans Symbols 2");
 
 @use 'common_style' with (
@@ -57,13 +63,13 @@ $fallback_chain: ("Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans Symbol
   $font_main: list.join(($font_text), $fallback_chain),
   $font_code: list.join(("Noto Sans Mono", $font_text), $fallback_chain),
 
-  $font_weight_main: 420,
-  $font_weight_strong: 625,
-  $font_weight_code: 380,
-  $font_weight_title: bold,
+  $font_weight_main: $font_weight_main,
+  $font_weight_strong: $font_weight_strong,
+  $font_weight_code: $font_weight_code,
+  $font_weight_title: $font_weight_title,
   $font_weight_symbol: inherit,
   $font_style_em: oblique 12deg,
-  $font_weight_menu: 450,
+  $font_weight_menu: $font_weight_menu,
 
   $border_style_main: solid,
   $border_style_title: dotted,

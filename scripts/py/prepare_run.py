@@ -54,10 +54,15 @@ def prepare_run(config, soupault_config):
             continue
 
         sheet_name = "style.css"
+        re_sheet_name = []
         for data in re_list:
             regex, sheet = data
-            if re.search(regex, file):
-                sheet_name = f"style_{sheet}.css"
+            match = re.search(regex, file)
+            if match:
+                re_sheet_name.append((match.start(), f"style_{sheet}.css"))
+        re_sheet_name.sort()
+        if len(re_sheet_name) != 0:
+            sheet_name = re_sheet_name[-1][1]
 
         ts=int(time.time())
         if "clean_urls" in soupault_config["settings"] and soupault_config["settings"]["clean_urls"]:
