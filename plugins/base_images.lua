@@ -43,7 +43,7 @@ function resize(input, output, cmd)
 			-- No need to regenerate this file if it hasn't been
 			-- updated. But we still need to return the size in pixels.
 			local command =
-				format("magick identify -format %%w:%%h %s", output_path)
+				format("magick identify -format %%w:%%h \"%s\"", output_path)
 			local output = Sys.get_program_output(command)
 			local colon = strfind(output, ":")
 			local width = strsub(output, 1, colon - 1)
@@ -52,7 +52,7 @@ function resize(input, output, cmd)
 		end
 	end
 	local command = format(
-		"magick %s %s -strip -format %%w:%%h -identify %s",
+		"magick \"%s\" %s -strip -format %%w:%%h -identify \"%s\"",
 		input_path,
 		cmd,
 		output_path
