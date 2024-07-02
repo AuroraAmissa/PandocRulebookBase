@@ -150,7 +150,7 @@ subprocess.run([
     "PandocRulebookBase/scripts/support/mkwebfont.sh",
     "--write-to-webroot", "--subset",
     "--store", f"build/run/web_fonts/{resource_root}/webfonts",
-    "--webroot", "build/run/web_fonts", "--splitter", "none",   
+    "--webroot", "build/run/web_fonts", "--splitter", "none",
 ]).check_returncode()
 
 # Minify HTML
