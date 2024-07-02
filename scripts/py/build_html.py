@@ -101,6 +101,10 @@ soupault_cfg["widgets"]["page-title"]["default"] = config["config"]["title"]
 soupault_cfg["widgets"]["page-title"]["append"] = " | " + config["config"]["title"]
 soupault_cfg["custom_options"]["resource_root"] = resource_root
 soupault_cfg["custom_options"]["site_title"] = config["config"]["title"]
+if "modified_mode" in config["config"]:
+    soupault_cfg["custom_options"]["modified_mode"] = config["config"]["modified_mode"]
+else:
+    soupault_cfg["custom_options"]["modified_mode"] = "regular"
 
 if "nonav" in config["config"] and len(config["config"]["nonav"]) > 0:
     soupault_cfg["templates"]["nonav"]["path_regex"] = "|".join(config["config"]["nonav"])
