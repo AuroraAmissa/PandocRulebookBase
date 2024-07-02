@@ -24,3 +24,9 @@ function fix_section_in_ability(elem)
     HTML.append_child(HTML.parent(elem), new_span)
 end
 Table.iter_values(fix_section_in_ability, HTML.select(page, ".box .section"))
+
+function add_calc_markings(elem)
+    HTML.prepend_child(elem, HTML.create_text("〔"))
+    HTML.append_child(elem, HTML.create_text("〕"))
+end
+Table.iter_values(add_calc_markings, HTML.select_all_of(page, {".c", ".calc"}))
