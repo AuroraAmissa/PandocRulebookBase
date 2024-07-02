@@ -22,7 +22,7 @@ function Link(el)
             target = pages[target:lower()]
         end
 
-        if not target:startswith("/") then
+        if not target:startswith("/") and not target:startswith(".") then
             if clean_urls then
                 target = "/" .. target
             else

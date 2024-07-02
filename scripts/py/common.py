@@ -17,6 +17,7 @@ def path_relative_to(root, source, target):
 
     if os.path.basename(source).startswith("index."):
         source = os.path.dirname(source)
+    source = os.path.dirname(source)
 
     rela_source = source[len(root):]
     rela_target = target[len(root):]
