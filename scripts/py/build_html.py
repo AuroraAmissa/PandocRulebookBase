@@ -89,7 +89,7 @@ if os.path.exists("content"):
         open(f"build/sources/soupault/site/{resource_root}/{pls_readme_name}", "w").write(pls_readme_contents)
 if has_entry:
     contents = f'<meta http-equiv="refresh" content="0; URL={resource_root}/{entry_path}"/>'
-    open(f"build/sources/soupault/site/{entry_path}.html", "w").write(contents)
+    open(f"build/sources/soupault/site/{entry_name}.html", "w").write(contents)
 open("build/run/origins.json", "w").write(json.dumps(origins))
 open("build/run/short_paths.json", "w").write(json.dumps(short_paths))
 
