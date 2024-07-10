@@ -156,4 +156,12 @@ subprocess.run([
 ]).check_returncode()
 
 # Minify HTML
-subprocess.run(["minify", "-vrs", "build/run/web_fonts/", "-o", "build/web/"]).check_returncode()
+for file in glob.glob("build/run/web_fonts/**", recursive=True):
+    suffix = common.strip_path_prefix(file, "build/run/web_fonts/")
+    target = f"build/web/{suffix}"
+    if os.path.isfile(file):
+        if file.endswith(".html") or file.endswith(".css"):
+            subprocess.run(["minify", "-v", file, "-o", target]).check_returncode()
+        else:
+            common.create_parent(target)
+            shutil.copyfile(file, target)

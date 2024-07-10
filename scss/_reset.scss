@@ -51,7 +51,8 @@ body {
 *,
 ::after,
 ::before {
-  box-sizing: border-box;
+  // Edited from original: Use content-box by default instead of border-box
+  box-sizing: content-box;
 }
 
 
@@ -151,7 +152,6 @@ mark,
 audio,
 video {
   font-size: 100%;
-  font: inherit;
   margin: 0;
   padding: 0;
   border: 0;
@@ -182,17 +182,6 @@ section {
 ol,
 ul {
   list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-
-  &:before,
-  &:after {
-    content: '';
-    content: none;
-  }
 }
 
 /**
@@ -408,7 +397,7 @@ hr {
  * 1. Correct the inheritance and scaling of font size in all browsers.
  */
 pre {
-  font-family: monospace, monospace;
+  font-family: "Noto Sans Mono";
   font-size: 100%;
 }
 
@@ -432,7 +421,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: "Noto Sans Mono";
 }
 
 /**

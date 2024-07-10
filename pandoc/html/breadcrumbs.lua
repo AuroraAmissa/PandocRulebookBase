@@ -73,6 +73,7 @@ local function push_authors(meta_span, list, author_class)
     end
 end
 
+local bullet = " • "
 local function Span(span)
     if span.classes:includes("breadcrumbs") then
         local file_name = common.origin_file()
@@ -97,7 +98,7 @@ local function Span(span)
 
         if #ogl_authors > 0 then
             if #meta_span ~= 0 then
-                table.insert(meta_span, pandoc.Str(" ⬩ "))
+                table.insert(meta_span, pandoc.Str(bullet))
             end
             table.insert(meta_span, "OGL by ")
             push_authors(meta_span, ogl_authors, false)
@@ -105,14 +106,14 @@ local function Span(span)
 
         if modified_mode == "regular" then
             if #meta_span ~= 0 then
-                table.insert(meta_span, pandoc.Str(" ⬩ "))
+                table.insert(meta_span, pandoc.Str(bullet))
             end
             table.insert(meta_span, pandoc.RawInline("html", "<time class=dt-published datetime=\"" .. created .. "\">"))
             table.insert(meta_span, iso_to_short(created))
             table.insert(meta_span, pandoc.RawInline("html", "</time>"))
 
             if iso_to_short(created) ~= iso_to_short(modified) then
-                table.insert(meta_span, pandoc.Str(" ⬩ "))
+                table.insert(meta_span, pandoc.Str(bullet))
                 table.insert(meta_span, "updated ")
                 table.insert(meta_span, pandoc.RawInline("html", "<time class=dt-updated datetime=\"" .. modified .. "\">"))
                 table.insert(meta_span, iso_to_short(modified))

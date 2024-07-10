@@ -60,8 +60,8 @@ $font_style_main: normal !default;
 $font_style_em: oblique !default;
 
 $font_size: 16px !default;
-$font_size_menu: 0.9rem !default;
-$font_size_code: 0.9rem !default;
+$font_size_menu: 0.9em !default;
+$font_size_code: 0.9em !default;
 $font_weight_menu: normal !default;
 
 $menu_mobile_seperator: " • " !default;
@@ -388,6 +388,7 @@ hr {
   padding: 0;
   @include border($border_style_title, $border_width_title);
   margin: 1.5rem 0;
+  background: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -862,8 +863,11 @@ hr.nav-hr {
   #menu-inner {
     min-height: $menu_min_height;
 
-    &, > :not(.nav-nosize) a {
+    & {
       font-size: $font_size_menu;
+    }
+
+    &, > :not(.nav-nosize) a {
       font-weight: $font_weight_menu;
     }
 
@@ -871,7 +875,7 @@ hr.nav-hr {
       font-size: 1rem;
       font-weight: $font_weight_main;
     }
-  }
+  } 
 
   .nav-mobile {
     display: none;

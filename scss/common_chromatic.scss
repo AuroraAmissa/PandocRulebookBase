@@ -43,8 +43,6 @@ $font_weight_code: 380 !default;
 $font_weight_title: bold !default;
 $font_weight_menu: $font_weight_main * 1.1 !default;
 
-$fallback_chain: ("Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans Symbols 2");
-
 @use 'common_style' with (
   $color_border: $color_border_main,
   $color_link: $color_link,
@@ -58,10 +56,10 @@ $fallback_chain: ("Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans Symbol
   $color_background_table_odd: $color_background_table_odd,
   $color_background_tooltip: $color_background_tooltip,
 
-  $font_title: list.join(($font_title), $fallback_chain),
+  $font_title: $font_title,
   $font_symbol: "Hachi Maru Pop",
-  $font_main: list.join(($font_text), $fallback_chain),
-  $font_code: list.join(("Noto Sans Mono", $font_text), $fallback_chain),
+  $font_main: $font_text,
+  $font_code: ("Noto Sans Mono", $font_text),
 
   $font_weight_main: $font_weight_main,
   $font_weight_strong: $font_weight_strong,
@@ -160,7 +158,7 @@ h1, hr {
 }
 
 .zh {
-  font-family: list.join(("Noto Sans SC", $font_text), $fallback_chain);
+  font-family: "Noto Sans SC", $font_text;
 }
 
 .decor {
