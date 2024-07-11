@@ -3,5 +3,4 @@
 set -eu
 
 PandocRulebookBase/scripts/py/build_html.py
-PandocRulebookBase/scripts/sh/build_link_check.sh
 PandocRulebookBase/scripts/sh/build_archive.sh

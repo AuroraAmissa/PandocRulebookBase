@@ -1,6 +1,6 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i python3 --pure -p soupault -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick
+#! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick -p lychee
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
 # Syspath manipulation
@@ -165,3 +165,6 @@ for file in glob.glob("build/run/web_fonts/**", recursive=True):
         else:
             common.create_parent(target)
             shutil.copyfile(file, target)
+
+# Check links
+subprocess.run(["lychee", "--offline", "build/web/"]).check_returncode()

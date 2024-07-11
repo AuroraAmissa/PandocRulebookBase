@@ -18,11 +18,11 @@ end
 
 function render_hcard(e)
     local user = HTML.inner_text(e)
-    local hcard = HTML.parse(Sys.read_file("PandocRulebookBase/template/hcard/" .. user .. ".html"))
+    local hcard = HTML.parse(Sys.read_file("PandocRulebookBase/soupault/template/hcard/" .. user .. ".html"))
     hcard = HTML.select_one(hcard, ".h-card")
 
     local pfp = HTML.get_attribute(HTML.select_one(hcard, "img.u-photo"), "src")
-    local pfp_source = "PandocRulebookBase/template/hcard/" .. pfp
+    local pfp_source = "PandocRulebookBase/soupault/template/hcard/" .. pfp
     local pfp_target = Sys.join_path(build_dir, Sys.join_path(image_src, pfp))
 
     if not Sys.is_file(pfp_target) then

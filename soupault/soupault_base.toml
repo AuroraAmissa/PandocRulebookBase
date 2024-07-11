@@ -9,7 +9,7 @@ ignore_directories = ["include"]
 plugin_discovery = true
 plugin_dirs = ["scripts/plugins"]
 
-default_template_file = "PandocRulebookBase/template/main.html"
+default_template_file = "PandocRulebookBase/soupault/template/main.html"
 default_content_selector = "article"
 default_content_action = "append_child"
 
@@ -65,13 +65,13 @@ file = "PandocRulebookBase/soupault/plugins/website_no-toc-format.lua"
 ##
 
 [templates.redirect]
-file = "PandocRulebookBase/template/redirect.html"
+file = "PandocRulebookBase/soupault/template/redirect.html"
 content_selector = 'head'
 content_action = "append_child"
 section = ""
 
 [templates.nonav]
-file = "PandocRulebookBase/template/main_nonav.html"
+file = "PandocRulebookBase/soupault/template/main_nonav.html"
 section = "apps/"
 include_subsections = true
 
@@ -92,7 +92,7 @@ file = "template/web/components/head.html"
 [widgets.base-format_menu-template]
 widget = "include"
 selector = ["#menu-inner"]
-file = "PandocRulebookBase/template/menu.html"
+file = "PandocRulebookBase/soupault/template/menu.html"
 
 [widgets.base-format_menu-footer]
 widget = "exec"
