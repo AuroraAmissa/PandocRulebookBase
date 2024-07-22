@@ -529,7 +529,7 @@ fieldset {
   min-width: 0;
 }
 
-body:not(:-moz-handler-blocked) fieldset {
+body:not(.does-not-exist:-moz-handler-blocked) fieldset {
   display: block;
 }
 
