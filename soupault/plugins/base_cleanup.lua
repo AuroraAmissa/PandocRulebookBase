@@ -1,4 +1,4 @@
-        local remove_classes = {
+local remove_classes = {
     "nav-gen", -- used only during generation
     "level1", "level2", "level3", "level4", "level5", "level6", -- redundant
     "u", "unlisted", "unnumbered", "ny" -- not used after generation

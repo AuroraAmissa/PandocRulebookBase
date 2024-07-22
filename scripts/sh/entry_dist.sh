@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-
-set -eu
+#!/bin/sh -eu
 
 PandocRulebookBase/scripts/py/build_html.py
 PandocRulebookBase/scripts/sh/build_archive.sh

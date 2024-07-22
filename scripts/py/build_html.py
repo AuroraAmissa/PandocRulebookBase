@@ -4,19 +4,18 @@
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
 # Syspath manipulation
-import os
-import shutil
-import sys
-sys.path.append(os.path.abspath('PandocRulebookBase/scripts/py'))
+__import__("sys").path.append(__import__("os").path.abspath('PandocRulebookBase/scripts/py'))
 
 # Proper imports
 import glob
 import json
-import subprocess
+import os
+import shutil
 import tomllib
 import tomli_w
 
 import common
+import custom_markdown
 import prepare_run
 
 # Setup
@@ -44,11 +43,11 @@ os.makedirs(f"build/run/web/{resource_root}/styles")
 for path in glob.glob("build/sources/css/style*.scss"):
     fragment = common.strip_path_prefix(path, "build/sources/css/")
     target_name = fragment.replace(".scss", ".css")
-    subprocess.run([
+    common.run([
         "dart-sass",
         "-c", "--no-source-map",
         f"{path}:build/run/web/{resource_root}/styles/{target_name}",
-    ]).check_returncode()
+    ])
 
 for path in glob.glob("template/web/styles/**", recursive=True):
     if not path.endswith(".scss"):
@@ -87,6 +86,15 @@ if os.path.exists("content"):
         short_paths[target] = resource_root + "/" + common.strip_path_prefix(path, "content/")
     if has_entry:
         open(f"build/sources/soupault/site/{resource_root}/{pls_readme_name}", "w").write(pls_readme_contents)
+for path in glob.glob("build/sources/soupault/site/**/*.md", recursive=True):
+    with open(path) as fd:
+        data = fd.read()
+    rewritten = custom_markdown.rewrite_markdown(data)
+    if rewritten != data:
+        with open(path, "w") as fd:
+            fd.write(rewritten)
+for path in glob.glob("build/sources/soupault/site/**/include/**/*.md", recursive=True):
+    os.remove(path)
 if has_entry:
     contents = f'<meta http-equiv="refresh" content="0; URL={resource_root}/{entry_path}"/>'
     open(f"build/sources/soupault/site/{entry_name}.html", "w").write(contents)
@@ -139,21 +147,22 @@ open("build/sources/soupault/soupault.toml", "w").write(tomli_w.dumps(soupault_c
 open("build/run/soupault.json", "w").write(json.dumps(soupault_cfg))
 
 # Run Soupault
-subprocess.run([
+common.run([
     "soupault",
+    "--verbose",
     "--config", "build/sources/soupault/soupault.toml",
     "--site-dir", "build/sources/soupault/site",
     "--build-dir", "build/run/web",
-]).check_returncode()
+])
 
 # Build webfonts
 shutil.copytree("build/run/web", "build/run/web_fonts")
-subprocess.run([
-    "PandocRulebookBase/scripts/support/mkwebfont.sh",
+common.run([
+    "PandocRulebookBase/scripts/sh/tool_mkwebfont.sh",
     "--write-to-webroot", "--subset",
     "--store", f"build/run/web_fonts/{resource_root}/webfonts",
     "--webroot", "build/run/web_fonts", "--splitter", "none",
-]).check_returncode()
+])
 
 # Minify HTML
 for file in glob.glob("build/run/web_fonts/**", recursive=True):
@@ -161,10 +170,10 @@ for file in glob.glob("build/run/web_fonts/**", recursive=True):
     target = f"build/web/{suffix}"
     if os.path.isfile(file):
         if file.endswith(".html") or file.endswith(".css"):
-            subprocess.run(["minify", "-v", file, "-o", target]).check_returncode()
+            common.run(["minify", "-v", file, "-o", target])
         else:
             common.create_parent(target)
             shutil.copyfile(file, target)
 
 # Check links
-subprocess.run(["lychee", "--offline", "build/web/"]).check_returncode()
+common.run(["lychee", "--offline", "build/web/"])

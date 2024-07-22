@@ -1,4 +1,5 @@
 import shutil
+import subprocess
 import os
 
 def strip_path_prefix(path, prefix):
@@ -90,3 +91,12 @@ def merge_config(base, new):
             out[key] = new[key]
 
     return out
+
+def run(args, capture = False):
+    if capture:
+        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    else:
+        result = subprocess.run(args)
+    result.check_returncode()
+    return result.stdout
+

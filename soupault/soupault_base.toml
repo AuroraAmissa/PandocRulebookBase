@@ -5,7 +5,6 @@ doctype = "<!DOCTYPE html>"
 clean_urls = false
 page_file_extensions = ["htm", "html", "md"]
 ignore_extensions = ["draft"]
-ignore_directories = ["include"]
 plugin_discovery = true
 plugin_dirs = ["scripts/plugins"]
 
@@ -14,7 +13,7 @@ default_content_selector = "article"
 default_content_action = "append_child"
 
 [preprocessors]
-md = 'PandocRulebookBase/scripts/support/pandoc_html.sh'
+md = 'PandocRulebookBase/scripts/sh/tool_pandoc-html.sh'
 
 ##
 ## Plugin declarations
@@ -97,13 +96,13 @@ file = "PandocRulebookBase/soupault/template/menu.html"
 [widgets.base-format_menu-footer]
 widget = "exec"
 selector = ["#menu-footer"]
-command = "PandocRulebookBase/scripts/support/pandoc_html.sh template/web/components/menu_footer.md"
+command = "PandocRulebookBase/scripts/sh/tool_pandoc-html.sh template/web/components/menu_footer.md"
 
-[widgets.base-format_menu-inner]
+[widgets.base-format_menu-index]
 after = "base-format_menu-template"
 widget = "exec"
 selector = ["#gen-menu"]
-command = "PandocRulebookBase/scripts/support/pandoc_html.sh template/web/components/menu_index.md"
+command = "PandocRulebookBase/scripts/sh/tool_pandoc-html.sh template/web/components/menu_index.md"
 
 [widgets.page-title]
 widget = "title"
@@ -144,11 +143,11 @@ wrapper = """ <div> """
 selector = [".box > table", ".box > ul", ".box > ol", ".box > hr"]
 
 [widgets.base_hcard]
-after = ["base-format_menu-inner", "base-format_menu-footer"]
+after = ["base-format_menu-index", "base-format_menu-footer"]
 widget = "base_hcard"
 
 [widgets.images]
-after = ["base-format_menu-inner", "base-format_menu-footer", "base_hcard"]
+after = ["base-format_menu-index", "base-format_menu-footer", "base_hcard"]
 widget = "base_images"
 
 ##
@@ -179,7 +178,7 @@ widget = "rulebook_formats"
 ##
 
 [widgets.table-of-contents]
-after = "base-format_menu-inner"
+after = "base-format_menu-index"
 widget = "toc"
 selector = "#gen-toc"
 

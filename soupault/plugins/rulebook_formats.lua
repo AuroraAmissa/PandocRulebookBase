@@ -15,13 +15,13 @@ function move_ability_head(element)
         HTML.delete(text[1])
     end
 end
-Table.iter_values(move_ability_head, HTML.select_all_of(page, {".ability-head"}))
+Table.iter_values(move_ability_head, HTML.select_all_of(page, { ".ability-head" }))
 
 -- Remove section tags from subabilities
 function subability_no_subsection(element)
-    Table.iter_values(HTML.delete, HTML.select_all_of(element, {".section"}))
+    Table.iter_values(HTML.delete, HTML.select_all_of(element, { ".section" }))
 end
-Table.iter_values(subability_no_subsection, HTML.select_all_of(page, {".subability"}))
+Table.iter_values(subability_no_subsection, HTML.select_all_of(page, { ".subability" }))
 
 -- Add hidden [x] text for ability heads
 function add_hidden_text(elem)
@@ -53,4 +53,4 @@ function add_calc_markings(elem)
     HTML.prepend_child(elem, HTML.create_text("〔"))
     HTML.append_child(elem, HTML.create_text("〕"))
 end
-Table.iter_values(add_calc_markings, HTML.select_all_of(page, {".c", ".calc"}))
+Table.iter_values(add_calc_markings, HTML.select_all_of(page, { ".c", ".calc" }))

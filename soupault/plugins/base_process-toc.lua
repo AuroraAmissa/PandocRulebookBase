@@ -35,17 +35,17 @@ local html = HTML.select_one(page, "#subpages-section")
 if html then
     -- Copy the subpages to the navigation bar
     local content = HTML.clone_content(html)
-    Table.iter_values(HTML.delete, HTML.select_all_of(content, {"h2", "h3", "h4", "h5", "h6"}))
+    Table.iter_values(HTML.delete, HTML.select_all_of(content, { "h2", "h3", "h4", "h5", "h6" }))
     HTML.append_child(HTML.select_one(page, "#gen-subpages"), content)
 else
     -- Delete the subpage headings
-    Table.iter_values(HTML.delete, HTML.select_all_of(page, {"#gen-subpages", "#nav-subpages", "#subpages-hr"}))
+    Table.iter_values(HTML.delete, HTML.select_all_of(page, { "#gen-subpages", "#nav-subpages", "#subpages-hr" }))
 end
 
 -- Delete the `#nav-hr` if there is no (remaining) table of contents
 local html = HTML.select_one(page, "#gen-toc li")
 if not html or Table.length(HTML.children(html)) == 0 then
-    Table.iter_values(HTML.delete, HTML.select_all_of(page, {"#nav-hr", "#nav-banner-toc", "#gen-toc"}))
+    Table.iter_values(HTML.delete, HTML.select_all_of(page, { "#nav-hr", "#nav-banner-toc", "#gen-toc" }))
 end
 
 -- Delete remaining empty .toc elements

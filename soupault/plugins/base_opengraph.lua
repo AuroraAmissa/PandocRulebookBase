@@ -21,34 +21,33 @@ site_title = soupault_config["custom_options"]["site_title"]
 
 -- Creates a `<meta>` tag and puts it into `<head>`.
 function add_meta(property, content)
-	if not content then
-		return
-	end
+    if not content then
+        return
+    end
 
-	content = String.trim(content)
-	content = Regex.replace_all(content, "\\s+", " ")
+    content = String.trim(content)
+    content = Regex.replace_all(content, "\\s+", " ")
 
-	local head = HTML.select_one(page, "head")
-	if not head then
-		Log.error("No <head> element found")
-	end
+    local head = HTML.select_one(page, "head")
+    if not head then
+        Log.error("No <head> element found")
+    end
 
-	local existing =
-		HTML.select_one(head, 'meta[property="' .. property .. '"]')
-	if existing then
-		return
-	end
+    local existing = HTML.select_one(head, 'meta[property="' .. property .. '"]')
+    if existing then
+        return
+    end
 
-	local meta = HTML.create_element("meta")
-	HTML.set_attribute(meta, "content", content)
-	HTML.set_attribute(meta, "property", property)
-	HTML.append_child(head, meta)
+    local meta = HTML.create_element("meta")
+    HTML.set_attribute(meta, "content", content)
+    HTML.set_attribute(meta, "property", property)
+    HTML.append_child(head, meta)
 end
 
 -- required metadata:
 local type = "article"
 if not HTML.select_one(page, "h1") then
-	type = "website"
+    type = "website"
 end
 add_meta("og:type", type)
 
@@ -75,24 +74,24 @@ add_meta("og:site_name", site_title)
 
 -- article metadata:
 if type == "article" then
-	local published_elt = HTML.select_one(page, "time.dt-published")
-	local published = published_elt
-		and HTML.get_attribute(published_elt, "datetime")
-	published = published
-		and Date.reformat(published, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
-	add_meta("article:published_time", published)
+    local published_elt = HTML.select_one(page, "time.dt-published")
+    local published = published_elt
+            and HTML.get_attribute(published_elt, "datetime")
+    published = published
+            and Date.reformat(published, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
+    add_meta("article:published_time", published)
 
-	local updated_elt = HTML.select_one(page, "time.dt-updated")
-	local updated = updated_elt and HTML.get_attribute(updated_elt, "datetime")
-	updated = updated
-		and Date.reformat(updated, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
-	add_meta("article:modified_time", updated)
+    local updated_elt = HTML.select_one(page, "time.dt-updated")
+    local updated = updated_elt and HTML.get_attribute(updated_elt, "datetime")
+    updated = updated
+            and Date.reformat(updated, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
+    add_meta("article:modified_time", updated)
 
-	local author_elt = HTML.select_one(page, ".h-card .p-name")
-	local author = author_elt and HTML.inner_text(author_elt)
-	add_meta("article:author", author)
+    local author_elt = HTML.select_one(page, ".h-card .p-name")
+    local author = author_elt and HTML.inner_text(author_elt)
+    add_meta("article:author", author)
 
-	local section_elt = HTML.select_one(page, "#post-section")
-	local section = section_elt and HTML.inner_text(section_elt)
-	add_meta("article:section", section)
+    local section_elt = HTML.select_one(page, "#post-section")
+    local section = section_elt and HTML.inner_text(section_elt)
+    add_meta("article:section", section)
 end

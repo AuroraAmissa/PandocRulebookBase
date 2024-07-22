@@ -76,7 +76,7 @@ function M.origin_file()
     return origin_info[raw_path] or raw_path
 end
 
-function M.short_path()
+function M. short_path()
     local raw_path = M.real_file()
     local short_path_info = M.read_json("build/run/short_paths.json")
     return short_path_info[raw_path] or raw_path
