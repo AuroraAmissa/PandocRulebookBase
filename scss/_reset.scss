@@ -155,6 +155,10 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
+  vertical-align: inherit;
+}
+
+html {
   vertical-align: baseline;
 }
 
@@ -525,7 +529,7 @@ fieldset {
   min-width: 0;
 }
 
-body:not(:-moz-handler-blocked) fieldset {
+body:not(.does-not-exist:-moz-handler-blocked) fieldset {
   display: block;
 }
 

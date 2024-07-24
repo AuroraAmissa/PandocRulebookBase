@@ -471,6 +471,10 @@ div.highlight {
 /// Sidebar layout
 ///
 
+table {
+  vertical-align: middle;
+}
+
 :not(.no-table-layout):not(.aligntab) > table:not(.no-table-layout):not(.aligntab) {
   padding: 0;
   border-spacing: 0;

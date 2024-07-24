@@ -59,7 +59,7 @@ def prepare_run(config, soupault_config):
             regex, sheet = data
             match = re.search(regex, file)
             if match:
-                re_sheet_name.append((match.start(), f"style_{sheet}.css"))
+                re_sheet_name.append((match.start(), f"style-{sheet}.css"))
         re_sheet_name.sort()
         if len(re_sheet_name) != 0:
             sheet_name = re_sheet_name[-1][1]
