@@ -16,11 +16,11 @@
 -- * Removed code for banner processing and favicon processing.
 -- * General customizations for my setup.
 
-resource_paths = JSON.from_string(Sys.read_file("build/run/resource_paths.json"))
+local resource_paths = JSON.from_string(Sys.read_file("build/run/resource_paths.json"))
 
 src_images_base = soupault_config["custom_options"]["resource_root"] .. "/images/"
-images_base_strsub = String.length(src_images_base) + 1
 target_images_uri = resource_paths[page_file] .. "images/"
+target_images_uri_strsub = String.length(target_images_uri) + 1
 
 if not global_data["images_cache"] then
     global_data["images_cache"] = {}
@@ -101,7 +101,7 @@ end
 -- @param ext    File extension to generate (`.jpg`, `.avif`)
 -- @param mime   Corresponding MIME type (`image/jpg`)
 function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
-    local base_src = strsub(src, images_base_strsub)
+    local base_src = strsub(src, target_images_uri_strsub)
     local base = Sys.strip_extensions(base_src) .. ext
     local new_src = suffix .. base
     resize(src, new_src, cmd)
@@ -119,6 +119,14 @@ function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
     HTML.prepend_child(parent, source)
 end
 
+function tx_attribute(from, to, attr)
+    local attr_value = HTML.get_attribute(from, attr)
+    if attr_value then
+        HTML.delete_attribute(from, attr)
+        HTML.set_attribute(to, attr, attr_value)
+    end
+end
+
 -- Take an `<img>` element, update the src, and wrap it in a `<picture>`.
 -- @param img    The `<img>` element
 -- @param src    The element's src attribute
@@ -130,7 +138,7 @@ end
 -- @param hidpi  ImageMagick params for @2x version.
 --               Won't be generated if nil.
 function build_images(img, src, suffix, ext, cmd, hidpi)
-    local base_src = strsub(src, images_base_strsub)
+    local base_src = strsub(src, target_images_uri_strsub)
     local new_src
     if ext then
         new_src = suffix .. Sys.strip_extensions(base_src) .. ext
@@ -153,6 +161,11 @@ function build_images(img, src, suffix, ext, cmd, hidpi)
     build_source(src, suffix, cmd, picture, hidpi, ".webp", "image/webp")
     build_source(src, suffix, cmd, picture, hidpi, ".avif", "image/avif")
     build_source(src, suffix, cmd, picture, hidpi, ".jxl", "image/jxl")
+
+    -- move attributes from source
+    tx_attribute(img, picture, "class")
+    tx_attribute(img, picture, "style")
+    tx_attribute(img, picture, "alt")
 
     return picture
 end
@@ -182,18 +195,9 @@ function build_pfp(img, src)
     )
 end
 
--- General images that appear inside of the article. These
--- are expected to take up the full page width.
-function build_preview(img, src)
-    local picture = build_images(img, src, "preview/", nil, "-resize 640x480 -quality 80%")
-    -- Make a nice link to the full res version. Not trying to
-    -- be bandwidth gremlins or anything, just want to make
-    -- pages faster to load.
-    local link = HTML.create_element("a")
-    HTML.set_attribute(link, "href", src)
-    local title = "Click for original resolution"
-    HTML.set_attribute(link, "title", title)
-    HTML.wrap(picture, link)
+-- General images that appear inside of the article.
+function build_general_image(img, src)
+    build_images(img, src, "encoded/", nil, "-quality 90%")
 end
 
 -- Processes all img tags on the page. Main entry point as a plugin.
@@ -203,18 +207,15 @@ function process_page(page)
     while imgs[index] do
         local img = imgs[index]
         local src = HTML.get_attribute(img, "src")
-        if String.starts_with(src, src_images_base) then
+        if String.starts_with(src, target_images_uri) then
             if HTML.matches_selector(page, img, "picture>img") then
                 -- this was already processed, skip it
             elseif HTML.has_class(img, "thumb") then
                 build_thumbnail(img, src)
             elseif HTML.matches_selector(page, img, ".h-card img") then
                 build_pfp(img, src)
-            elseif HTML.matches_selector(page, img, "article img") then
-                local input_path = Sys.join_path(site_dir, src)
-                local command = format("magick identify -format %%w:%%h %s", input_path)
-                local output = Sys.get_program_output(command)
-                build_preview(img, src)
+            else
+                build_general_image(img, src)
             end
         end
 

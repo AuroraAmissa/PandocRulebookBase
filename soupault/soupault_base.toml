@@ -138,9 +138,10 @@ selector = '*[class^="language-"]'
 command = 'highlight --force -O html -f --syntax=$(echo $ATTR_CLASS | sed -e "s/language-//")'
 
 [widgets.wrap-boxes]
+after = ["rulebook_formats"]
 widget = "wrap"
 wrapper = """ <div> """
-selector = [".box > table", ".box > ul", ".box > ol", ".box > hr"]
+selector = [".box > table", ".box > ul", ".box > ol", ".box > hr", ".box > section"]
 
 [widgets.base_hcard]
 after = ["base-format_menu-index", "base-format_menu-footer"]

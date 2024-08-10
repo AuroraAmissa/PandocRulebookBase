@@ -7,12 +7,18 @@ page = page
 function move_ability_head(element)
     local parent = HTML.parent(element)
 
-    local text = HTML.children(parent)
-    if text then
-        HTML.append_child(parent, HTML.create_text(String.trim(HTML.inner_text(text[1]))))
-        HTML.append_child(parent, element)
+    if HTML.children(parent) then
+        if HTML.has_class(HTML.parent(parent), "marked") then
+            HTML.prepend_child(parent, element)
+            HTML.add_class(element, "marked-head")
+        else
+            HTML.append_child(parent, element)
+        end
 
-        HTML.delete(text[1])
+        local section = HTML.select_one(parent, ".section")
+        if section then
+            HTML.prepend_child(parent, section)
+        end
     end
 end
 Table.iter_values(move_ability_head, HTML.select_all_of(page, { ".ability-head" }))
@@ -25,15 +31,22 @@ Table.iter_values(subability_no_subsection, HTML.select_all_of(page, { ".subabil
 
 -- Add hidden [x] text for ability heads
 function add_hidden_text(elem)
-    local elem_before = HTML.create_element("span", " [")
-    HTML.add_class(elem_before, "select-only")
-    HTML.set_attribute(elem_before, "aria-hidden", "true")
-    HTML.prepend_child(elem, elem_before)
+    if HTML.has_class(elem, "marked-head") then
+        local elem_after = HTML.create_element("span", " | ")
+        HTML.add_class(elem_after, "select-only")
+        HTML.set_attribute(elem_after, "aria-hidden", "true")
+        HTML.append_child(elem, elem_after)
+    else
+        local elem_before = HTML.create_element("span", " [")
+        HTML.add_class(elem_before, "select-only")
+        HTML.set_attribute(elem_before, "aria-hidden", "true")
+        HTML.prepend_child(elem, elem_before)
 
-    local elem_after = HTML.create_element("span", "]")
-    HTML.add_class(elem_after, "select-only")
-    HTML.set_attribute(elem_after, "aria-hidden", "true")
-    HTML.append_child(elem, elem_after)
+        local elem_after = HTML.create_element("span", "]")
+        HTML.add_class(elem_after, "select-only")
+        HTML.set_attribute(elem_after, "aria-hidden", "true")
+        HTML.append_child(elem, elem_after)
+    end
 end
 Table.iter_values(add_hidden_text, HTML.select(page, ".ability-head"))
 
@@ -48,9 +61,30 @@ function fix_section_in_ability(elem)
 end
 Table.iter_values(fix_section_in_ability, HTML.select(page, ".box .section"))
 
+-- Unwrap sections in boxes.
+Table.iter_values(HTML.unwrap, HTML.select(page, ".box > section:not(.ability)"))
+
+-- Fix subability headers
+function fix_h7(elem)
+    Table.iter_values(HTML.delete, HTML.select(elem, ".section"))
+    HTML.unwrap(HTML.parent(elem))
+
+    HTML.remove_class(elem, "h7")
+    local wrapper = HTML.create_element("div")
+    HTML.add_class(wrapper, "h7")
+    HTML.wrap(elem, wrapper)
+    HTML.set_tag_name(elem, "div")
+end
+Table.iter_values(fix_h7, HTML.select(page, ".box > p > .h7"))
+
 -- Add the markers for calc blocks.
 function add_calc_markings(elem)
-    HTML.prepend_child(elem, HTML.create_text("〔"))
-    HTML.append_child(elem, HTML.create_text("〕"))
+    if HTML.has_class(elem, "fu") then
+        HTML.prepend_child(elem, HTML.create_text("【"))
+        HTML.append_child(elem, HTML.create_text("】"))
+    else
+        HTML.prepend_child(elem, HTML.create_text("〔"))
+        HTML.append_child(elem, HTML.create_text("〕"))
+    end
 end
 Table.iter_values(add_calc_markings, HTML.select_all_of(page, { ".c", ".calc" }))

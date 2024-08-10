@@ -155,6 +155,10 @@ common.run([
     "--build-dir", "build/run/web",
 ])
 
+# Copy extra resources
+for path in glob.glob("template/web/static/**", recursive=True):
+    common.copy_file_to("template/web/static/", path, "build/run/web")
+
 # Build webfonts
 shutil.copytree("build/run/web", "build/run/web_fonts")
 common.run([

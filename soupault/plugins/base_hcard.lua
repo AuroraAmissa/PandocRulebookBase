@@ -5,7 +5,10 @@ build_dir = build_dir
 page = page
 soupault_config = soupault_config
 
+local resource_paths = JSON.from_string(Sys.read_file("build/run/resource_paths.json"))
+
 image_src = soupault_config["custom_options"]["resource_root"] .. "/images/"
+target_images_uri = resource_paths[page_file] .. "images/"
 
 function add_rel(e, new)
     local rel_name = HTML.get_attribute(e, "rel")
@@ -44,7 +47,7 @@ function render_hcard(e)
         add_rel(HTML.select_one(hcard, ".u-url"), "me")
     end
 
-    HTML.set_attribute(HTML.select_one(hcard, "img.u-photo"), "src", image_src .. pfp)
+    HTML.set_attribute(HTML.select_one(hcard, "img.u-photo"), "src", target_images_uri .. pfp)
     HTML.replace(e, hcard)
 end
 

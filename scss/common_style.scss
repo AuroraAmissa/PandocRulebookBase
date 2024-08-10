@@ -28,7 +28,7 @@ $border_style_table: $border_style_secondary !default;
 $border_width_table: $border_width_secondary !default;
 
 $border_style_subability: $border_style_secondary !default;
-$border_width_subability: 0 0 0 2px !default;
+$border_width_subability: 2px !default;
 
 $border_style_code: $border_style_secondary !default;
 $border_width_code: 1px !default;
@@ -137,6 +137,10 @@ ul, ol {
   }
 }
 
+ol {
+  list-style: decimal outside;
+}
+
 article {
   li + li {
     margin-top: 0.2em;
@@ -191,6 +195,13 @@ img {
   }
 }
 
+.img-border {
+  border-color: $color_text;
+  border-width: 2px;
+  border-style: solid;
+  margin: 0.25rem;
+}
+
 ///
 /// Typography
 ///
@@ -216,11 +227,9 @@ a {
 
 b, strong {
   font-weight: $font_weight_strong;
-  font-style: $font_style_main;
 }
 
 i, em {
-  font-weight: $font_weight_main;
   font-style: $font_style_em;
 }
 
@@ -274,6 +283,25 @@ h2.center-head, h3.center-head, h4.center-head, h5.center-head, h6.center-head {
   text-align: center;
 }
 
+.center {
+  text-align: center;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.fus {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: bold;
+  -webkit-text-stroke: 0.75px black;
+
+  &.red {
+    color: red;
+  }
+}
+
 ///
 /// Headings
 ///
@@ -306,6 +334,11 @@ h1.hide_h1 {
   @include font_symbol;
   display: none;
   user-select: none;
+  margin-right: 0.5em;
+
+  .marked & {
+    margin-right: 0;
+  }
 }
 
 h2, h3, h4, h6 {
@@ -332,7 +365,6 @@ h2, h3, h4, h6 {
         display: inline-block;
         color: $color_link;
         text-decoration: underline;
-        margin-right: 0.5em;
       }
     }
   }
@@ -521,6 +553,7 @@ table {
   width: 100%;
   border-spacing: 0;
   padding: 0;
+  vertical-align: baseline;
 
   thead {
     display: none;
@@ -535,6 +568,7 @@ table {
   > h6 {
     font-size: 1.2rem;
     margin: 0;
+    line-height: 150%;
   }
 
   + .ability {
@@ -562,6 +596,26 @@ table {
 
 .subability-head {
   padding-right: 0;
+}
+
+.marked {
+  .ability-head {
+    @include font_title;
+    margin-right: 0.5em;
+    padding-right: 0.5em;
+    border-right: $border_style_title 2px;
+    float: left;
+  }
+
+  h6 {
+    &:not(#xx)::before {
+      content: none;
+    }
+
+    &:not(#xx)::after {
+      content: none;
+    }
+  }
 }
 
 blockquote {
@@ -609,6 +663,10 @@ blockquote {
     }
   }
 
+  > .h7 {
+    font-size: 1.1em;
+  }
+
   // The two main types of elements allowed in ability blocks.
   > p, > div {
     &:not(:first-child) {
@@ -638,6 +696,12 @@ blockquote {
         margin-bottom: 0;
       }
     }
+  }
+}
+
+p, div {
+  .h7 + &:not(#xx) {
+    padding-top: 0.2rem;
   }
 }
 
