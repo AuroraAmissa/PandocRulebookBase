@@ -230,7 +230,13 @@ b, strong {
 }
 
 i, em {
-  font-style: $font_style_em;
+  font-style: oblique;
+}
+
+@-moz-document url-prefix() {
+  i, em {
+    font-style: $font_style_em;
+  }
 }
 
 p {
