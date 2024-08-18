@@ -63,7 +63,7 @@ function resize(input, output, cmd)
             else
                 -- No need to regenerate this file if it hasn't been
                 -- updated. But we still need to return the size in pixels.
-                local proc_out = Process.run_output({ "magick", "identify", "-format", "%%w:%%h", output_path })
+                local proc_out = Process.run_output({ "magick", "identify", "-format", "%w:%h", output_path })
                 local colon = string.find(proc_out, ":")
                 local width = string.sub(proc_out, 1, colon - 1)
                 local height = string.sub(proc_out, colon + 1)
