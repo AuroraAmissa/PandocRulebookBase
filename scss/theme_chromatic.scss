@@ -25,21 +25,21 @@ $theme_lightness_mult_border: 1.0 !default;
 $theme_lightness_mult_text: 1.0 !default;
 $theme_highlight_as_link: false !default;
 
-$color_text: oklch(51.26% * $theme_lightness_mult * $theme_lightness_mult_text 0.161 * $theme_chroma_mult $theme_color) !default;
-$color_link: oklch(69.27% * $theme_lightness_mult_highlight 0.187 * $theme_chroma_mult_highlight $theme_color) !default;
-$color_text_highlight: if($theme_highlight_as_link, $color_link, oklch(51.26% * $theme_lightness_mult_highlight 0.161 * $theme_chroma_mult_highlight $theme_color)) !default;
+$color_text: oklch(51% * $theme_lightness_mult * $theme_lightness_mult_text 0.16 * $theme_chroma_mult $theme_color) !default;
+$color_link: oklch(69% * $theme_lightness_mult_highlight 0.19 * $theme_chroma_mult_highlight $theme_color) !default;
+$color_text_highlight: if($theme_highlight_as_link, $color_link, oklch(51% * $theme_lightness_mult_highlight 0.16 * $theme_chroma_mult_highlight $theme_color)) !default;
 $color_code_block: $color_text !default;
 
-$color_background_main: oklch(list.slash(99.01% 0.007 * $theme_chroma_mult $theme_color_secondary, $bg_alpha)) !default;
-$color_background_secondary_dark: oklch(list.slash(89.98% 0.057 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
-$color_background_secondary_light: oklch(list.slash(95.39% 0.026 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.15)) !default;
-$color_background_table_even: oklch(list.slash(98.32% 0.009 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
-$color_background_table_odd: oklch(list.slash(91.41% 0.048 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
-$color_background_tooltip: oklch(99.01% 0.007 * $theme_chroma_mult $theme_color_secondary) !default;
+$color_background_main: oklch(list.slash(99% 0.01 * $theme_chroma_mult $theme_color_secondary, $bg_alpha)) !default;
+$color_background_secondary_dark: oklch(list.slash(90% 0.06 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
+$color_background_secondary_light: oklch(list.slash(95% 0.03 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.15)) !default;
+$color_background_table_even: oklch(list.slash(98% 0.01 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
+$color_background_table_odd: oklch(list.slash(91% 0.05 * $theme_chroma_mult * $theme_chroma_mult_table $theme_color_secondary, 0.35)) !default;
+$color_background_tooltip: oklch(99% 0.01 * $theme_chroma_mult $theme_color_secondary) !default;
 
-$color_border_main: oklch(91.81% * $theme_lightness_mult_border 0.046 * $theme_chroma_mult * $theme_chroma_mult_border $theme_color) !default;
-$color_border_hr: oklch(75.27% * $theme_lightness_mult_border 0.157 * $theme_chroma_mult * $theme_chroma_mult_border $theme_color) !default;
-$color_decor: oklch(82.91% 0.102 * $theme_chroma_mult $theme_color) !default;
+$color_border_main: oklch(92% * $theme_lightness_mult_border 0.05 * $theme_chroma_mult * $theme_chroma_mult_border $theme_color) !default;
+$color_border_hr: oklch(75% * $theme_lightness_mult_border 0.16 * $theme_chroma_mult * $theme_chroma_mult_border $theme_color) !default;
+$color_decor: oklch(83% 0.10 * $theme_chroma_mult $theme_color) !default;
 
 $font_weight_main: 420 !default;
 $font_weight_strong: 625 !default;
