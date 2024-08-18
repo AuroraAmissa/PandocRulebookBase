@@ -77,14 +77,10 @@ if type == "article" then
     local published_elt = HTML.select_one(page, "time.dt-published")
     local published = published_elt
             and HTML.get_attribute(published_elt, "datetime")
-    published = published
-            and Date.reformat(published, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
     add_meta("article:published_time", published)
 
     local updated_elt = HTML.select_one(page, "time.dt-updated")
     local updated = updated_elt and HTML.get_attribute(updated_elt, "datetime")
-    updated = updated
-            and Date.reformat(updated, { "%Y-%m-%d" }, "%Y-%m-%dT%H:%M:%SZ")
     add_meta("article:modified_time", updated)
 
     local author_elt = HTML.select_one(page, ".h-card .p-name")

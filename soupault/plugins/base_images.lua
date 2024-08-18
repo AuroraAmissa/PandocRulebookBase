@@ -22,8 +22,16 @@ src_images_base = soupault_config["custom_options"]["resource_root"] .. "/images
 target_images_uri = resource_paths[page_file] .. "images/"
 target_images_uri_strsub = String.length(target_images_uri) + 1
 
-if not global_data["images_cache"] then
-    global_data["images_cache"] = {}
+if not persistent_data["images_cache"] then
+    persistent_data["images_cache"] = {}
+end
+
+local function join_path(root, current, fragment)
+    if string.startswith(fragment, "/") then
+        return Sys.join_path(root, string.sub(fragment, 2))
+    else
+        return Sys.join_path(current, fragment)
+    end
 end
 
 -- Resizes an image using ImageMagick.
@@ -35,20 +43,21 @@ end
 --               Example: `-resize 640x480`
 -- @return       The image width and height in pixels.
 function resize(input, output, cmd)
-    local input_path = Sys.join_path(site_dir, input)
+    local input_path = join_path(site_dir, Sys.dirname(page_file), input)
     if not Sys.is_file(input_path) then
-        input_path = Sys.join_path(build_dir, input)
+        input_path = join_path(build_dir, Sys.dirname(Sys.join_path(build_dir, relative_page_file)), input)
     end
+
     local output_path = Sys.join_path(build_dir, Sys.join_path(src_images_base, output))
     local output_dir = Sys.dirname(output_path)
     Sys.mkdir(output_dir)
     if Sys.is_file(output_path) then
         local input_mt = Sys.get_file_modification_time(input_path)
         local output_mt = Sys.get_file_modification_time(output_path)
-        if output_mt > input_mt then
-            if global_data["images_cache"][output_path] then
-                local width = global_data["images_cache"][output_path]["width"]
-                local height = global_data["images_cache"][output_path]["height"]
+        if output_mt >= input_mt then
+            if persistent_data["images_cache"][output_path] then
+                local width = persistent_data["images_cache"][output_path]["width"]
+                local height = persistent_data["images_cache"][output_path]["height"]
                 return width, height
             else
                 -- No need to regenerate this file if it hasn't been
@@ -59,9 +68,9 @@ function resize(input, output, cmd)
                 local width = strsub(output, 1, colon - 1)
                 local height = strsub(output, colon + 1)
 
-                global_data["images_cache"][output_path] = {}
-                global_data["images_cache"][output_path]["width"] = width
-                global_data["images_cache"][output_path]["height"] = height
+                persistent_data["images_cache"][output_path] = {}
+                persistent_data["images_cache"][output_path]["width"] = width
+                persistent_data["images_cache"][output_path]["height"] = height
 
                 return width, height
             end

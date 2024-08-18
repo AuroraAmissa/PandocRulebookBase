@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i python3 --pure -p soupault -p nix -p git -p git-lfs -p wget -p cacert
+#! nix-shell -i python3 --pure -p nix -p git -p git-lfs -p wget -p cacert
 #! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick -p lychee
 #! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
 
@@ -39,19 +39,19 @@ for path in glob.glob("PandocRulebookBase/**/*.scss", recursive=True):
     common.copy_file_to("PandocRulebookBase/", path, "build/sources/css/PandocRulebookBase")
 
 # Build styles directory
-os.makedirs(f"build/run/web/{resource_root}/styles")
+os.makedirs(f"build/sources/soupault/site/{resource_root}/styles")
 for path in glob.glob("build/sources/css/style*.scss"):
     fragment = common.strip_path_prefix(path, "build/sources/css/")
     target_name = fragment.replace(".scss", ".css")
     common.run([
         "dart-sass",
         "-c", "--no-source-map",
-        f"{path}:build/run/web/{resource_root}/styles/{target_name}",
+        f"{path}:build/sources/soupault/site/{resource_root}/styles/{target_name}",
     ])
 
 for path in glob.glob("template/web/styles/**", recursive=True):
     if not path.endswith(".scss"):
-        common.copy_file_to("template/web/styles/", path, f"build/run/web/{resource_root}/styles")
+        common.copy_file_to("template/web/styles/", path, f"build/sources/soupault/site/{resource_root}/styles")
 
 # Build soupault sources directory
 has_entry = False
@@ -70,7 +70,6 @@ The file names here are more organized for easy development rather than being ea
 If you really insist, the title page can be found at <{entry_path}>.
 """
 
-os.makedirs("build/sources/soupault/site")
 origins = {}
 short_paths = {}
 if os.path.exists("site"):
@@ -148,11 +147,8 @@ open("build/run/soupault.json", "w").write(json.dumps(soupault_cfg))
 
 # Run Soupault
 common.run([
-    "soupault",
-    "--verbose",
-    "--config", "build/sources/soupault/soupault.toml",
-    "--site-dir", "build/sources/soupault/site",
-    "--build-dir", "build/run/web",
+    "PandocRulebookBase/scripts/sh/tool_crabsoup.sh",
+    "-v", "build", "--config", "build/sources/soupault/soupault.toml",
 ])
 
 # Copy extra resources
