@@ -74,7 +74,7 @@ keep = true
 [widgets.generator-meta]
 widget = 'insert_html'
 selector = 'head'
-html = '<meta name="generator" content="soupault">'
+html = '<meta name="generator" content="crabsoup">'
 
 ##
 ## Widgets: Markup Processing

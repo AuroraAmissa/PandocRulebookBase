@@ -23,7 +23,6 @@ if not HTML.select_one(page, ".nav-gen ul") then
     Table.iter_values(process_menu_item, HTML.select(page, "#gen-menu > ul > li"))
     Table.iter_values(HTML.unwrap, HTML.select(page, "#gen-menu > ul"))
     Table.iter_values(process_menu_inner, HTML.select(page, "#menu-inner"))
-
     add_class_chain(HTML.select_one(page, "article"), "no-toc")
 else
     add_class_chain(HTML.select_one(page, "article"), "has-toc")
