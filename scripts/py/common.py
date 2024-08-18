@@ -31,7 +31,7 @@ def path_relative_to(root, source, target):
             rela_source = ""
         super_name += "../"
 
-    return super_name + rela_target[len(rela_source):]
+    return (super_name + rela_target[len(rela_source):]).replace("//", "/")
 
 def del_path(target):
     if os.path.isdir(target):

@@ -148,7 +148,7 @@ open("build/run/soupault.json", "w").write(json.dumps(soupault_cfg))
 # Run Soupault
 common.run([
     "PandocRulebookBase/scripts/sh/tool_crabsoup.sh",
-    "-v", "build", "--config", "build/sources/soupault/soupault.toml",
+    "build", "--config", "build/sources/soupault/soupault.toml",
 ])
 
 # Copy extra resources
