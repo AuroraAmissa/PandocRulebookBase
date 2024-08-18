@@ -17,15 +17,15 @@
 -- Pulls `site_title` from the `[custom_options]` section for the
 -- og:site_name field.
 
-site_title = soupault_config["custom_options"]["site_title"]
+local site_title = soupault_config["custom_options"]["site_title"]
 
 -- Creates a `<meta>` tag and puts it into `<head>`.
-function add_meta(property, content)
+local function add_meta(property, content)
     if not content then
         return
     end
 
-    content = String.trim(content)
+    content = string.trim(content)
     content = Regex.replace_all(content, "\\s+", " ")
 
     local head = HTML.select_one(page, "head")

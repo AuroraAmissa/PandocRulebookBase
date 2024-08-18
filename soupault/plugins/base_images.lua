@@ -18,13 +18,14 @@
 
 local resource_paths = JSON.from_string(Sys.read_file("build/run/resource_paths.json"))
 
-src_images_base = soupault_config["custom_options"]["resource_root"] .. "/images/"
-target_images_uri = resource_paths[page_file] .. "images/"
-target_images_uri_strsub = String.length(target_images_uri) + 1
+local src_images_base = soupault_config["custom_options"]["resource_root"] .. "/images/"
+local target_images_uri = resource_paths[page_file] .. "images/"
+local target_images_uri_strsub = #target_images_uri + 1
 
 if not persistent_data["images_cache"] then
     persistent_data["images_cache"] = {}
 end
+local images_cache = persistent_data["images_cache"]
 
 local function join_path(root, current, fragment)
     if string.startswith(fragment, "/") then
@@ -55,44 +56,44 @@ function resize(input, output, cmd)
         local input_mt = Sys.get_file_modification_time(input_path)
         local output_mt = Sys.get_file_modification_time(output_path)
         if output_mt >= input_mt then
-            if persistent_data["images_cache"][output_path] then
-                local width = persistent_data["images_cache"][output_path]["width"]
-                local height = persistent_data["images_cache"][output_path]["height"]
+            if images_cache[output_path] then
+                local width = images_cache[output_path]["width"]
+                local height = images_cache[output_path]["height"]
                 return width, height
             else
                 -- No need to regenerate this file if it hasn't been
                 -- updated. But we still need to return the size in pixels.
-                local command = format("magick identify -format %%w:%%h \"%s\"", output_path)
-                local output = Sys.get_program_output(command)
-                local colon = strfind(output, ":")
-                local width = strsub(output, 1, colon - 1)
-                local height = strsub(output, colon + 1)
+                local proc_out = Process.run_output({ "magick", "identify", "-format", "%%w:%%h", output_path })
+                local colon = string.find(proc_out, ":")
+                local width = string.sub(proc_out, 1, colon - 1)
+                local height = string.sub(proc_out, colon + 1)
 
-                persistent_data["images_cache"][output_path] = {}
-                persistent_data["images_cache"][output_path]["width"] = width
-                persistent_data["images_cache"][output_path]["height"] = height
+                images_cache[output_path] = {}
+                images_cache[output_path]["width"] = width
+                images_cache[output_path]["height"] = height
 
                 return width, height
             end
         end
     end
-    local command = format(
+
+    local command = string.format(
             "magick \"%s\" %s -strip -format %%w:%%h -identify \"%s\"",
             input_path,
             cmd,
             output_path
     )
     Log.info("Running " .. command)
-    local output = Sys.get_program_output(command)
-    local colon = strfind(output, ":")
-    local width = strsub(output, 1, colon - 1)
-    local height = strsub(output, colon + 1)
+    local proc_out = Sys.get_program_output(command)
+    local colon = string.find(proc_out, ":")
+    local width = string.sub(proc_out, 1, colon - 1)
+    local height = string.sub(proc_out, colon + 1)
 
     local png_opt = config["png_optimizer"]
     if png_opt and Sys.has_extension(output_path, "png") then
-        local command = format(png_opt, output_path)
-        Log.info("Optimizing png using " .. command)
-        Sys.run_program(command)
+        local optimize_command = string.format(png_opt, output_path)
+        Log.info("Optimizing png using " .. optimize_command)
+        Sys.run_program(optimize_command)
     end
 
     return width, height
@@ -110,15 +111,15 @@ end
 -- @param ext    File extension to generate (`.jpg`, `.avif`)
 -- @param mime   Corresponding MIME type (`image/jpg`)
 function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
-    local base_src = strsub(src, target_images_uri_strsub)
-    local base = Sys.strip_extensions(base_src) .. ext
+    local base_src = string.sub(src, target_images_uri_strsub)
+    local base = Sys.strip_extension(base_src) .. ext
     local new_src = suffix .. base
     resize(src, new_src, cmd)
     local srcset
     if hidpi then
         local src_2x = suffix .. "2x/" .. base
         resize(src, src_2x, hidpi)
-        srcset = format("%s, %s 2x", target_images_uri .. new_src, target_images_uri .. src_2x)
+        srcset = string.format("%s, %s 2x", target_images_uri .. new_src, target_images_uri .. src_2x)
     else
         srcset = target_images_uri .. new_src
     end
@@ -147,10 +148,10 @@ end
 -- @param hidpi  ImageMagick params for @2x version.
 --               Won't be generated if nil.
 function build_images(img, src, suffix, ext, cmd, hidpi)
-    local base_src = strsub(src, target_images_uri_strsub)
+    local base_src = string.sub(src, target_images_uri_strsub)
     local new_src
     if ext then
-        new_src = suffix .. Sys.strip_extensions(base_src) .. ext
+        new_src = suffix .. Sys.strip_extension(base_src) .. ext
     else
         new_src = suffix .. base_src
     end
@@ -216,12 +217,12 @@ function process_page(page)
     while imgs[index] do
         local img = imgs[index]
         local src = HTML.get_attribute(img, "src")
-        if String.starts_with(src, target_images_uri) then
-            if HTML.matches_selector(page, img, "picture>img") then
+        if string.startswith(src, target_images_uri) then
+            if HTML.matches(img, "picture>img") then
                 -- this was already processed, skip it
             elseif HTML.has_class(img, "thumb") then
                 build_thumbnail(img, src)
-            elseif HTML.matches_selector(page, img, ".h-card img") then
+            elseif HTML.matches(img, ".h-card img") then
                 build_pfp(img, src)
             else
                 build_general_image(img, src)

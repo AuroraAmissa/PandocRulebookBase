@@ -1,12 +1,5 @@
-HTML = HTML
-Table = Table
-JSON = JSON
-Regex = Regex
-Sys = Sys
-page = page
-
-alt = JSON.from_string(Sys.read_file("build/run/alt.json"))
-function append_tooltip(tt)
+local alt = JSON.from_string(Sys.read_file("build/run/alt.json"))
+for _, tt in HTML.select(page, ".alt") do
     local raw_text = HTML.inner_text(tt)
     local text = HTML.inner_text(tt)
     if HTML.has_class(tt, "ny") then
@@ -37,4 +30,3 @@ function append_tooltip(tt)
     HTML.append_child(tt_wr, tt_in)
     HTML.append_child(wrap_elem, tt_wr)
 end
-Table.iter_values(append_tooltip, HTML.select_all_of(page, { ".alt" }))

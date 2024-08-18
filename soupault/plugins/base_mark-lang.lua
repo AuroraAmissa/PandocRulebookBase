@@ -1,11 +1,9 @@
-lang = config["lang"]
+local lang = config["lang"]
 
-function mark_lang_class(e)
+for _, e in HTML.select(page, "article,section") do
     HTML.add_class(e, lang)
 end
-Table.iter_values(mark_lang_class, HTML.select_all_of(page, { "article", "section" }))
 
-function mark_lang(e)
+for _, e in HTML.select(page, "html") do
     HTML.set_attribute(e, "lang", lang)
 end
-Table.iter_values(mark_lang, HTML.select(page, "html"))

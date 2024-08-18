@@ -4,17 +4,13 @@ local remove_classes = {
     "u", "unlisted", "unnumbered", "ny" -- not used after generation
 }
 
-function do_remove(elem)
-    HTML.remove_class(elem, target_class)
+for _, cl in remove_classes do
+    for _, elem in HTML.select(page, "." .. cl) do
+        HTML.remove_class(elem, cl)
+    end
 end
-function remove(cl)
-    target_class = cl
-    Table.iter_values(do_remove, HTML.select(page, "." .. cl))
-end
-Table.iter_values(remove, remove_classes)
 
-function aria_hidden(elem)
+for _, elem in HTML.select(page, ".aria-hidden") do
     HTML.remove_class(elem, "aria-hidden")
     HTML.set_attribute(elem, "aria-hidden", "true")
 end
-Table.iter_values(aria_hidden, HTML.select(page, ".aria-hidden"))
