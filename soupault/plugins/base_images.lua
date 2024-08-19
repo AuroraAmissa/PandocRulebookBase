@@ -43,7 +43,7 @@ end
 -- @param cmd    Parameters to pass to ImageMagick.
 --               Example: `-resize 640x480`
 -- @return       The image width and height in pixels.
-function resize(input, output, cmd)
+local function resize(input, output, cmd)
     local input_path = join_path(site_dir, Sys.dirname(page_file), input)
     if not Sys.is_file(input_path) then
         input_path = join_path(build_dir, Sys.dirname(Sys.join_path(build_dir, relative_page_file)), input)
@@ -63,7 +63,7 @@ function resize(input, output, cmd)
             else
                 -- No need to regenerate this file if it hasn't been
                 -- updated. But we still need to return the size in pixels.
-                local proc_out = Process.run_output({ "magick", "identify", "-format", "%%w:%%h", output_path })
+                local proc_out = Process.run_output({ "magick", "identify", "-format", "%w:%h", output_path })
                 local colon = string.find(proc_out, ":")
                 local width = string.sub(proc_out, 1, colon - 1)
                 local height = string.sub(proc_out, colon + 1)
@@ -77,24 +77,17 @@ function resize(input, output, cmd)
         end
     end
 
-    local command = string.format(
-            "magick \"%s\" %s -strip -format %%w:%%h -identify \"%s\"",
-            input_path,
-            cmd,
-            output_path
-    )
-    Log.info("Running " .. command)
-    local proc_out = Sys.get_program_output(command)
+    local command = { "magick", input_path }
+    local cmd_args = string.split(cmd, " ")
+    table.move(cmd_args, 1, #cmd_args, #command + 1, command)
+    local command_tail = { "-strip", "-format", "%w:%h", "-identify", output_path }
+    table.move(command_tail, 1, #command_tail, #command + 1, command)
+
+    Log.info("Running " .. Value.repr_compact(command))
+    local proc_out = Process.run_output(command)
     local colon = string.find(proc_out, ":")
     local width = string.sub(proc_out, 1, colon - 1)
     local height = string.sub(proc_out, colon + 1)
-
-    local png_opt = config["png_optimizer"]
-    if png_opt and Sys.has_extension(output_path, "png") then
-        local optimize_command = string.format(png_opt, output_path)
-        Log.info("Optimizing png using " .. optimize_command)
-        Sys.run_program(optimize_command)
-    end
 
     return width, height
 end
@@ -110,7 +103,7 @@ end
 --               Won't be generated if nil.
 -- @param ext    File extension to generate (`.jpg`, `.avif`)
 -- @param mime   Corresponding MIME type (`image/jpg`)
-function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
+local function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
     local base_src = string.sub(src, target_images_uri_strsub)
     local base = Sys.strip_extension(base_src) .. ext
     local new_src = suffix .. base
@@ -129,7 +122,7 @@ function build_source(src, suffix, cmd, parent, hidpi, ext, mime)
     HTML.prepend_child(parent, source)
 end
 
-function tx_attribute(from, to, attr)
+local function tx_attribute(from, to, attr)
     local attr_value = HTML.get_attribute(from, attr)
     if attr_value then
         HTML.delete_attribute(from, attr)
@@ -147,7 +140,7 @@ end
 -- @param cmd    Parameters to pass to ImageMagick
 -- @param hidpi  ImageMagick params for @2x version.
 --               Won't be generated if nil.
-function build_images(img, src, suffix, ext, cmd, hidpi)
+local function build_images(img, src, suffix, ext, cmd, hidpi)
     local base_src = string.sub(src, target_images_uri_strsub)
     local new_src
     if ext then
@@ -181,20 +174,20 @@ function build_images(img, src, suffix, ext, cmd, hidpi)
 end
 
 -- Small thumbnails, like in feeds.
-function build_thumbnail(img, src)
+local function build_thumbnail(img, src)
     build_images(
             img,
             src,
             "thumb/",
             ".jpg",
-            "-resize 320x240^ -gravity Center " .. "-extent 320x240 -quality 80%"
+            "-resize 320x240^ -gravity Center -extent 320x240 -quality 80%"
     )
 end
 
 -- Tiny profile pictures for mf2 h-cards. Small icons like
 -- these are where having an @2x version makes the biggest
 -- impact.
-function build_pfp(img, src)
+local function build_pfp(img, src)
     build_images(
             img,
             src,
@@ -206,12 +199,12 @@ function build_pfp(img, src)
 end
 
 -- General images that appear inside of the article.
-function build_general_image(img, src)
+local function build_general_image(img, src)
     build_images(img, src, "encoded/", nil, "-quality 90%")
 end
 
 -- Processes all img tags on the page. Main entry point as a plugin.
-function process_page(page)
+local function process_page(page)
     local imgs = HTML.select(page, "img")
     local index = 1
     while imgs[index] do
