@@ -28,10 +28,12 @@ local elem_subpages = HTML.select_one(page, "#subpages-section")
 if elem_subpages then
     -- Copy the subpages to the navigation bar
     local content = HTML.clone(elem_subpages)
+
     Table.iter_values(HTML.delete, HTML.select(content, "h2, h3, h4, h5, h6"))
     local subpages = HTML.select_one(page, "#gen-subpages")
     if subpages then
         HTML.append_child(subpages, content)
+        HTML.unwrap(content)
     end
 else
     -- Delete the subpage headings

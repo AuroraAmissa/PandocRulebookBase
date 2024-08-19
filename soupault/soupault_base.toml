@@ -149,10 +149,6 @@ heading_links = true
 heading_link_text = "§"
 heading_link_class = "section"
 heading_links_append = true
-use_heading_slug = true
-
-slug_regex = '[^a-zA-Z0-9.]+'
-slug_replacement_string = "-"
 
 [widgets.base_process-toc]
 after = "table-of-contents"
