@@ -47,13 +47,15 @@ if not html or Table.length(HTML.children(html)) == 0 then
 end
 
 -- Delete remaining empty .toc elements
-local function delete_empty_toc(element)
-    if Table.length(HTML.children(element)) == 0 then
-        HTML.delete(element)
+while true do
+    local any_deleted = false
+    for _, element in HTML.select(page, ".toc") do
+        if Table.length(HTML.children(element)) == 0 then
+            HTML.delete(element)
+            any_deleted = true
+        end
+    end
+    if not any_deleted then
+        break
     end
 end
-Table.iter_values(delete_empty_toc, HTML.select(page, ".toc")) -- lazy loop!
-Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
-Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
-Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
-Table.iter_values(delete_empty_toc, HTML.select(page, ".toc"))
