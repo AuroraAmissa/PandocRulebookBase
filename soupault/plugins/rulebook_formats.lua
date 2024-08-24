@@ -48,8 +48,15 @@ for _, elem in HTML.select(page, ".box .section") do
     Table.iter_values(HTML.delete, HTML.children(elem))
 
     local new_span = HTML.create_element("span", text)
-    HTML.add_class(new_span, "section-for-ability")
+    HTML.add_class(new_span, "section-for-box")
     HTML.append_child(HTML.parent(elem) or unreachable(), new_span)
+
+    if HTML.has_class(elem, ".ability-head") then
+        local parent = HTML.parent(elem)
+        if not parent or not HTML.has_class(parent, "marked") then
+            HTML.add_class(new_span, "section-for-ability")
+        end
+    end
 end
 
 -- Unwrap sections in boxes.

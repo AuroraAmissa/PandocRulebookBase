@@ -64,6 +64,8 @@ $font_size_menu: 0.9em !default;
 $font_size_code: 0.9em !default;
 $font_weight_menu: normal !default;
 
+$line_height_box_header: 125% !default;
+
 $menu_mobile_seperator: " • " !default;
 $menu_width: 15em !default;
 $menu_min_height: 20em !default;
@@ -336,15 +338,14 @@ h1.hide_h1 {
   font-weight: $font_weight_main;
 }
 
-.section-for-ability {
+.section-for-box {
   @include font_symbol;
   display: none;
   user-select: none;
-  margin-right: 0.5em;
+}
 
-  .marked & {
-    margin-right: 0;
-  }
+.section-for-ability {
+  margin-right: 0.5em;
 }
 
 h2, h3, h4, h6 {
@@ -366,11 +367,12 @@ h2, h3, h4, h6 {
         text-align: right;
       }
 
-      > .section-for-ability {
+      > .section-for-box {
         float: right;
         display: inline-block;
         color: $color_link;
         text-decoration: underline;
+        line-height: $line_height_box_header;
       }
     }
   }
@@ -660,6 +662,7 @@ blockquote {
     margin: 0;
     background: $color_background_secondary_dark;
     @include border($border_style_secondary, $border_width_secondary_head);
+    line-height: $line_height_box_header;
 
     + p, + div {
       &:not(#xx) { // redundant :not(#xx) to fix precedence
