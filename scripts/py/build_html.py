@@ -102,7 +102,6 @@ open("build/run/short_paths.json", "w").write(json.dumps(short_paths))
 
 # Build soupault configuration
 soupault_cfg = tomllib.loads(open("PandocRulebookBase/soupault/soupault_base.toml").read())
-soupault_cfg["custom_options"] = {}
 
 soupault_cfg["widgets"]["page-title"]["default"] = config["config"]["title"]
 soupault_cfg["widgets"]["page-title"]["append"] = " | " + config["config"]["title"]

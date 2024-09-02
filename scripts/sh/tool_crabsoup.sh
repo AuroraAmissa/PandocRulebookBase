@@ -2,7 +2,7 @@
 
 set -eu
 
-VERSION="0.1.0-alpha3"
+VERSION="0.1.0-alpha5"
 CRABSOUP="build/crabsoup-$VERSION"
 
 if [ ! -f "$CRABSOUP" ]; then
