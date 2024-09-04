@@ -1,6 +1,6 @@
 -- Process excluded headings
 local unlisted_ids = {}
-for _, element in HTML.select(page, ".unlisted, h4, h5, h6") do
+for _, element in HTML.select(page, ".unlisted, .notoc, h4, h5, h6") do
     local attr = HTML.get_attribute(element, "id")
     if attr then
         unlisted_ids["#" .. attr] = 1
