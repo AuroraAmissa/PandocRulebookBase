@@ -82,7 +82,7 @@ for _, elem in HTML.select(page, ".c, .calc") do
         HTML.prepend_child(elem, HTML.create_text("【"))
         HTML.append_child(elem, HTML.create_text("】"))
     else
-        HTML.prepend_child(elem, HTML.create_text(c_open))
-        HTML.append_child(elem, HTML.create_text(c_close))
+        HTML.prepend_child(elem, HTML.create_text("〔"))
+        HTML.append_child(elem, HTML.create_text("〕"))
     end
 end

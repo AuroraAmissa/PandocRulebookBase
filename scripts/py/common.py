@@ -94,7 +94,7 @@ def merge_config(base, new):
 
 def run(args, capture = False):
     if capture:
-        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        result = subprocess.run(args, stdout=subprocess.PIPE)
     else:
         result = subprocess.run(args)
     result.check_returncode()

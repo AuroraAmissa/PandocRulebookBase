@@ -18,10 +18,6 @@ default_content_action = "append_child"
 [preprocessors]
 md = 'PandocRulebookBase/scripts/sh/tool_pandoc-html.sh'
 
-[custom_options]
-c_open = "〔"
-c_close = "〕"
-
 ##
 ## Base Templates
 ##

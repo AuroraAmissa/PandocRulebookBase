@@ -2,3 +2,5 @@
 /venv
 /.sass-cache
 /deploy_test.sh
+/.idea
+/template/fonts/nonfree
