@@ -1,7 +1,4 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -i python3 --pure -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -p pandoc -p texliveFull
-#! nix-shell -p python311
+#! /usr/bin/env python3
 
 # Syspath manipulation
 __import__("sys").path.append(__import__("os").path.abspath('PandocRulebookBase/scripts/py'))
@@ -10,6 +7,7 @@ __import__("sys").path.append(__import__("os").path.abspath('PandocRulebookBase/
 import glob
 import json
 import os
+import shutil
 import tomllib
 
 import common
@@ -25,6 +23,7 @@ if "pdf" in config:
 
 # Prepares the necessary directories
 common.recreate_dir("build/pdf")
+os.makedirs("build/pdf/out")
 
 # Build the PDF sources
 with open("build/pdf/meta.json", "w") as fd:
@@ -68,10 +67,42 @@ with open("build/pdf/tex/_generated_pkgs.tex", "w") as fd:
                     pdfdisplaydoctitle]{{hyperref}}
     """)
 
+with open("build/pdf/tex/_generated_gitinfo.tex", "w") as fd:
+    revision = common.run(["git", "describe", "--match=x^", "--always", "--dirty=-*"], capture = True)
+    revision = revision.decode("utf-8").strip()
+    commit_time = common.run(["git", "log", "-1", "--date=short", "--pretty=format:%cd"], capture = True)
+    commit_time = commit_time.decode("utf-8").strip()
+
+    is_draft = r"\newcommand\gitIsDraft\relax"
+    if os.getenv("DO_RELEASE"):
+        is_draft = ""
+
+    fd.write(rf"""
+        \newcommand\gitRevision{{{revision}}}
+        \newcommand\gitCommitTime{{{commit_time}}}
+        {is_draft}
+    """)
+
 with open("build/pdf/tex/_generated_fonts.tex", "w") as fd:
     fd.write(tex_fonts.generate_tex_fonts(config))
 
+for path in glob.glob("build/pdf/tex/images/*"):
+    if os.path.isfile(path):
+        print(f"Converting {path} to JPEG 2000...")
+        root = os.path.splitext(path)[0]
+        common.run(["magick", "-define", "jp2:quality=60", path, f"{root}.jp2"])
+
 # Run latex
 os.chdir("build/pdf/tex")
-for file in glob.glob("book*.tex"):
-    common.run(["latexmk", "-interaction=nonstopmode", "-pdflatex=lualatex", "-pdf", file])
+books = config["pdf"]["books"]
+for book_name in books:
+    common.run([
+        "latexmk", "-interaction=nonstopmode", "-pdflatex=lualatex",
+        "-pdf", f"{book_name}.tex"
+    ])
+    print("Compressing PDF...")
+    common.run([
+        "qpdf", "--linearize", "--object-streams=generate", "--newline-before-endstream",
+        "--decode-level=generalized", "--recompress-flate", "--compression-level=9",
+        f"{book_name}.pdf", f"../out/{books[book_name]}.pdf",
+    ])

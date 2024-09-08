@@ -16,6 +16,9 @@ function Span(elem)
         table.insert(elem.content, 1, ch_open)
         table.insert(elem.content, ch_close)
 
+        table.insert(elem.content, 1, pandoc.RawInline('latex', '\\nolinebreak{'))
+        table.insert(elem.content, pandoc.RawInline('latex', '}'))
+
         if not no_c_span_space then
             return {
                 pandoc.RawInline('latex', "\\hspace{-0.5em}"),

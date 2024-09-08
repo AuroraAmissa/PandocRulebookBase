@@ -1,19 +1,242 @@
+%! suppress = FileNotFound
+%! suppress = Makeatletter
+%! suppress = NoExtension
+
 \usepackage[english]{babel}
 \usepackage{enumitem}
 \usepackage[no-config]{fontspec}
 \usepackage{geometry}
 \usepackage{luacode}
 \usepackage{multicol}
+
+\usepackage{eso-pic}
+\usepackage{graphicx}
+
 \usepackage{xcolor}
+\usepackage{tcolorbox}
 
-%! suppress = FileNotFound
 \input{_generated_pkgs}
-
-%! suppress = FileNotFound
 \input{_generated_fonts}
+\input{_generated_gitinfo}
 
+\pdfvariable omitcidset=1
 \hypersetup{
     bookmarks=true,bookmarksnumbered=false,bookmarksopen=true,bookmarksopenlevel=1,
     breaklinks=true,pdfborder={0 0 1},backref=section,colorlinks=true
 }
+\setsecnumdepth{none}
 \settocdepth{subparagraph}
+\strictpagecheck
+
+% Command for declaring a section.
+%
+% Parameters:
+% 1 - Section name (not command)
+% 2 - Section Title Font Name
+% 3 - Background color
+% 4 - Deemphasized color
+% 5 - Line/Title color
+% 6 - Link color
+\makeatletter%
+\newcommand\definesection[6]{%
+    \expandafter\newcommand\csname #1titlefont\endcsname{#2}
+    \definecolor{#1-bg}{HTML}{#3}%
+    \definecolor{#1-de}{HTML}{#4}%
+    \definecolor{#1-li}{HTML}{#5}%
+    \definecolor{#1-ln}{HTML}{#6}%
+    \newtcolorbox{#1-sidebarenv}{textmarker,colback=#1-bg,colframe=#1-li}%
+}
+\makeatother%
+\newcommand\setsection[1]{%
+    \renewcommand\vtitlefont{\csname #1titlefont\endcsname}%
+    \renewcommand\vcolorset{#1}%
+    \renewcommand\vbgimage{#1}%
+    \resethyper%
+}
+
+%
+% Setup command variables
+%
+\newcommand\vtitlefont\relax
+\newcommand\vtitlecentered\relax
+\newcommand\vcolorset\relax
+\newcommand\vsecsize\relax
+\newcommand\vsubsecsize\relax
+\newcommand\vsubsubsecsize\relax
+
+\definecolor{cw-bg}{HTML}{ffe6e6}
+\definecolor{cw-li}{HTML}{ff787a}
+\definecolor{watermark}{HTML}{909090}
+\definecolor{watermark-dark}{HTML}{000000}
+\definecolor{watermark-light}{HTML}{ffffff}
+\newcommand\gitwatermarkclr{\color{watermark}}
+
+\newcommand\vbgcolorname{\vcolorset-bg}
+\newcommand\vbgcolor{\color{\vbgcolorname}}
+\newcommand\vdecolorname{\vcolorset-de}
+\newcommand\vdecolor{\color{\vdecolorname}}
+\newcommand\vlncolorname{\vcolorset-ln}
+\newcommand\vlncolor{\color{\vlncolorname}}
+\newcommand\vlicolorname{\vcolorset-li}
+\newcommand\vlicolor{\color{\vlicolorname}}
+
+%
+% Setup macros
+%
+\newcommand\setsplatlayout{
+    \renewcommand\vtitlecentered\centering
+    \renewcommand\vsecsize{\fontsize{28}{30}}
+    \renewcommand\vsubsecsize{\fontsize{28}{30}}
+    \renewcommand\vsubsubsecsize{\fontsize{20.5}{24.5}}
+    \defaultlists
+}
+\newcommand\setsecsplatlayout{
+    \renewcommand\vtitlecentered\centering
+    \renewcommand\vsecsize{\fontsize{28}{30}}
+    \renewcommand\vsubsecsize{\fontsize{20.5}{24.5}}
+    \renewcommand\vsubsubsecsize{\fontsize{15.5}{20}}
+    \defaultlists
+}
+\newcommand\setnormallayout{
+    \renewcommand\vtitlecentered\relax
+    \renewcommand\vsecsize{\fontsize{28}{30}}
+    \renewcommand\vsubsecsize{\fontsize{20.5}{24.5}}
+    \renewcommand\vsubsubsecsize{\fontsize{15.5}{20}}
+    \firmlists
+}
+\newcommand\resethyper{
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=\vlncolorname,
+        urlcolor=\vlncolorname,
+        pdfborderstyle={/S/U/W 0},
+    }
+}
+
+%
+% Headings style
+%
+\setlength\beforechapskip{22pt}
+\newcommand\lumquotechapskip{\setlength\afterchapskip{15pt}}
+\newcommand\lumnormalchapskip{\setlength\afterchapskip{30pt}}
+\lumnormalchapskip
+
+\newcommand\titlenohyphen{\hyphenpenalty=10000\raggedright}
+
+\renewcommand*{\parttitlefont}{\titlenohyphen\fontsize{38}{34}\vtitlefont\centering}
+\renewcommand*{\chaptitlefont}{\titlenohyphen\fontsize{38}{34}\vtitlefont\centering}
+
+\setsecheadstyle{\titlenohyphen\vsecsize\vtitlefont\vtitlecentered}
+\setsubsecheadstyle{\titlenohyphen\vsubsecsize\vtitlefont\vtitlecentered}
+\setsubsubsecheadstyle{\titlenohyphen\vsubsubsecsize\vtitlefont}
+
+\setbeforesecskip{1.5ex}
+\setbeforesubsecskip{1.5ex}
+\setbeforesubsubsecskip{1.5ex}
+
+%
+% Setup typography
+%
+\setlength{\parfillskip}{0pt plus 1fil} % Paragraph spacing
+\emergencystretch=0.05em
+\hyphenpenalty=1000 % Less hyphens please...
+\hbadness=1000
+\raggedcolumns
+
+\twocoltocetc % two column table of contents
+\firmlists % Reduce list spacing.
+
+\renewcommand{\labelitemi}{$\texttt{•}$}
+\setlist[itemize]{leftmargin=1.2em}
+
+\newcommand\defaultparagraphsplitting{
+    \widowpenalties 1 10000 \raggedbottom % Avoid splitting paragraphs.
+}
+\newcommand\twocolumnparagraphsplitting{
+    \widowpenalties 1 800 \raggedbottom % Split paragraphs, but not 100% aggressively.
+}
+\defaultparagraphsplitting
+
+\setlength{\footmarkwidth}{0.8em}
+\setlength{\footmarksep}{-0.8em}
+\setlength{\footparindent}{10em}
+\renewcommand{\foottextfont}{\footnotesize\;}
+\renewcommand*{\footnoterule}{}
+
+%
+% Setup page layouts
+%
+\newcommand\footertextsize\small
+
+\makeatletter
+\makepagestyle{default_pagestyle}
+\makeoddfoot{default_pagestyle}{\footertextsize\sffamily\thepage}{}{\footertextsize\sffamily\leftmark}
+\makeevenfoot{default_pagestyle}{\footertextsize\sffamily\rightmark}{}{\footertextsize\sffamily\thepage}
+\makepsmarks{default_pagestyle}{%
+    \createmark{chapter}{left}{shownumber}{\@chapapp\ }{. \ }%
+    \createmark{section}{right}{shownumber}{}{. \ }%
+}
+\nouppercaseheads
+\pagestyle{default_pagestyle}
+\makeatother
+
+\aliaspagestyle{plain}{default_pagestyle}
+
+\renewcommand\afterpartskip\relax % allow quotes on the title pages.
+
+%
+% Background support
+%
+\expandafter\ifx\csname Gin@rule@.jp2\endcsname\relax
+  \DeclareGraphicsRule{.jp2}{jpg}{.jp2}{#1}
+  \DeclareGraphicsRule{.JP2}{jpg}{.JP2}{#1}
+  \usepackage{grfext}
+  \AppendGraphicsExtensions{.jp2,.JP2}
+\fi
+
+\newcommand\vbgimage\relax
+\AddToShipoutPictureBG {%
+    \IfFileExists{images/bg_\vbgimage.jp2}{%
+        \includegraphics[width=\paperwidth,height=\paperheight]{images/bg_\vbgimage.jp2}%
+    }{%
+    }%
+}
+
+%
+% Git mark
+%
+% Derived ultimately from gitmark2
+%
+\newcommand\vgitmarksize{\fontsize{7}{0}}
+\newcommand\gitMarkPref\relax
+\newcommand\gitMark\relax
+
+\newcommand\resetgitmark{%
+    \renewcommand{\gitMarkPref}{Draft • This version is subject to change •}%
+    \renewcommand{\gitMark}{\texttt\vgitmarksize{\gitRevision} • \gitCommitTime}%
+}
+\resetgitmark
+\newcommand{\gitMarkFormat}{\gitwatermarkclr\vgitmarksize\sffamily}
+\newcommand\gitmarkheight{1.575em}
+
+\ifdefined\gitIsDraft
+    \AddToShipoutPictureFG{%
+        \AtPageLowerLeft{%
+            \raisebox{\gitmarkheight}{%
+                \makebox[\paperwidth]{%
+                    \begin{minipage}[b]{\paperwidth}%
+                        \renewcommand{\baselinestretch}{1}%
+                        \centering{\gitMarkFormat\gitMarkPref{} \gitMark}%
+                    \end{minipage}%
+                }%
+            }%
+        }%
+    }%
+\fi
+
+%
+% Setup section layout
+%
+\setnormallayout
+\definesection{default}{\relax}{000000}{000000}{000000}{0000FF}%
+\setsection{default}

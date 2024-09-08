@@ -1,13 +1,16 @@
 #!/bin/sh -e
 
 if [ "$1" = "" ]; then
-    echo "Usage: build.sh [dist/web/pdf]"
+    echo "Usage: build.sh [release/dist/web/pdf]"
+elif [ "$1" = "release" ]; then
+    export DO_RELEASE=1
+    nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_dist.sh
 elif [ "$1" = "dist" ]; then
-    PandocRulebookBase/scripts/sh/entry_dist.sh
+    nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_dist.sh
 elif [ "$1" = "web" ]; then
-    PandocRulebookBase/scripts/sh/entry_web.sh
+    nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_web.sh
 elif [ "$1" = "pdf" ]; then
-    PandocRulebookBase/scripts/sh/entry_pdf.sh
+    nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_pdf.sh
 else
     echo "I don't know what $1 means."
 fi

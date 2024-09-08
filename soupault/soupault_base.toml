@@ -18,6 +18,8 @@ default_content_action = "append_child"
 [preprocessors]
 md = 'PandocRulebookBase/scripts/sh/tool_pandoc-html.sh'
 
+[custom_options]
+
 ##
 ## Base Templates
 ##

@@ -1,7 +1,4 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -i python3 --pure -p nix -p git -p git-lfs -p wget -p cacert
-#! nix-shell -p pandoc -p minify -p dart-sass -p highlight -p imagemagick -p lychee
-#! nix-shell -p python311 -p python311Packages.beautifulsoup4 -p python311Packages.tomli-w
+#! /usr/bin/env python3
 
 # Syspath manipulation
 __import__("sys").path.append(__import__("os").path.abspath('PandocRulebookBase/scripts/py'))

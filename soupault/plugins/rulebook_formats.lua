@@ -75,8 +75,6 @@ for _, elem in HTML.select(page, ".box > p > .h7") do
 end
 
 -- Add the markers for calc blocks.
-local c_open = soupault_config["custom_options"]["c_open"]
-local c_close = soupault_config["custom_options"]["c_close"]
 for _, elem in HTML.select(page, ".c, .calc") do
     if HTML.has_class(elem, "fu") then
         HTML.prepend_child(elem, HTML.create_text("【"))
