@@ -18,13 +18,14 @@
 
 \input{_generated_pkgs}
 \input{_generated_fonts}
-\input{_generated_gitinfo}
+\input{_generated_buildinfo}
 
 \pdfvariable omitcidset=1
 \hypersetup{
     bookmarks=true,bookmarksnumbered=false,bookmarksopen=true,bookmarksopenlevel=1,
     breaklinks=true,pdfborder={0 0 1},backref=section,colorlinks=true
 }
+\hypersetup{pdftitle={\pdfTitle}}
 \setsecnumdepth{none}
 \settocdepth{subparagraph}
 \strictpagecheck
@@ -231,7 +232,7 @@
 \newcommand\renderGitMarkV\renderGitMark
 \newcommand\enableGitMark{\renewcommand\renderGitMarkV\renderGitMark}
 \newcommand\disableGitMark{\renewcommand\renderGitMarkV\relax}
-\ifdefined\gitIsDraft
+\ifdefined\buildIsDraft
     \AddToShipoutPictureFG{\renderGitMarkV}
 \fi
 

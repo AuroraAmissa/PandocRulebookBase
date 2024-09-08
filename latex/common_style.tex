@@ -14,7 +14,7 @@
 % Common functions
 %
 \newcommand\titlePageDraftMarker{%
-    \ifdefined\gitIsDraft Draft \else Revision \fi%
+    \ifdefined\buildIsDraft \ifdefined\buildIsPlaytest Playtest \else Draft \fi \else Revision \fi%
 }
 \newcommand\titlePage[3]{
     \disableGitMark
@@ -33,6 +33,17 @@
     \newpage
 
     \enableGitMark
+}
+\newcommand\repositoryInfoText[1]{
+    \ifdefined\buildIsDraft
+        This is \ifdefined\buildIsCiRelease an automatically rendered \else a \fi
+        \ifdefined\buildIsPlaytest playtest \else draft \fi version of \pdfTitle.
+        The mechanics and lore of this book may change at a later date, and many parts of this system have yet to be
+        fully finalized.
+        A current version of this document may be found on \href{https://github.com/#1/releases}{Github}.
+    \fi
+    Source code for the system document can \ifdefined\buildIsDraft also \fi be found on
+    \href{https://github.com/#1/tree/\gitCommitHash}{Github}.
 }
 
 %

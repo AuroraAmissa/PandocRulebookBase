@@ -62,28 +62,41 @@ for path in glob.glob("PandocRulebookBase/latex/**/*.tex", recursive=True):
 with open("build/pdf/tex/_generated_pkgs.tex", "w") as fd:
     fd.write(rf"""
         \usepackage[pdftex,
-                    pdftitle={{{config["config"]["title"]}}},
                     pdfauthor={{{config["config"]["author"]}}},
                     pdfdisplaydoctitle]{{hyperref}}
     """)
 
-with open("build/pdf/tex/_generated_gitinfo.tex", "w") as fd:
-    version = common.run(["git", "describe", "--always", "--dirty=-*"], capture = True)
-    version = version.decode("utf-8").strip()
-    revision = common.run(["git", "describe", "--match=x^", "--always", "--dirty=-*"], capture = True)
-    revision = revision.decode("utf-8").strip()
-    commit_time = common.run(["git", "log", "-1", "--date=short", "--pretty=format:%cd"], capture = True)
-    commit_time = commit_time.decode("utf-8").strip()
+def run_result(args):
+    result = common.run(args, capture = True).decode("utf-8").strip()
+    return result
 
-    is_draft = r"\newcommand\gitIsDraft\relax"
+
+with open("build/pdf/tex/_generated_buildinfo.tex", "w") as fd:
+    version = run_result(["git", "describe", "--always", "--dirty=-*"])
+    revision = run_result(["git", "describe", "--match=x^", "--always", "--dirty=-*"])
+    commit_time = run_result(["git", "log", "-1", "--date=short", "--pretty=format:%cd"])
+    git_hash = run_result(["git", "log", "-1", "--pretty=format:%H"])
+
+    is_draft = r"\newcommand\buildIsDraft\relax"
     if os.getenv("DO_RELEASE"):
         is_draft = ""
+
+    is_playtest = ""
+    if os.getenv("DO_PLAYTEST"):
+        is_playtest = r"\newcommand\buildIsPlaytest\relax"
+
+    is_ci_release = ""
+    if os.getenv("DO_CI_RELEASE"):
+        is_ci_release = r"\newcommand\buildIsCiRelease\relax"
 
     fd.write(rf"""
         \newcommand\gitVersion{{{version}}}
         \newcommand\gitRevision{{{revision}}}
         \newcommand\gitCommitTime{{{commit_time}}}
+        \newcommand\gitCommitHash{{{git_hash}}}
         {is_draft}
+        {is_playtest}
+        {is_ci_release}
     """)
 
 with open("build/pdf/tex/_generated_fonts.tex", "w") as fd:
