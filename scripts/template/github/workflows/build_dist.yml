@@ -16,6 +16,8 @@ jobs:
       - uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-unstable
+      - name: Fetch git tags.
+        run: git fetch --prune --unshallow --tags
       - run: ./build.sh ci
       - uses: actions/upload-artifact@v4
         with:
