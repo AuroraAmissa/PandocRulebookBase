@@ -9,3 +9,74 @@
 
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
+
+%
+% Common functions
+%
+\newcommand\titlePageDraftMarker{%
+    \ifdefined\gitIsDraft Draft \else Revision \fi%
+}
+\newcommand\titlePage[3]{
+    \disableGitMark
+
+    \setsection{#3}
+    \setcounter{page}{0}
+
+    \title{{\Huge\vtitlefont{\fontsize{37}{0}\selectfont {#1}}}\\
+    \textsf{\vskip 0.1em \fontsize{14}{0} \selectfont {#2}}}
+
+    \date{{\normalsize\textsf{}}{\normalsize{\sffamily \titlePageDraftMarker}}{\normalsize\textsf{
+    \gitVersion{}}}{\normalsize{} (\gitCommitTime{})}}
+
+    \maketitle
+    \thispagestyle{empty}
+    \newpage
+
+    \enableGitMark
+}
+
+%
+% Sidebar support
+%
+\newcommand\lumsidebargap\relax
+\newcommand\lumsidebarrule\relax
+\newcommand\lumsidebarnormal{%
+    \renewcommand\lumsidebargap{1.9mm}%
+    \renewcommand\lumsidebarrule{1.6pt}%
+}
+\newcommand\lumsidebarpageinset{%
+    \renewcommand\lumsidebargap{2.75mm}%
+    \renewcommand\lumsidebarrule{1.6pt}%
+}
+\newcommand\lumsidebartwocolumn{%
+    \renewcommand\lumsidebargap{1.2mm}%
+    \renewcommand\lumsidebarrule{1.35pt}%
+}
+\lumsidebarnormal
+
+\tcbset{textmarker/.style={%
+    skin=enhancedmiddle jigsaw,breakable,parbox=false,
+    boxrule=0pt,leftrule=\lumsidebarrule,rightrule=\lumsidebarrule,boxsep=0mm,arc=0mm,outer arc=0mm,
+    left=\lumsidebargap,right=\lumsidebargap,top=2mm,bottom=2mm,toptitle=1mm,bottomtitle=1mm,oversize
+}}
+\newtcolorbox{cw-sidebarenv}{textmarker,colback=cw-bg,colframe=cw-li}
+
+\newenvironment{lumsidebar}
+    {\begin{\vcolorset-sidebarenv}}
+    {\end{\vcolorset-sidebarenv}}
+
+%
+% Two-column support
+%
+\newenvironment{twocolumnbox}
+    {\lumsidebartwocolumn \twocolumnparagraphsplitting \begin{multicols}{2}}
+    {\end{multicols} \defaultparagraphsplitting \lumsidebarnormal}
+\newenvironment{twocolumnboxfill}
+    {\lumsidebartwocolumn \twocolumnparagraphsplitting \begin{multicols*}{2}}
+    {\end{multicols*} \defaultparagraphsplitting \lumsidebarnormal}
+
+%
+% Row color helper
+%
+\newcommand\crw{\rowcolor{\vcolorset-bg}}
+\newcommand\lcl{\cellcolor{\vcolorset-ln}}

@@ -68,6 +68,8 @@ with open("build/pdf/tex/_generated_pkgs.tex", "w") as fd:
     """)
 
 with open("build/pdf/tex/_generated_gitinfo.tex", "w") as fd:
+    version = common.run(["git", "describe", "--always", "--dirty=-*"], capture = True)
+    version = version.decode("utf-8").strip()
     revision = common.run(["git", "describe", "--match=x^", "--always", "--dirty=-*"], capture = True)
     revision = revision.decode("utf-8").strip()
     commit_time = common.run(["git", "log", "-1", "--date=short", "--pretty=format:%cd"], capture = True)
@@ -78,6 +80,7 @@ with open("build/pdf/tex/_generated_gitinfo.tex", "w") as fd:
         is_draft = ""
 
     fd.write(rf"""
+        \newcommand\gitVersion{{{version}}}
         \newcommand\gitRevision{{{revision}}}
         \newcommand\gitCommitTime{{{commit_time}}}
         {is_draft}

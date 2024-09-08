@@ -8,12 +8,13 @@
 \usepackage{geometry}
 \usepackage{luacode}
 \usepackage{multicol}
+\usepackage{wrapfig}
 
 \usepackage{eso-pic}
 \usepackage{graphicx}
-
+\usepackage{graphbox}
+\usepackage[raster, fitting, skins, breakable]{tcolorbox}
 \usepackage{xcolor}
-\usepackage{tcolorbox}
 
 \input{_generated_pkgs}
 \input{_generated_fonts}
@@ -88,21 +89,18 @@
     \renewcommand\vsecsize{\fontsize{28}{30}}
     \renewcommand\vsubsecsize{\fontsize{28}{30}}
     \renewcommand\vsubsubsecsize{\fontsize{20.5}{24.5}}
-    \defaultlists
 }
 \newcommand\setsecsplatlayout{
     \renewcommand\vtitlecentered\centering
     \renewcommand\vsecsize{\fontsize{28}{30}}
     \renewcommand\vsubsecsize{\fontsize{20.5}{24.5}}
     \renewcommand\vsubsubsecsize{\fontsize{15.5}{20}}
-    \defaultlists
 }
 \newcommand\setnormallayout{
     \renewcommand\vtitlecentered\relax
     \renewcommand\vsecsize{\fontsize{28}{30}}
     \renewcommand\vsubsecsize{\fontsize{20.5}{24.5}}
     \renewcommand\vsubsubsecsize{\fontsize{15.5}{20}}
-    \firmlists
 }
 \newcommand\resethyper{
     \hypersetup{
@@ -142,9 +140,6 @@
 \hyphenpenalty=1000 % Less hyphens please...
 \hbadness=1000
 \raggedcolumns
-
-\twocoltocetc % two column table of contents
-\firmlists % Reduce list spacing.
 
 \renewcommand{\labelitemi}{$\texttt{•}$}
 \setlist[itemize]{leftmargin=1.2em}
@@ -219,19 +214,23 @@
 \newcommand{\gitMarkFormat}{\gitwatermarkclr\vgitmarksize\sffamily}
 \newcommand\gitmarkheight{1.575em}
 
-\ifdefined\gitIsDraft
-    \AddToShipoutPictureFG{%
-        \AtPageLowerLeft{%
-            \raisebox{\gitmarkheight}{%
-                \makebox[\paperwidth]{%
-                    \begin{minipage}[b]{\paperwidth}%
-                        \renewcommand{\baselinestretch}{1}%
-                        \centering{\gitMarkFormat\gitMarkPref{} \gitMark}%
-                    \end{minipage}%
-                }%
+\newcommand\renderGitMark{%
+    \AtPageLowerLeft{%
+        \raisebox{\gitmarkheight}{%
+            \makebox[\paperwidth]{%
+                \begin{minipage}[b]{\paperwidth}%
+                \renewcommand{\baselinestretch}{1}%
+                \centering{\gitMarkFormat\gitMarkPref{} \gitMark}%
+                \end{minipage}%
             }%
         }%
     }%
+}
+\newcommand\renderGitMarkV\renderGitMark
+\newcommand\enableGitMark{\renewcommand\renderGitMarkV\renderGitMark}
+\newcommand\disableGitMark{\renewcommand\renderGitMarkV\relax}
+\ifdefined\gitIsDraft
+    \AddToShipoutPictureFG{\renderGitMarkV}
 \fi
 
 %

@@ -30,3 +30,11 @@ function Span(elem)
         end
     end
 end
+
+function Div(elem)
+    if elem.classes:includes("sidebar") then
+        table.insert(elem.content, 1, pandoc.RawInline('latex', '\\begin{lumsidebar}'))
+        table.insert(elem.content, pandoc.RawInline('latex', '\\end{lumsidebar}'))
+        return elem
+    end
+end
