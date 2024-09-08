@@ -72,7 +72,7 @@ def run_result(args):
 
 
 with open("build/pdf/tex/_generated_buildinfo.tex", "w") as fd:
-    version = run_result(["git", "describe", "--always", "--dirty=-*"])
+    version = run_result(["git", "describe", "--match=^v", "--always", "--dirty=-*"])
     revision = run_result(["git", "describe", "--match=x^", "--always", "--dirty=-*"])
     commit_time = run_result(["git", "log", "-1", "--date=short", "--pretty=format:%cd"])
     git_hash = run_result(["git", "log", "-1", "--pretty=format:%H"])

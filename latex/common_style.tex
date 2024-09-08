@@ -25,8 +25,12 @@
     \title{{\Huge\vtitlefont{\fontsize{37}{0}\selectfont {#1}}}\\
     \textsf{\vskip 0.1em \fontsize{14}{0} \selectfont {#2}}}
 
-    \date{{\normalsize\textsf{}}{\normalsize{\sffamily \titlePageDraftMarker}}{\normalsize\textsf{
-    \gitVersion{}}}{\normalsize{} (\gitCommitTime{})}}
+    \date{%
+        {\normalsize\textsf{}}%
+        {\normalsize{\sffamily \titlePageDraftMarker{}}}%
+        {\normalsize\textsf{\gitVersion{}}}%
+        {\normalsize{} (\gitCommitTime{})}%
+    }
 
     \maketitle
     \thispagestyle{empty}
