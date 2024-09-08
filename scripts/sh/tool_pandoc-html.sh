@@ -4,6 +4,7 @@ pandoc \
     --wrap=preserve --columns=1 \
     --lua-filter=PandocRulebookBase/pandoc/custom-classes.lua \
     --lua-filter=PandocRulebookBase/pandoc/html/breadcrumbs.lua \
+    --lua-filter=PandocRulebookBase/pandoc/html/html-classes.lua \
     --lua-filter=PandocRulebookBase/pandoc/html/language-tags.lua \
     --lua-filter=PandocRulebookBase/pandoc/html/mdlinks-html.lua \
     "$@"

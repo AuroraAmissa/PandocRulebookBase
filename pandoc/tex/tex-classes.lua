@@ -32,9 +32,27 @@ function Span(elem)
 end
 
 function Div(elem)
+    if elem.classes:includes("sidebar") and elem.classes:includes("cw") then
+        table.insert(elem.content, 1, pandoc.RawInline('latex', '\\begin{cw-sidebarenv}'))
+        table.insert(elem.content, pandoc.RawInline('latex', '\\end{cw-sidebarenv}'))
+        return elem
+    end
+
     if elem.classes:includes("sidebar") then
         table.insert(elem.content, 1, pandoc.RawInline('latex', '\\begin{lumsidebar}'))
         table.insert(elem.content, pandoc.RawInline('latex', '\\end{lumsidebar}'))
+        return elem
+    end
+
+    if elem.classes:includes("twocolumn") then
+        table.insert(elem.content, 1, pandoc.RawInline('latex', '\\begin{twocolumnbox}'))
+        table.insert(elem.content, pandoc.RawInline('latex', '\\end{twocolumnbox}'))
+        return elem
+    end
+
+    if elem.classes:includes("twocolumnfill") then
+        table.insert(elem.content, 1, pandoc.RawInline('latex', '\\begin{twocolumnboxfill}'))
+        table.insert(elem.content, pandoc.RawInline('latex', '\\end{twocolumnboxfill}'))
         return elem
     end
 end
