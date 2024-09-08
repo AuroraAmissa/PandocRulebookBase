@@ -2,7 +2,7 @@
 
 set -eu
 
-VERSION="0.2.0-alpha7"
+VERSION="0.2.0-alpha8"
 MKWEBFONT="build/mkwebfont-$VERSION"
 
 if [ ! -f "$MKWEBFONT" ]; then

@@ -15,4 +15,7 @@ with open("build/PARAM_TITLE", "w") as fd:
     fd.write(title)
 
 with open("build/PARAM_ARCHIVE_TITLE", "w") as fd:
-    fd.write(title.replace(" ", ""))
+    if "archive_title" in config["config"]:
+        fd.write(config["config"]["archive_title"])
+    else:
+        fd.write(title.replace(" ", ""))

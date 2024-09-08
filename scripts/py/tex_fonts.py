@@ -20,18 +20,21 @@ class Font(object):
             else:
                 self.args[arg] = True
 
-def lookup_font(font, is_bold, is_italic):
+def lookup_font(font, target_weight, is_italic):
     for subfont in font:
-        bold_matches = (subfont["weight"] != "Regular") == is_bold
+        bold_matches = subfont["weight_range"]["start"] <= target_weight <= subfont["weight_range"]["end"]
         italic_matches = (subfont["style"] != "Regular") == is_italic
 
+        print(subfont, bold_matches, subfont["weight_range"], target_weight)
+
         if bold_matches and italic_matches:
+            print(subfont)
             return subfont
 
-    if is_bold and is_italic:
-        return lookup_font(font, True, False)
-    elif is_bold or is_italic:
-        return lookup_font(font, False, False)
+    if is_italic:
+        return lookup_font(font, target_weight, False)
+    elif target_weight != 400 or is_italic:
+        return lookup_font(font, 400, False)
     else:
         raise Exception("No normal font?")
 
@@ -40,7 +43,7 @@ def find_font_features(name, is_bold, is_italic, font, font_obj, fallback):
     bold_weight = int(font_obj.args["BoldWeight"]) if "BoldWeight" in font_obj.args else 700
     weight = normal_weight if not is_bold else bold_weight
 
-    target_font = lookup_font(font, is_bold, is_italic)
+    target_font = lookup_font(font, weight, is_italic)
     font_obj.found = True
 
     features = ""
