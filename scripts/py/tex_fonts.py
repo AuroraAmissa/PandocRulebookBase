@@ -25,10 +25,7 @@ def lookup_font(font, target_weight, is_italic):
         bold_matches = subfont["weight_range"]["start"] <= target_weight <= subfont["weight_range"]["end"]
         italic_matches = (subfont["style"] != "Regular") == is_italic
 
-        print(subfont, bold_matches, subfont["weight_range"], target_weight)
-
         if bold_matches and italic_matches:
-            print(subfont)
             return subfont
 
     if is_italic:
@@ -116,7 +113,6 @@ def generate_tex_fonts(config):
     fonts = []
     if "pdf" in config and "fonts" in config["pdf"]:
         for font in config["pdf"]["fonts"]:
-            print(font)
             fonts.append(Font(font))
 
     if len(list(filter(lambda x: "Main" in x.args, fonts))) == 0:

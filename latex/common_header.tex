@@ -13,12 +13,14 @@
 \usepackage{eso-pic}
 \usepackage{graphicx}
 \usepackage{graphbox}
-\usepackage[raster, fitting, skins, breakable]{tcolorbox}
+\usepackage[raster, fitting, skins, breakable, hooks]{tcolorbox}
 \usepackage{xcolor}
 
 \input{_generated_pkgs}
 \input{_generated_fonts}
 \input{_generated_buildinfo}
+
+\input{tagpdf_support}
 
 \pdfvariable omitcidset=1
 \hypersetup{
@@ -185,17 +187,10 @@
 %
 % Background support
 %
-\expandafter\ifx\csname Gin@rule@.jp2\endcsname\relax
-  \DeclareGraphicsRule{.jp2}{jpg}{.jp2}{#1}
-  \DeclareGraphicsRule{.JP2}{jpg}{.JP2}{#1}
-  \usepackage{grfext}
-  \AppendGraphicsExtensions{.jp2,.JP2}
-\fi
-
 \newcommand\vbgimage\relax
 \AddToShipoutPictureBG {%
-    \IfFileExists{images/bg_\vbgimage.jp2}{%
-        \includegraphics[width=\paperwidth,height=\paperheight]{images/bg_\vbgimage.jp2}%
+    \IfFileExists{images/bg_\vbgimage.jpeg}{%
+        \includegraphics[width=\paperwidth,height=\paperheight]{images/bg_\vbgimage.jpeg}%
     }{%
     }%
 }

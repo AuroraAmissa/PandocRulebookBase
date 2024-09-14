@@ -22,17 +22,21 @@
     \setsection{#3}
     \setcounter{page}{0}
 
-    \title{{\Huge\vtitlefont{\fontsize{37}{0}\selectfont {#1}}}\\
-    \textsf{\vskip 0.1em \fontsize{14}{0} \selectfont {#2}}}
-
-    \date{%
-        {\normalsize\textsf{}}%
-        {\normalsize{\sffamily \titlePageDraftMarker{}}}%
-        {\normalsize\textsf{\gitVersion{}}}%
-        {\normalsize{} (\gitCommitTime{})}%
+    \title{%
+        {\Huge\vtitlefont{\fontsize{37}{0}\selectfont {\tagboth{Title}{#1}}}}\\%
+        \textsf{\vskip 0.1em \fontsize{14}{0} \selectfont {\tagp{#2}}}%
     }
 
-    \maketitle
+    \date{%
+        \tagp{%
+            {\normalsize\textsf{}}%
+            {\normalsize{\sffamily \titlePageDraftMarker{}}}%
+            {\normalsize\textsf{\gitVersion{}}}%
+            {\normalsize{} (\gitCommitTime{})}%
+        }%
+    }
+
+    \tagstruct{Part}{\maketitle}
     \thispagestyle{empty}
     \newpage
 
@@ -77,8 +81,14 @@
 \newtcolorbox{cw-sidebarenv}{textmarker,colback=cw-bg,colframe=cw-li}
 
 \newenvironment{lumsidebar}
-    {\begin{\vcolorset-sidebarenv}}
-    {\end{\vcolorset-sidebarenv}}
+    {%
+        \begin{\vcolorset-sidebarenv}%
+        \SuspendTagging{tagsupport/fntext/begin}%
+    }
+    {%
+        \ResumeTagging{tagsupport/fntext/begin}%
+        \end{\vcolorset-sidebarenv}%
+    }
 
 %
 % Two-column support

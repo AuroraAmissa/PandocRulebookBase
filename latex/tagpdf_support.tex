@@ -1,0 +1,60 @@
+\tagpdfsetup{activate,activate/spaces}
+
+\newcommand\tagstruct[2]{\tagstructbegin{tag=#1}#2\tagstructend}
+\newcommand\tagmc[2]{\tagmcbegin{tag=#1}#2\tagmcend}
+\newcommand\tagboth[2]{\tagstruct{#1}{\tagmc{#1}{#2}}}
+\newcommand\tagp[1]{\tagboth{P}{#1}}
+
+% Code from StackOverflow
+% https://tex.stackexchange.com/questions/611262/footnotes-in-tcolorbox-not-in-the-page-of-the-footnotemark
+
+\newif\iffootaux
+\newcounter{footaux}% for \csname
+\newcounter{auxpage}% to handle frontmatter etc.
+\setcounter{auxpage}{1}
+
+\makeatletter
+\tcbset{every box/.style={before upper app=\tcb@footnote@setup}}
+
+\def\tcb@footnote@setup{\let\footnotetext=\footaux
+  \let\footnote=\footnoteaux}
+
+\def\footnoteaux{\@ifnextchar[\@xfootnoteaux{\stepcounter{footnote}%
+  \footnotemark[\thefootnote]\@footaux[\thefootnote]}}
+
+\def\@xfootnoteaux[#1]{\footnotemark[#1]\@footaux[#1]}
+
+\def\footaux{\@ifnextchar[\@footaux{\@footaux[\thefootnote]}}
+\def\@footaux[#1]#2{\protected@write{\@auxout}{\let\theauxpage\relax}{\string\newfootnote{\theauxpage}{#1}{#2}}}
+
+\newcommand{\newfootnote}[3]{% #1 = \theauxpage, #2 = \thefoontnote, #3 = text
+  \ifnum#1=1\relax
+    \footnotetext[#2]{#3}%
+  \else
+    \stepcounter{footaux}%
+    \expandafter\xdef\csname footauxpage\thefootaux\endcsname{#1}%
+    \expandafter\xdef\csname footauxnumber\thefootaux\endcsname{#2}%
+    \expandafter\protected@xdef\csname footauxtext\thefootaux\endcsname{#3}%
+  \fi}
+
+% to run at the end of every page (debug version)
+\newcommand{\addfootaux}{\loop
+  \@ifundefined{footauxpage\thefootaux}{\footauxfalse}{%
+    \count1=\csname footauxpage\thefootaux\endcsname\relax
+    \advance\count1 by -1
+    \ifnum\count1=\value{auxpage}%
+      \expandafter\let\expandafter\footauxnumber\csname footauxnumber\thefootaux\endcsname
+      \expandafter\let\expandafter\footauxtext\csname footauxtext\thefootaux\endcsname
+      \footnotetext[\footauxnumber]{\footauxtext}%
+      \footauxtrue
+    \else
+      \footauxfalse
+    \fi}
+  \iffootaux
+    \global\expandafter\let\csname footauxpage\thefootaux\endcsname\relax
+    \global\expandafter\let\csname footauxnumber\thefootaux\endcsname\relax
+    \global\expandafter\let\csname footauxtext\thefootaux\endcsname\relax
+    \stepcounter{footaux}%
+  \repeat
+\stepcounter{auxpage}}
+\makeatother

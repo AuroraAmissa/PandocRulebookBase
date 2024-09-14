@@ -102,12 +102,6 @@ with open("build/pdf/tex/_generated_buildinfo.tex", "w") as fd:
 with open("build/pdf/tex/_generated_fonts.tex", "w") as fd:
     fd.write(tex_fonts.generate_tex_fonts(config))
 
-for path in glob.glob("build/pdf/tex/images/*"):
-    if os.path.isfile(path):
-        print(f"Converting {path} to JPEG 2000...")
-        root = os.path.splitext(path)[0]
-        common.run(["magick", "-define", "jp2:quality=60", path, f"{root}.jp2"])
-
 # Run latex
 os.chdir("build/pdf/tex")
 books = config["pdf"]["books"]

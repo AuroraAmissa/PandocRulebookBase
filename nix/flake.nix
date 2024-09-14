@@ -16,11 +16,10 @@
             devShells.default = pkgs.mkShell {
                 buildInputs = with pkgs; [
                     nix git git-lfs wget cacert zip
-                    pandoc minify dart-sass highlight imagemagick lychee
-                    texliveFull qpdf
+                    pandoc minify dart-sass highlight imagemagick lychee qpdf
                     python311 python311Packages.beautifulsoup4 python311Packages.tomli-w
                 ];
             };
         }
     );
-}
+}   
