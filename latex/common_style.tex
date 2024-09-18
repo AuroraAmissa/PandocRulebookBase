@@ -1,5 +1,7 @@
 %! suppress = Makeatletter
 
+\makeatletter
+
 %
 % Define layout
 %
@@ -11,7 +13,7 @@
 \setlength{\parindent}{0pt}
 
 %
-% Common functions
+% Predefined page elements
 %
 \newcommand\titlePageDraftMarker{%
     \ifdefined\buildIsDraft \ifdefined\buildIsPlaytest Playtest \else Draft \fi \else Revision \fi%
@@ -53,6 +55,19 @@
     Source code for the system document can \ifdefined\buildIsDraft also \fi be found on
     \href{https://github.com/#1/tree/\gitCommitHash}{Github}.
 }
+\newcommand\customTableOfContents{
+    \tagstruct{Sect}{
+        \tagboth{H1}{\chapter{Contents}}
+        \tagstruct{TOC}{
+            \begin{twocolumnboxfill}
+                \begingroup
+                    \parskip\cftparskip
+                    \@starttoc{toc}
+                \endgroup
+            \end{twocolumnboxfill}
+        }
+    }
+}
 
 %
 % Sidebar support
@@ -83,10 +98,8 @@
 \newenvironment{lumsidebar}
     {%
         \begin{\vcolorset-sidebarenv}%
-        \SuspendTagging{tagsupport/fntext/begin}%
     }
     {%
-        \ResumeTagging{tagsupport/fntext/begin}%
         \end{\vcolorset-sidebarenv}%
     }
 
@@ -105,3 +118,6 @@
 %
 \newcommand\crw{\rowcolor{\vcolorset-bg}}
 \newcommand\lcl{\cellcolor{\vcolorset-ln}}
+
+% Epilogue
+\makeatother

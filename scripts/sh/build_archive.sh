@@ -7,7 +7,7 @@ TITLE="$(cat build/PARAM_TITLE)"
 ARCHIVE_TITLE="$(cat build/PARAM_ARCHIVE_TITLE)"
 
 cd build
-VERSION="$(git describe --always --dirty=-DIRTY)"
+VERSION="$(git describe --candidates=1000 --exclude="ci_draft*" --always --dirty=-DIRTY)"
 CONTENT_DIR="$TITLE $VERSION"
 ZIP_FILE="$ARCHIVE_TITLE-$VERSION.zip"
 rm -rf "$CONTENT_DIR" "$ZIP_FILE" dist ||:

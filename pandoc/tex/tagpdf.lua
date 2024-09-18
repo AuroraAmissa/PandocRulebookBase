@@ -1,13 +1,23 @@
 -- Implements PDF tagging on the pandoc level.
 
 local function tag_struct(elem, tag)
-    table.insert(elem, 1, pandoc.RawInline('latex', '\\tagstructbegin{tag=' .. tag .. '}'))
-    table.insert(elem, pandoc.RawInline('latex', '\\tagstructend'))
+    local insert = table.insert
+    if elem.insert then
+        insert = elem.insert
+    end
+
+    insert(elem, 1, pandoc.RawInline('latex', '\\expandafter\\tagstructbegin{tag=' .. tag .. '}'))
+    insert(elem, pandoc.RawInline('latex', '\\tagstructend'))
 end
 
 local function tag_content(elem, tag)
-    table.insert(elem, 1, pandoc.RawInline('latex', '\\tagmcbegin{tag=' .. tag .. '}'))
-    table.insert(elem, pandoc.RawInline('latex', '\\tagmcend'))
+    local insert = table.insert
+    if elem.insert then
+        insert = elem.insert
+    end
+
+    insert(elem, 1, pandoc.RawInline('latex', '\\expandafter\\tagmcbegin{tag=' .. tag .. '}'))
+    insert(elem, pandoc.RawInline('latex', '\\tagmcend'))
 end
 
 local function Pandoc(doc)
@@ -57,14 +67,42 @@ local function Header(elem)
         tag = "H4"
     end
 
+    tag = tag .. ",label={" .. pandoc.utils.stringify(elem.content) .. " \\thepage}"
+
     local result = {elem}
     tag_content(result, tag)
     tag_struct(result, tag)
     return result
 end
 
+local function List(elem)
+    local ordering = "UnorderedList"
+    if elem.tag == "OrderedList" then
+        ordering = "OrderedList"
+    end
+
+    local content = {elem}
+    tag_struct(content, "LI")
+    tag_struct(content, "L,attribute=" .. ordering)
+
+    local last = #elem.content
+    for i, obj in ipairs(elem.content) do
+        -- List body
+        tag_content(obj, "LBody")
+        tag_struct(obj, "LBody")
+
+        -- LI code
+        if i ~= last then
+            obj:insert(pandoc.RawInline('latex', '\\tagstructend'))
+            obj:insert(pandoc.RawInline('latex', '\\tagstructbegin{tag=LI}'))
+        end
+    end
+
+    return content
+end
+
 return {
     {Pandoc = Pandoc},
     {Div = DivSidebar},
-    {Para = Para, Div = Div, Header = Header},
+    {Para = Para, Div = Div, Header = Header, BulletList = List, OrderedList = List},
 }

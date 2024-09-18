@@ -41,9 +41,13 @@
 % 4 - Deemphasized color
 % 5 - Line/Title color
 % 6 - Link color
+% 7 - Bullet label
 \makeatletter%
-\newcommand\definesection[6]{%
-    \expandafter\newcommand\csname #1titlefont\endcsname{#2}
+\newcommand
+%! suppress = DuplicateDefinition
+\definesection[7]{%
+    \expandafter\newcommand\csname #1titlefont\endcsname{#2}%
+    \expandafter\newcommand\csname #1labelitemi\endcsname{#7}%
     \definecolor{#1-bg}{HTML}{#3}%
     \definecolor{#1-de}{HTML}{#4}%
     \definecolor{#1-li}{HTML}{#5}%
@@ -56,6 +60,7 @@
     \renewcommand\vcolorset{#1}%
     \renewcommand\vbgimage{#1}%
     \resethyper%
+    \renewcommand\labelitemi{\tagboth{Lbl}{\csname #1labelitemi\endcsname}}%
 }
 
 %
@@ -235,5 +240,5 @@
 % Setup section layout
 %
 \setnormallayout
-\definesection{default}{\relax}{000000}{000000}{000000}{0000FF}%
+\definesection{default}{\relax}{000000}{000000}{000000}{0000FF}{•}%
 \setsection{default}
