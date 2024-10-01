@@ -106,9 +106,12 @@ with open("build/pdf/tex/_generated_fonts.tex", "w") as fd:
 os.chdir("build/pdf/tex")
 books = config["pdf"]["books"]
 for book_name in books:
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        common.run([
+            "texliveonfly", "-a", "-interaction=nonstopmode", "--compiler=lualatex", f"{book_name}.tex"
+        ])
     common.run([
-        "latexmk", "-interaction=nonstopmode", "-pdflatex=lualatex",
-        "-pdf", f"{book_name}.tex"
+        "latexmk", "-interaction=nonstopmode", "-pdflatex=lualatex", "-pdf", f"{book_name}.tex"
     ])
     print("Compressing PDF...")
     common.run([
