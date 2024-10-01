@@ -55,18 +55,21 @@
     Source code for the system document can \ifdefined\buildIsDraft also \fi be found on
     \href{https://github.com/#1/tree/\gitCommitHash}{Github}.
 }
+\newcommand\customTableOfContentsHeadless{
+    \tagstruct{TOC}{
+        \begin{twocolumnboxfill}
+            \begingroup
+                \parskip\cftparskip
+                \@starttoc{toc}
+            \endgroup
+        \end{twocolumnboxfill}
+    }
+}
 \newcommand\customTableOfContents{
     \tagstruct{Sect}{
         \tagboth{H1}{\chapter{Contents}}
         \tagheadinglabel{Contents}
-        \tagstruct{TOC}{
-            \begin{twocolumnboxfill}
-                \begingroup
-                    \parskip\cftparskip
-                    \@starttoc{toc}
-                \endgroup
-            \end{twocolumnboxfill}
-        }
+        \customTableOfContentsHeadless
     }
 }
 

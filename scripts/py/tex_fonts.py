@@ -5,6 +5,8 @@ import re
 
 import common
 
+is_ci = os.getenv("GITHUB_ACTIONS") == "true"
+
 class Font(object):
     def __init__(self, string):
         split = string.split(',')
@@ -93,6 +95,7 @@ def make_tex(font_name, font, font_obj, fallback_sources):
             {bold_italic_features}
         }}
         \newfontfamily{tex_font_name}{{{font_name}}}[]
+        \newcommand{tex_font_name}Exists{{1}}
     """
 
 def make_fallbacks(fallback_sources):
@@ -139,6 +142,9 @@ def generate_tex_fonts(config):
     for font in glob.glob("template/fonts/**/*.ttf", recursive=True):
         if os.path.isfile(font):
             args.append(font)
+    for font in glob.glob("template/fonts/**/*.otf", recursive=True):
+        if os.path.isfile(font):
+            args.append(font)
 
     result = common.run(
         ["PandocRulebookBase/scripts/sh/tool_mkwebfont.sh"] + args + ["--dump-fonts", "build/pdf/tex/fonts/"],
@@ -165,17 +171,19 @@ def generate_tex_fonts(config):
         font = faces[font_name]
         filtered = list(filter(lambda x: x.name.lower() == font_name.lower(), fonts))
         font_obj = filtered[0] if len(filtered) > 0 else Font(font_name)
-        tex += make_tex(font_name, font, font_obj, fallback_sources)
 
-        if ",LastFallback" in font_obj.args:
-            tex += make_fallbacks(fallback_sources)
+        if not (is_ci and "Nonfree" in font_obj.args):
+            tex += make_tex(font_name, font, font_obj, fallback_sources)
+
+            if ",LastFallback" in font_obj.args:
+                tex += make_fallbacks(fallback_sources)
     tex += "\n"
 
     for font in fonts:
         if not font.found:
             if "Alternative" in font.args:
                 alternative = font.args["Alternative"]
-                tex += f"\\newcommand{font_name_to_tex(font.name)}{font_name_to_tex(alternative)}"
+                tex += f"\\newcommand{font_name_to_tex(font.name)}{font_name_to_tex(alternative)}\n"
             else:
                 raise Exception(f"Font not found: {font.name}")
         if "Main" in font.args:

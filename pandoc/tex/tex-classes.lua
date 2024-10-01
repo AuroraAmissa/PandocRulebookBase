@@ -3,6 +3,12 @@ local common = require 'PandocRulebookBase.pandoc.common'
 local meta = common.read_json("build/pdf/meta.json")
 local no_c_span_space = meta.pdf.no_c_span_space
 
+function Header(elem)
+    if elem.classes:includes("texoverride") then
+        return {}
+    end
+end
+
 function Span(elem)
     if elem.classes:includes("breadcrumbs") then
         return {}

@@ -11,6 +11,7 @@ elif [ "$1" = "release" ]; then
     nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_dist.sh
 elif [ "$1" = "ci" ]; then
     export DO_CI_RELEASE=1
+    export GITHUB_ACTIONS=true # hacky, but... whatevs
     nix develop path:PandocRulebookBase/nix/ --command PandocRulebookBase/scripts/sh/entry_dist.sh
 elif [ "$1" = "playtest" ]; then
     export DO_PLAYTEST=1
