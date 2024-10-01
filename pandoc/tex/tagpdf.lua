@@ -67,9 +67,10 @@ local function Header(elem)
         tag = "H4"
     end
 
-    tag = tag .. ",label={" .. pandoc.utils.stringify(elem.content) .. " \\thepage}"
+    local content = pandoc.utils.stringify(elem.content)
 
     local result = {elem}
+    table.insert(result, pandoc.RawInline('latex', '\\tagheadinglabel{' .. content .. '}'))
     tag_content(result, tag)
     tag_struct(result, tag)
     return result

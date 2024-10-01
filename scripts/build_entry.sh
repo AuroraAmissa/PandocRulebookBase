@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    git lfs pull -X "*.xcf"
+fi
+
 if [ "$1" = "" ]; then
     echo "Usage: build.sh [release/ci/playtest/draft/web/pdf]"
 elif [ "$1" = "release" ]; then

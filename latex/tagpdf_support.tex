@@ -7,6 +7,8 @@
 \newcommand\tagboth[2]{\tagstruct{#1}{\tagmc{#1}{#2}}}
 \newcommand\tagp[1]{\tagboth{P}{#1}}
 
+\newcommand\tagheadinglabel[1]{\expandafter\tagstruct{NonStruct,label={#1 \thepage}}{}}
+
 \let\originalcontentsline\contentsline
 \renewcommand{\contentsline}[4]{%
     \tagstruct{TOCI,ref={#2 #3}}{%
