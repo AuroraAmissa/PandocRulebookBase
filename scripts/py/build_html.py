@@ -149,7 +149,7 @@ common.run([
 ])
 
 # Copy extra resources
-for path in glob.glob("template/web/static/**", recursive=True):
+for path in glob.glob("template/web/static/**", recursive=True, include_hidden=True):
     common.copy_file_to("template/web/static/", path, "build/run/web")
 
 # Build webfonts
