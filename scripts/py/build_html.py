@@ -162,7 +162,7 @@ common.run([
 ])
 
 # Minify HTML
-for file in glob.glob("build/run/web_fonts/**", recursive=True):
+for file in glob.glob("build/run/web_fonts/**", recursive=True, include_hidden=True):
     suffix = common.strip_path_prefix(file, "build/run/web_fonts/")
     target = f"build/web/{suffix}"
     if os.path.isfile(file):
