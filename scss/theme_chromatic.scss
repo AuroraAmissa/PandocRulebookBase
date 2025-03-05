@@ -1,6 +1,7 @@
 @use 'sass:list';
 
 $font_title: "Hachi Maru Pop" !default;
+$font_symbol: "Hachi Maru Pop" !default;
 $font_text: "M Plus 2" !default;
 
 $marker_li: "♡" !default;
@@ -61,7 +62,7 @@ $font_weight_menu: $font_weight_main * 1.1 !default;
   $color_background_tooltip: $color_background_tooltip,
 
   $font_title: $font_title,
-  $font_symbol: "Hachi Maru Pop",
+  $font_symbol: $font_symbol,
   $font_main: $font_text,
   $font_code: ("Noto Sans Mono", $font_text),
 
@@ -87,11 +88,13 @@ $font_weight_menu: $font_weight_main * 1.1 !default;
 :not(ol) > li::marker {
   content: $marker_li + "  ";
   @include common_style.font_symbol;
+  line-height: 100%;
 }
 
 article li ul li::marker {
   content: $marker_li_2 + "  ";
   @include common_style.font_symbol;
+  line-height: 100%;
 }
 
 h1, hr {
@@ -106,11 +109,13 @@ h1, hr {
   &:before {
     content: $marker_title + "  ";
     @include common_style.font_symbol;
+    line-height: 100%;
   }
 
   &:after {
     content: "  " + $marker_title;
     @include common_style.font_symbol;
+    line-height: 100%;
   }
 }
 
@@ -121,11 +126,13 @@ h1, hr {
       margin-left: -0.5em;
       padding-left: 0.15rem;
       @include common_style.font_symbol;
+      line-height: 100%;
     }
 
     &::after {
       content: "  》";
       @include common_style.font_symbol;
+      line-height: 100%;
     }
   }
 
@@ -136,11 +143,13 @@ h1, hr {
       margin-left: -0.6em;
       padding-left: 0.15rem;
       @include common_style.font_symbol;
+      line-height: 100%;
     }
 
     &::after {
       content: "  〉";
       @include common_style.font_symbol;
+      line-height: 100%;
     }
   }
 
