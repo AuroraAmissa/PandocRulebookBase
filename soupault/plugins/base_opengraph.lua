@@ -55,7 +55,7 @@ local title_elt = HTML.select_one(page, "h1")
 local title = title_elt and HTML.inner_text(title_elt)
 add_meta("og:title", title)
 
-local image_elt = HTML.select_one(page, ".e-content img")
+local image_elt = HTML.select_one(page, "img.metaimage")
 local image = image_elt and HTML.get_attribute(image_elt, "src")
 local image_alt = image_elt and HTML.get_attribute(image_elt, "alt")
 add_meta("og:image", image)

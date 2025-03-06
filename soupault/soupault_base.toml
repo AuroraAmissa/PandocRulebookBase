@@ -109,7 +109,7 @@ after = ["base-format_menu-index", "base-format_menu-footer"]
 widget = "base_hcard"
 
 [widgets.images]
-after = ["base-format_menu-index", "base-format_menu-footer", "base_hcard"]
+after = ["base-format_menu-index", "base-format_menu-footer", "base_hcard", "base_opengraph"]
 widget = "base_images"
 
 ##
