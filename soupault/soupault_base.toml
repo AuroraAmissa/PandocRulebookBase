@@ -67,7 +67,7 @@ command = "PandocRulebookBase/scripts/sh/tool_pandoc-html.sh template/web/compon
 
 [widgets.page-title]
 widget = "title"
-selector = "h1"
+selector = "h1:not(.internal)"
 default = "Project Name"
 append = " | Project Name"
 force = true
@@ -86,7 +86,7 @@ html = '<meta name="generator" content="crabsoup">'
 widget = "base_fix-styles"
 
 [widgets.base_cleanup]
-after = ["base_process-toc", "rulebook_alt-span"]
+after = ["base_process-toc", "rulebook_alt-span", "base_opengraph"]
 widget = "base_cleanup"
 
 [widgets.base_opengraph]

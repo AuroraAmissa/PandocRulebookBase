@@ -15,6 +15,10 @@ for _, elem in HTML.select(page, ".aria-hidden") do
     HTML.set_attribute(elem, "aria-hidden", "true")
 end
 
-for _, elem in HTML.select(page, ".internal") do
+for _, elem in HTML.select(page, ".internal:not(section)") do
     HTML.delete(elem)
+end
+
+for _, elem in HTML.select(page, ".internal") do
+    HTML.remove_class(elem, "internal")
 end
