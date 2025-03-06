@@ -14,3 +14,7 @@ for _, elem in HTML.select(page, ".aria-hidden") do
     HTML.remove_class(elem, "aria-hidden")
     HTML.set_attribute(elem, "aria-hidden", "true")
 end
+
+for _, elem in HTML.select(page, ".internal") do
+    HTML.delete(elem)
+end
