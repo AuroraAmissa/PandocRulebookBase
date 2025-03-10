@@ -168,7 +168,6 @@ local function build_images(img, src, suffix, ext, cmd, hidpi)
     -- move attributes from source
     tx_attribute(img, picture, "class")
     tx_attribute(img, picture, "style")
-    tx_attribute(img, picture, "alt")
 
     return picture
 end
