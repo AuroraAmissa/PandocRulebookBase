@@ -25,10 +25,11 @@ $theme_lightness_mult_highlight: 1.0 !default;
 $theme_lightness_mult_border: 1.0 !default;
 $theme_lightness_mult_text: 1.0 !default;
 $theme_highlight_as_link: false !default;
+$theme_highlight_as_text: false !default;
 
 $color_text: oklch(51% * $theme_lightness_mult * $theme_lightness_mult_text 0.16 * $theme_chroma_mult $theme_color) !default;
 $color_link: oklch(69% * $theme_lightness_mult_highlight 0.19 * $theme_chroma_mult_highlight $theme_color) !default;
-$color_text_highlight: if($theme_highlight_as_link, $color_link, oklch(51% * $theme_lightness_mult_highlight 0.16 * $theme_chroma_mult_highlight $theme_color)) !default;
+$color_text_highlight: if($theme_highlight_as_link, $color_link, if($theme_highlight_as_text, $color_text, oklch(51% * $theme_lightness_mult_highlight 0.16 * $theme_chroma_mult_highlight $theme_color))) !default;
 $color_code_block: $color_text !default;
 
 $color_background_main: oklch(list.slash(99% 0.01 * $theme_chroma_mult $theme_color_secondary, $bg_alpha)) !default;
