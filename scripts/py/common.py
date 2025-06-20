@@ -1,3 +1,4 @@
+import glob
 import shutil
 import subprocess
 import os
@@ -32,6 +33,14 @@ def path_relative_to(root, source, target):
         super_name += "../"
 
     return (super_name + rela_target[len(rela_source):]).replace("//", "/")
+
+def all_fonts():
+    fonts = []
+    fonts += glob.glob("template/fonts/**/*.ttf", recursive=True)
+    fonts += glob.glob("template/fonts/**/*.otf", recursive=True)
+    fonts += glob.glob("PandocRulebookBase/res/fonts/**/*.ttf", recursive=True)
+    fonts += glob.glob("PandocRulebookBase/res/fonts/**/*.otf", recursive=True)
+    return sorted(filter(os.path.isfile, fonts))
 
 def del_path(target):
     if os.path.isdir(target):

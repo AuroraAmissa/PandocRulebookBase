@@ -139,12 +139,8 @@ def generate_tex_fonts(config):
         if not "Provided" in font.args:
             args.append("--gfont")
             args.append(font.name)
-    for font in glob.glob("template/fonts/**/*.ttf", recursive=True):
-        if os.path.isfile(font):
-            args.append(font)
-    for font in glob.glob("template/fonts/**/*.otf", recursive=True):
-        if os.path.isfile(font):
-            args.append(font)
+    for font in common.all_fonts():
+        args.append(font)
 
     result = common.run(
         ["PandocRulebookBase/scripts/sh/tool_mkwebfont.sh"] + args + ["--dump-fonts", "build/pdf/tex/fonts/"],

@@ -153,13 +153,17 @@ for path in glob.glob("template/web/static/**", recursive=True, include_hidden=T
     common.copy_file_to("template/web/static/", path, "build/run/web")
 
 # Build webfonts
+extra_fonts = []
+for font in common.all_fonts():
+    extra_fonts.append(font)
+
 shutil.copytree("build/run/web", "build/run/web_fonts")
 common.run([
     "PandocRulebookBase/scripts/sh/tool_mkwebfont.sh",
     "--write-to-webroot", "--subset",
     "--store", f"build/run/web_fonts/{resource_root}/webfonts",
     "--webroot", "build/run/web_fonts", "--splitter", "none",
-])
+] + extra_fonts)
 
 # Minify HTML
 for file in glob.glob("build/run/web_fonts/**", recursive=True, include_hidden=True):

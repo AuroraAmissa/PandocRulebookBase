@@ -299,17 +299,6 @@ h2.center-head, h3.center-head, h4.center-head, h5.center-head, h6.center-head {
   font-size: 0.8rem;
 }
 
-.fus {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: bold;
-  -webkit-text-stroke: 0.75px black;
-
-  &.red {
-    color: red;
-  }
-}
-
 ///
 /// Headings
 ///
@@ -448,6 +437,10 @@ button {
     border-color: #1b1f2326;
     transition-duration: 0.1s;
   }
+}
+
+figcaption {
+  display: none;
 }
 
 ///
