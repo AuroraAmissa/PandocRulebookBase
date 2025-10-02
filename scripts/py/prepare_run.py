@@ -16,6 +16,9 @@ def prepare_run(config, soupault_config):
 
         title = None
         for line in contents.split("\n"):
+            if line.startswith("link-alias: "):
+                title = line[12:]
+                break
             if line.startswith("# "):
                 title = line[2:]
                 title = title.split("{")[0].strip()
