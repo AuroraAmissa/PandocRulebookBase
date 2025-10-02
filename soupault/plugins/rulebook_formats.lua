@@ -42,19 +42,35 @@ for _, elem in HTML.select(page, ".ability-head") do
     end
 end
 
--- Fix section markers in abilities to appear in the proper place.
-for _, elem in HTML.select(page, ".box .section") do
-    local text = HTML.inner_text(elem)
-    Table.iter_values(HTML.delete, HTML.children(elem))
+-- Various fixups for boxes
+for _, box in HTML.select(page, ".box") do
+    -- Fix text elements in h6
+    for _, elem in HTML.select(box, "h6") do
+        for _, child in HTML.children(elem) do
+            if HTML.is_text(child) then
+                local text = string.trim(HTML.inner_text(child))
+                if text ~= "" then
+                    HTML.insert_after(child, HTML.create_text(text))
+                end
+                HTML.delete(child)
+            end
+        end
+    end
 
-    local new_span = HTML.create_element("span", text)
-    HTML.add_class(new_span, "section-for-box")
-    HTML.append_child(HTML.parent(elem) or unreachable(), new_span)
+    -- Fix section markers in abilities to appear in the proper place.
+    for _, elem in HTML.select(box, ".section") do
+        local text = HTML.inner_text(elem)
+        Table.iter_values(HTML.delete, HTML.children(elem))
 
-    if HTML.has_class(elem, ".ability-head") then
+        local new_span = HTML.create_element("span", text)
+        HTML.add_class(new_span, "section-for-box")
         local parent = HTML.parent(elem)
-        if not parent or not HTML.has_class(parent, "marked") then
-            HTML.add_class(new_span, "section-for-ability")
+        HTML.append_child(parent or unreachable(), new_span)
+
+        if HTML.select_one(parent, ".ability-head") then
+            if not HTML.has_class(box, "marked") then
+                HTML.add_class(new_span, "section-for-ability")
+            end
         end
     end
 end

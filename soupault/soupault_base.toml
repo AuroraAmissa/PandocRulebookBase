@@ -7,6 +7,7 @@ page_file_extensions = ["htm", "html", "md"]
 ignore_extensions = ["draft"]
 plugin_discovery = true
 plugin_dirs = ["PandocRulebookBase/soupault/plugins"]
+pretty_print_html = false
 
 site_dir = "build/sources/soupault/site"
 build_dir = "build/run/web"
