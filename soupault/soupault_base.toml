@@ -74,11 +74,6 @@ append = " | Project Name"
 force = true
 keep = true
 
-[widgets.generator-meta]
-widget = 'insert_html'
-selector = 'head'
-html = '<meta name="generator" content="crabsoup">'
-
 ##
 ## Widgets: Markup Processing
 ##
