@@ -44,11 +44,13 @@ end
 
 -- Various fixups for boxes
 for _, box in HTML.select(page, ".box") do
-    -- Fix text elements in h6
+    -- Fix trailing text elements in h6
     for _, elem in HTML.select(box, "h6") do
-        for _, child in HTML.children(elem) do
-            if HTML.is_text(child) then
-                local text = string.trim(HTML.inner_text(child))
+        local children = HTML.children(elem)
+        for i = 1, #children - 1 do
+            local child = children[i]
+            if HTML.is_text(child) and HTML.has_class(children[i + 1], "ability-head") then
+                local text = Regex.replace(HTML.inner_text(child), "\\s*$", "")
                 if text ~= "" then
                     HTML.insert_after(child, HTML.create_text(text))
                 end
@@ -67,10 +69,8 @@ for _, box in HTML.select(page, ".box") do
         local parent = HTML.parent(elem)
         HTML.append_child(parent or unreachable(), new_span)
 
-        if HTML.select_one(parent, ".ability-head") then
-            if not HTML.has_class(box, "marked") then
-                HTML.add_class(new_span, "section-for-ability")
-            end
+        if HTML.select_one(parent, ".ability-head") and not HTML.has_class(box, "marked") then
+            HTML.add_class(new_span, "section-for-ability")
         end
     end
 end

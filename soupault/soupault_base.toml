@@ -82,7 +82,7 @@ keep = true
 widget = "base_fix-styles"
 
 [widgets.base_cleanup]
-after = ["base_process-toc", "rulebook_alt-span", "base_opengraph"]
+after = ["base_process-toc", "rulebook_alt-span", "rulebook_elements", "base_opengraph", "table-of-contents"]
 widget = "base_cleanup"
 
 [widgets.base_opengraph]
@@ -95,7 +95,7 @@ selector = '*[class^="language-"]'
 command = 'highlight --force -O html -f --syntax=$(echo $ATTR_CLASS | sed -e "s/language-//")'
 
 [widgets.wrap-boxes]
-after = ["rulebook_formats"]
+after = ["rulebook_elements"]
 widget = "wrap"
 wrapper = """ <div> """
 selector = [".box > table", ".box > ul", ".box > ol", ".box > hr", ".box > section"]
@@ -124,19 +124,22 @@ selector = ["#rev-tag"]
 command = 'git rev-parse HEAD | tr -d "\n"'
 action = "replace_content"
 
+[widgets.rulebook_create-id]
+widget = "rulebook_create-id"
+
 [widgets.rulebook_alt-span]
 widget = "rulebook_alt-span"
 
-[widgets.rulebook_formats]
-after = "table-of-contents"
-widget = "rulebook_formats"
+[widgets.rulebook_elements]
+after = ["rulebook_create-id", "table-of-contents"]
+widget = "rulebook_elements"
 
 ##
 ## Widgets: Table of Contents
 ##
 
 [widgets.table-of-contents]
-after = "base-format_menu-index"
+after = ["base-format_menu-index", "rulebook_create-id"]
 widget = "toc"
 selector = "#gen-toc"
 
