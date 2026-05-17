@@ -155,3 +155,7 @@ widget = "base_process-toc"
 [widgets.website_no-toc-format]
 after = "base_process-toc"
 widget = "website_no-toc-format"
+
+[widgets.base_remove-navigation]
+after = "website_no-toc-format"
+widget = "base_remove-navigation"

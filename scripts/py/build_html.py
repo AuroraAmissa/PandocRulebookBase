@@ -123,6 +123,14 @@ if "toc_allowed" in config["config"]:
 else:
     del soupault_cfg["widgets"]["website_no-toc-format"]
 
+if "no_site_navigation" in config["config"]:
+    if len(config["config"]["no_site_navigation"]) > 0:
+        soupault_cfg["widgets"]["base_remove-navigation"]["path_regex"] = "|".join(config["config"]["no_site_navigation"])
+    else:
+        soupault_cfg["widgets"]["base_remove-navigation"]["path_regex"] = "x^"
+else:
+    del soupault_cfg["widgets"]["base_remove-navigation"]
+
 if not has_entry:
     del soupault_cfg["templates"]["redirect"]
 
